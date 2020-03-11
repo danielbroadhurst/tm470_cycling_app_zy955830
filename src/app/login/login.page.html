@@ -1,0 +1,19 @@
+<div class="loginBox">
+  <ion-card>
+      <ion-card-header><ion-card-title>Login</ion-card-title></ion-card-header>
+      <ion-input placeholder="E-Mail"></ion-input>
+      <ion-input placeholder="Password"></ion-input>
+      <div>
+        <ion-button [routerLink]="['/dashboard']" expand="block" class="ion-activatable ripple-parent">
+          Login
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-button>
+      </div>
+      <div>
+        <ion-button [routerLink]="['/register']" expand="block" class="ion-activatable ripple-parent" color="tertiary">
+          Sign Up
+          <ion-ripple-effect></ion-ripple-effect>
+        </ion-button>
+      </div>
+  </ion-card>
+</div>
