@@ -1,30 +1,32 @@
 import { NgModule } from '@angular/core';
 import { PreloadAllModules, RouterModule, Routes } from '@angular/router';
+import { AuthGuard } from './services/auth.guard';
 
 const routes: Routes = [
   { path: '', redirectTo: 'login', pathMatch: 'full' },
   {
     path: 'login',
-    loadChildren: () => import('./login/login.module').then( m => m.LoginPageModule)
+    loadChildren: () => import('./pages/login/login.module').then( m => m.LoginPageModule)
   },
   {
     path: 'register',
-    loadChildren: () => import('./register/register.module').then( m => m.RegisterPageModule)
+    loadChildren: () => import('./pages/register/register.module').then( m => m.RegisterPageModule)
   },
   {
     path: 'dashboard',
-    loadChildren: () => import('./dashboard/dashboard.module').then( m => m.DashboardPageModule)
-  },  {
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/dashboard/dashboard.module').then( m => m.DashboardPageModule)
+  },
+  {
     path: 'profile',
-    loadChildren: () => import('./profile/profile.module').then( m => m.ProfilePageModule)
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/profile/profile.module').then( m => m.ProfilePageModule)
   },
   {
     path: 'clubs',
-    loadChildren: () => import('./clubs/clubs.module').then( m => m.ClubsPageModule)
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/clubs/clubs.module').then( m => m.ClubsPageModule)
   },
-
-
-
 ];
 
 @NgModule({
