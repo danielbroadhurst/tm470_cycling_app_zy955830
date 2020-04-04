@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MenuController } from '@ionic/angular';
+import { MenuController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 
@@ -11,7 +11,11 @@ import { Router } from '@angular/router';
 export class NavigationComponent implements OnInit {
 
   response;
-  constructor(private authService: AuthenticationService, private menu: MenuController, private router: Router) { }
+  constructor(
+    private authService: AuthenticationService,
+    private menu: MenuController,
+    private router: Router,
+    public alertController: AlertController) { }
 
   ngOnInit() {}
 
@@ -22,13 +26,22 @@ export class NavigationComponent implements OnInit {
   ]
 
   logout() {
-    localStorage.removeItem('token');
     this.authService.logoutUser().subscribe(
       res => {
         this.response = res;
-        console.log(this.response);
-        
+        this.presentAlert('Success', this.response)
       })
+    localStorage.removeItem('token');
     this.router.navigate(['/']);
+  }
+  async presentAlert(header: string, message: string) {
+    const alert = await this.alertController.create({
+      header: 'Alert',
+      subHeader: header,
+      message: message,
+      buttons: ['OK']
+    });
+
+    await alert.present();
   }
 }
