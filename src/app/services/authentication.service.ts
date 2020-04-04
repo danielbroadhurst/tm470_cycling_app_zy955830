@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators/'; 
 
-import { User } from '../interfaces/User';
+import { UserAuth } from '../interfaces/user-auth';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -26,22 +26,21 @@ export class AuthenticationService {
 
   constructor(private http: HttpClient) { }
 
-  registerUser(user: User): Observable<User> {
-    return this.http.post<User>(this.registerUrl, user)
+  registerUser(user: UserAuth): Observable<UserAuth> {
+    return this.http.post<UserAuth>(this.registerUrl, user)
     .pipe(
       catchError(this.handleError)
     )
   }
 
-  loginUser(user: User): Observable<User> {
-    return this.http.post<User>(this.loginUrl, user)
+  loginUser(user: UserAuth): Observable<UserAuth> {
+    return this.http.post<UserAuth>(this.loginUrl, user)
     .pipe(
       catchError(this.handleError)
     )
   }
 
   logoutUser(): Observable<{}> {
-    console.log(this.logoutUrl, httpOptions.headers);
     return this.http.post(this.logoutUrl, null, httpOptions)
     .pipe(
       catchError(this.handleError)

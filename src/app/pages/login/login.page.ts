@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from "@angular/router"
-
-import { User }    from '../../interfaces/User';
 import { AlertController } from '@ionic/angular';
+import { UserAuth } from 'src/app/interfaces/user-auth';
 
 @Component({
   selector: 'app-login',
@@ -15,7 +14,7 @@ export class LoginPage implements OnInit {
   response: any;
   apiErrorResponse: string;
 
-  model = new User(null, null, null, null);
+  model = new UserAuth(null, null, null, null);
 
   isValidEmail = false;
   isValidPassword = false;
@@ -48,7 +47,7 @@ export class LoginPage implements OnInit {
           this.response = res;
           if (this.response.access_token) {
             localStorage.setItem('token', this.response.access_token);
-            this.model = new User(null, null, null, null);
+            this.model = new UserAuth(null, null, null, null);
             this.router.navigate(['/dashboard']);
           }
         },
