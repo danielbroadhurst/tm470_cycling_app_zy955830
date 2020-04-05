@@ -30,16 +30,13 @@ export class DashboardPage implements OnInit {
   }
 
   async getLoggedUser() {    
-    let token = localStorage.getItem('token')
-    console.log(token);
-    
-    this.user = await this.userService.getLoggedUser() ? this.userService.getLoggedUser() : this.alreadyLoggedIn(token);  
+    this.user = await this.userService.getLoggedUser() ? this.userService.getLoggedUser() : this.alreadyLoggedIn();  
     this.profilePopulated(this.user.user_profile) 
     if (this.userService.getLoggedUser()) this.loading.dismiss()
   }
 
-  async alreadyLoggedIn(accessToken:string) {    
-    this.userService.initUser(accessToken)
+  async alreadyLoggedIn() {    
+    this.userService.initUser()
     .subscribe(
       res => {      
         this.loading.dismiss()
