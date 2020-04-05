@@ -4,6 +4,7 @@ import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators/'; 
 import { User } from '../classes/User';
 import { Router } from '@angular/router';
+import { Profile } from '../classes/profile';
 
 @Injectable({
   providedIn: 'root'
@@ -21,7 +22,8 @@ export class UserService {
 
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
   userUrl = 'http://cycling_hub_api.test/';
-  endpoint = 'api/user';
+  userEndpoint = 'api/user';
+  profileEndpoint = 'api/userProfile';
 
   constructor(
     private router: Router,
@@ -41,10 +43,23 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.get<User>(`${this.heroku}${this.endpoint}`, httpOptions)
+    return this.http.get<User>(`${this.heroku}${this.userEndpoint}`, httpOptions)
     .pipe(
       catchError(this.handleError)
     ) 
+  }
+
+  createProfile(profile: Profile): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.heroku}${this.profileEndpoint}`, profile, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   storeUser(user: User) {
