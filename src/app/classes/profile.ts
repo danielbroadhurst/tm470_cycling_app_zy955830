@@ -2,7 +2,7 @@ export class Profile {
 
     constructor(
         public gender: string,
-        public date_of_birth: Date,
+        public date_of_birth: string,
         public bio: string,
         public town: string,
         public region: string,
