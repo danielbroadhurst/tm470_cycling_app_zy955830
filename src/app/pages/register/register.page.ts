@@ -4,7 +4,7 @@ import { AuthenticationService } from '../../services/authentication.service';
 
 import { Router } from "@angular/router"
 import { AlertController } from '@ionic/angular';
-import { UserAuth } from 'src/app/interfaces/user-auth';
+import { UserAuth } from 'src/app/classes/user-auth';
 
 @Component({
   selector: 'app-register',

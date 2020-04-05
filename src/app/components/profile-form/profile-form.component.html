@@ -1,0 +1,62 @@
+<ion-text>
+  <p *ngIf="user && user.user_profile === null">
+    Please fill out your User Profile
+  </p>
+</ion-text>
+
+<div>
+  <button (click)="captureImage()">Click for Image</button>
+</div>
+
+<div>
+  <ion-list-header>Personal Details</ion-list-header>
+  <ion-item>
+    <ion-label position="floating">Email</ion-label>
+    <ion-input disabled email value="{{user.email}}"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Date of Birth</ion-label>
+    <ion-datetime displayFormat="DD/MM/YYYY" placeholder="DD/MM/YYYY"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-segment (ionChange)="genderSelected($event)">
+      <ion-segment-button value="male">
+        <ion-label>Male</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="female">
+        <ion-label>Female</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="ratherNot">
+        <ion-label>Rather not say</ion-label>
+      </ion-segment-button>
+    </ion-segment>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Town</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Region</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Country</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+</div>
+
+<div>
+  <ion-list-header>Cycling Preferences</ion-list-header>
+  <ion-item>
+    <ion-label position="floating">Description</ion-label>
+    <ion-textarea placeholder="Enter your bio here..."></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Current Bike</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Preffered Style</ion-label>
+    <ion-input type="text"></ion-input>
+  </ion-item>
+</div>

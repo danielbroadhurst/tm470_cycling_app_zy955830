@@ -3,7 +3,7 @@ import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators/'; 
 
-import { UserAuth } from '../interfaces/user-auth';
+import { UserAuth } from '../classes/user-auth';
 
 const httpOptions = {
   headers: new HttpHeaders({
@@ -20,28 +20,31 @@ export class AuthenticationService {
       return true;
     }
   }
-  registerUrl = 'http://cycling_hub_api.test/api/register';
-  loginUrl = 'http://cycling_hub_api.test/api/login';
-  logoutUrl = 'http://cycling_hub_api.test/api/logout';
+  registerEndpoint = 'api/register';
+  loginEndpoint = 'api/login';
+  logoutEndpoint = 'api/logout';
+
+  local = 'http://cycling_hub_api.test/';
+  heroku = 'https://lit-fjord-04089.herokuapp.com/';
 
   constructor(private http: HttpClient) { }
 
   registerUser(user: UserAuth): Observable<UserAuth> {
-    return this.http.post<UserAuth>(this.registerUrl, user)
+    return this.http.post<UserAuth>(`${this.heroku}${this.registerEndpoint}`, user)
     .pipe(
       catchError(this.handleError)
     )
   }
 
   loginUser(user: UserAuth): Observable<UserAuth> {
-    return this.http.post<UserAuth>(this.loginUrl, user)
+    return this.http.post<UserAuth>(`${this.heroku}${this.loginEndpoint}`, user)
     .pipe(
       catchError(this.handleError)
     )
   }
 
   logoutUser(): Observable<{}> {
-    return this.http.post(this.logoutUrl, null, httpOptions)
+    return this.http.post(`${this.heroku}${this.logoutEndpoint}`, null, httpOptions)
     .pipe(
       catchError(this.handleError)
     )

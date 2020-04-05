@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
 import { Router } from "@angular/router"
 import { AlertController } from '@ionic/angular';
-import { UserAuth } from 'src/app/interfaces/user-auth';
+import { UserAuth } from 'src/app/classes/user-auth';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-login',
@@ -21,13 +22,34 @@ export class LoginPage implements OnInit {
   displayEmailError = false;
   displayPasswordError = false;
 
+  userloader:any;
   constructor(
-    public authentication: AuthenticationService,
     private router: Router,
+    public authentication: AuthenticationService,
+    public userService: UserService,
     public alertController: AlertController) {
   }
   
-  ngOnInit() {
+  async ngOnInit() {  
+    // Enables Auto Login and Stores User Data in UserService  
+    if (this.authentication.loggedIn()) {
+      this.alreadyLoggedIn()
+    }
+  }
+
+  alreadyLoggedIn() {
+    this.userService.initUser()
+    .subscribe(
+      res => {
+        this.response = res;
+        this.userService.storeUser(this.response[0])  
+        this.router.navigate(['/dashboard']); // navigating to LoginComponent      
+      },
+      error => {
+        this.apiErrorResponse = error.message
+        this.presentAlert('Error', error.status, this.apiErrorResponse)
+      }     
+    );
   }
 
   loginUser(event: { preventDefault: () => void; }) {  
@@ -47,13 +69,16 @@ export class LoginPage implements OnInit {
           this.response = res;
           if (this.response.access_token) {
             localStorage.setItem('token', this.response.access_token);
-            this.model = new UserAuth(null, null, null, null);
-            this.router.navigate(['/dashboard']);
+            setTimeout(() => {
+              this.model = new UserAuth(null, null, null, null);
+              this.router.navigate(['/dashboard']);
+            }, 1000);
           }
         },
         error => {
-          this.apiErrorResponse = error
-          this.presentAlert('Error', this.apiErrorResponse)
+          console.log(error);
+          this.apiErrorResponse = error.message
+          this.presentAlert('Error', error.status, this.apiErrorResponse)
         }     
       );
     } else {
@@ -65,10 +90,10 @@ export class LoginPage implements OnInit {
       }
     }
   }
-  async presentAlert(header: string, message: string) {
+  async presentAlert(header: string, subHeader:string, message: string) {
     const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: header,
+      header: header,
+      subHeader: subHeader,
       message: message,
       buttons: ['OK']
     });

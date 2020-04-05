@@ -7,6 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
+import { ProfileFormComponent } from 'src/app/components/profile-form/profile-form.component';
 
 @NgModule({
   imports: [
@@ -15,6 +16,6 @@ import { DashboardPage } from './dashboard.page';
     IonicModule,
     DashboardPageRoutingModule
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardPage, ProfileFormComponent]
 })
 export class DashboardPageModule {}

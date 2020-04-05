@@ -16,6 +16,7 @@ import { AuthenticationService } from './services/authentication.service';
 import { ReactiveFormsModule } from '@angular/forms';
 import { FormsModule } from '@angular/forms'
 
+import { Camera } from '@ionic-native/camera/ngx';
 
 @NgModule({
   declarations: [AppComponent, NavigationComponent],
@@ -25,6 +26,7 @@ import { FormsModule } from '@angular/forms'
     StatusBar,
     SplashScreen,
     AuthenticationService,
+    Camera,
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy }
   ],
   bootstrap: [AppComponent]
