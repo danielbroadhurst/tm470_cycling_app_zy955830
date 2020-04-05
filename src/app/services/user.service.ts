@@ -5,13 +5,6 @@ import { catchError } from 'rxjs/operators/';
 import { User } from '../classes/User';
 import { Router } from '@angular/router';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-  })
-};
-
 @Injectable({
   providedIn: 'root'
 })
@@ -41,8 +34,13 @@ export class UserService {
     }
   }
 
-  initUser(accessToken:string): Observable<any> {
-    httpOptions.headers.append('Authorization', `Bearer ${accessToken}`)
+  initUser(): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
     return this.http.get<User>(`${this.heroku}${this.endpoint}`, httpOptions)
     .pipe(
       catchError(this.handleError)
