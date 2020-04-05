@@ -25,8 +25,8 @@ export class DashboardPage implements OnInit {
   profile: boolean;
 
   ngOnInit() {
+    this.loading.presentLoading("Loading Details", 300)
     this.getLoggedUser()
-    this.loading.presentLoading("Loading Details", null)
   }
 
   async getLoggedUser() {    
