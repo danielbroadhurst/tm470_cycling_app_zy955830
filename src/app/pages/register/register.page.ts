@@ -18,8 +18,8 @@ export class RegisterPage implements OnInit {
   model = new UserAuth(null, null, null, null);
 
   constructor(
-    public authentication: AuthenticationService,
     private router: Router,
+    public authentication: AuthenticationService,
     public alertController: AlertController) { }
 
   ngOnInit() {

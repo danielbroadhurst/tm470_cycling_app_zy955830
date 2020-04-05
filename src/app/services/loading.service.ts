@@ -7,7 +7,7 @@ import { LoadingController } from '@ionic/angular';
 export class Loading {
   constructor(public loadingController: LoadingController) {}
 
-  async presentLoading(message:string, duration: null) {
+  async presentLoading(message:string, duration = null) {
     const loading = await this.loadingController.create({
       message: message,
       duration: duration
