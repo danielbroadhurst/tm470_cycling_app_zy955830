@@ -9,7 +9,7 @@
   <button (click)="captureImage()">Click for Image</button>
 </div>
 
-<div>
+<div *ngIf="profile">
   <ion-list-header>Personal Details</ion-list-header>
   <ion-item>
     <ion-label position="floating">Email</ion-label>
@@ -42,11 +42,13 @@
   </ion-item>
   <ion-item>
     <ion-label position="floating">Country</ion-label>
-    <ion-input type="text" name="country" id="country" [(ngModel)]="profile.country" #country="ngModel"></ion-input>
+    <ion-select id="country" [(ngModel)]="profile.country" [value]="profile.country" #country="ngModel">
+      <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}</ion-select-option>
+    </ion-select>
   </ion-item>
 </div>
 
-<div>
+<div *ngIf="profile">
   <ion-list-header>Cycling Preferences</ion-list-header>
   <ion-item>
     <ion-label position="floating">Description</ion-label>
@@ -58,7 +60,14 @@
   </ion-item>
   <ion-item>
     <ion-label position="floating">Preffered Style</ion-label>
-    <ion-input type="text" name="preferredStyle" id="preferredStyle" [(ngModel)]="profile.preferred_style" #preferredStyle="ngModel"></ion-input>
+    <ion-select name="preferredStyle" id="preferredStyle" [value]="profile.preferred_style" [(ngModel)]="profile.preferred_style" #preferredStyle="ngModel">
+      <ion-select-option value="Road">Road</ion-select-option>
+      <ion-select-option value="BMX">BMX</ion-select-option>
+      <ion-select-option value="Downhill">Downhill</ion-select-option>
+      <ion-select-option value="Cyclocross">Cyclocross</ion-select-option>
+      <ion-select-option value="MountainBike">Mountain Bike</ion-select-option>
+      <ion-select-option value="Track">Track</ion-select-option>
+    </ion-select>
   </ion-item>
 </div>
 

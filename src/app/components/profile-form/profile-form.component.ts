@@ -1,9 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { User } from 'src/app/classes/User';
+import { User } from 'src/app/classes/userClass';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Platform, AlertController } from '@ionic/angular';
 import { Profile } from 'src/app/classes/profile';
-import { UserService } from 'src/app/services/user.service';
+import { UserService } from 'src/app/services/user.service'
+import { CountriesService } from "src/app/services/countries.service";
 
 @Component({
   selector: 'app-profile-form',
@@ -15,24 +16,35 @@ export class ProfileFormComponent implements OnInit {
 
   response: any;
   apiErrorResponse: string;
-
   imageFilePath:any;
-
   profile: Profile;
+  countries: any;
 
   constructor(
     private camera: Camera,
     public userService: UserService,
+    public countriesService: CountriesService,
     public platform: Platform,
     public alertController: AlertController) { }
 
 
-  ngOnInit() {
-    if (this.user.user_profile) {
-      this.profile = this.user.user_profile;
-      this.imageFilePath = this.user.user_profile.profile_picture;
-    } else {
-      this.profile = new Profile(null, null, null, null, null, null, null, null, null)
+  async ngOnInit() {
+    this.getCountries()
+  }
+
+  async getCountries() {
+    if (!this.countriesService.getCountries()) {
+      this.countriesService.initCountries()
+      .subscribe((data: any) => {
+        this.countriesService.storeCountries(data);
+        this.countries = this.countriesService.getCountries();
+        if (this.user.user_profile) {
+          this.profile = this.user.user_profile;
+          this.imageFilePath = this.user.user_profile.profile_picture;
+        } else {
+          this.profile = new Profile(null, null, null, null, null, null, null, null, null)
+        }    
+      });
     }    
   }
 
