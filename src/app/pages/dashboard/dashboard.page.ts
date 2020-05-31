@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/services/user.service';
-import { User } from 'src/app/classes/User';
+import { User } from 'src/app/classes/userClass';
 import { AlertController } from '@ionic/angular';
 import { Loading } from 'src/app/services/loading.service';
 
@@ -19,12 +19,11 @@ export class DashboardPage implements OnInit {
 
   response:any;
   apiErrorResponse: any;
-
   user: User;
-
   profile: boolean;
 
   ngOnInit() {
+    this.profile = false;
     this.loading.presentLoading("Loading Details", 300)
     this.getLoggedUser()
   }
@@ -39,7 +38,6 @@ export class DashboardPage implements OnInit {
     this.userService.initUser()
     .subscribe(
       res => {      
-        this.loading.dismiss()
         this.userService.storeUser(res[0]) 
         this.user = this.userService.getLoggedUser()    
         console.log(this.user);
@@ -63,9 +61,7 @@ export class DashboardPage implements OnInit {
       this.profile = false;
     } else {
       this.profile = true;
-    }
-    console.log(this.profile);
-    
+    }    
   }
 
   async presentAlert(header: string, subHeader:string, message: string) {
@@ -75,7 +71,6 @@ export class DashboardPage implements OnInit {
       message: message,
       buttons: ['OK']
     });
-
     await alert.present();
   }
 }

@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators/'; 
-import { User } from '../classes/User';
+import { User } from '../classes/userClass';
 import { Router } from '@angular/router';
 import { Profile } from '../classes/profile';
 
@@ -22,8 +22,9 @@ export class UserService {
 
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
   userUrl = 'http://cycling_hub_api.test/';
+  macLocal ='http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   userEndpoint = 'api/user';
-  profileEndpoint = 'api/userProfile';
+  profileEndpoint = 'api/user-profile';
 
   constructor(
     private router: Router,
@@ -43,7 +44,7 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.get<User>(`${this.heroku}${this.userEndpoint}`, httpOptions)
+    return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
     .pipe(
       catchError(this.handleError)
     ) 
@@ -56,7 +57,7 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.post<Profile>(`${this.heroku}${this.profileEndpoint}`, profile, httpOptions)
+    return this.http.post<Profile>(`${this.macLocal}${this.profileEndpoint}`, profile, httpOptions)
       .pipe(
         catchError(this.handleError)
       )

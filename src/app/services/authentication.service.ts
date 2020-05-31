@@ -26,25 +26,27 @@ export class AuthenticationService {
 
   local = 'http://cycling_hub_api.test/';
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
+  macLocal ='http://localhost:8888/TM470/laraPassport_cycling_api/public/';
+
 
   constructor(private http: HttpClient) { }
 
   registerUser(user: UserAuth): Observable<UserAuth> {
-    return this.http.post<UserAuth>(`${this.heroku}${this.registerEndpoint}`, user)
+    return this.http.post<UserAuth>(`${this.macLocal}${this.registerEndpoint}`, user)
     .pipe(
       catchError(this.handleError)
     )
   }
 
   loginUser(user: UserAuth): Observable<UserAuth> {
-    return this.http.post<UserAuth>(`${this.heroku}${this.loginEndpoint}`, user)
+    return this.http.post<UserAuth>(`${this.macLocal}${this.loginEndpoint}`, user)
     .pipe(
       catchError(this.handleError)
     )
   }
 
   logoutUser(): Observable<{}> {
-    return this.http.post(`${this.heroku}${this.logoutEndpoint}`, null, httpOptions)
+    return this.http.post(`${this.macLocal}${this.logoutEndpoint}`, null, httpOptions)
     .pipe(
       catchError(this.handleError)
     )
