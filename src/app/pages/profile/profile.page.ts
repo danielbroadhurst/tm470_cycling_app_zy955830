@@ -26,34 +26,10 @@ export class ProfilePage implements OnInit {
   apiErrorResponse: any;
 
   async getLoggedUser() {    
-    this.user = await this.userService.getLoggedUser() ? this.userService.getLoggedUser() : this.alreadyLoggedIn();  
-    this.profilePopulated(this.user.user_profile)     
-    //if (this.userService.getLoggedUser()) this.loading.dismiss()
-  }
-  async alreadyLoggedIn() {    
-    this.userService.initUser()
-    .subscribe(
-      res => {      
-        this.userService.storeUser(res[0]) 
-        this.user = this.userService.getLoggedUser()    
-        if (this.user.user_profile !== null) {
-          this.profilePopulated(true)
-        } else {
-          this.profilePopulated(false)
-        }
-      },
-      error => {
-        this.apiErrorResponse = error.message
-        this.presentAlert('Error', error.status, this.apiErrorResponse)
-      }     
-    )
-  }
-  profilePopulated(profile: any) {
-    if (!this.user.user_profile) {
-      this.profile = false;
-    } else if (this.user.user_profile === null) {
-      this.profile = false;
-    } else {
+    this.user = await this.userService.getLoggedUser();  
+    console.log(this.user);
+    
+    if (this.user.user_profile) {
       this.profile = true;
     }
   }

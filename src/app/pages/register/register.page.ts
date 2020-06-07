@@ -31,7 +31,6 @@ export class RegisterPage implements OnInit {
     .subscribe(
       res => {
         this.response = res;
-        // TODO - Store the access_token
         if (this.response.access_token) {
           localStorage.setItem('token', this.response.access_token);
           this.model = new UserAuth(null, null, null, null);

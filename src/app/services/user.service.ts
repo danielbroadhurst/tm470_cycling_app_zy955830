@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators/'; 
+import { catchError, map } from 'rxjs/operators/'; 
 import { User } from '../classes/userClass';
 import { Router } from '@angular/router';
 import { Profile } from '../classes/profile';
@@ -18,6 +18,7 @@ export class UserService {
   }
 
   user: any
+  profile: any
   apiErrorResponse: string
 
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
@@ -37,7 +38,7 @@ export class UserService {
     }
   }
 
-  initUser(): Observable<any> {
+  getUser(): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -46,6 +47,7 @@ export class UserService {
     };
     return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
     .pipe(
+      map(data => this.user = data[0]),
       catchError(this.handleError)
     ) 
   }
@@ -64,12 +66,45 @@ export class UserService {
   }
 
   storeUser(user: User) {
-    this.user = user;
+    this.user = user;    
+    console.log('User Stored', user);
     return true;
   }
 
-  getLoggedUser() {    
-    return this.user;
+  async getLoggedUser() {       
+    return new Promise<User>((resolve, reject) => {
+      if (!this.user) {
+        this.getUser()
+        .subscribe(
+          res => {             
+            this.storeUser(res)
+            resolve(this.user);
+          })    
+          error => {
+            reject(error.message)
+          }   
+      } else {
+        resolve(this.user);
+      }
+    })     
+  }
+
+  profilePopulated(profile: any) {
+    if (!this.user.user_profile) {
+      return false;
+    } else if (this.user.user_profile === null) {
+      return false;
+    } else {
+      return true;
+    }    
+  }
+
+  getUserClubAdmin(id: any) {    
+    if (this.user && this.user.cycling_club_admin) {
+      let clubsArray = this.user.cycling_club_admin
+      let club = clubsArray.find(clubs => clubs.id == id)
+      return club;
+    }
   }
 
   /**

@@ -38,7 +38,7 @@ export class LoginPage implements OnInit {
   }
 
   alreadyLoggedIn() {
-    this.userService.initUser()
+    this.userService.getUser()
     .subscribe(
       res => {
         this.response = res;

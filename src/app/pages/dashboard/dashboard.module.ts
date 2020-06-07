@@ -7,7 +7,7 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
-import { ProfileFormComponent } from 'src/app/components/profile-form/profile-form.component';
+import { ProfileFormComponent } from 'src/app/components/forms/profile-form/profile-form.component';
 
 @NgModule({
   imports: [
