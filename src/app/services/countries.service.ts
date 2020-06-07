@@ -1,8 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { catchError } from 'rxjs/operators';
-
+import { catchError, map } from 'rxjs/operators';
 @Injectable({
   providedIn: 'root'
 })
@@ -18,41 +17,36 @@ export class CountriesService {
   ) { }
 
   ngOnInit() {
-    this.initCountries;
+    this.getCountries();
   }
 
-  initCountries(): Observable<any[]> {
+  getCountries(): Promise<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.get<any>(`${this.macLocal}${this.countriesEndpoint}`, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      )
+    if (this.countries.length > 0) {
+      console.log('return Countries');
+      return Promise.resolve(this.countries);
+    }
+    return new Promise(resolve => {
+      console.log('called Countries API');
+      this.http.get(`${this.macLocal}${this.countriesEndpoint}`, httpOptions)
+        .pipe(
+          map((res: any) => res),
+          catchError(this.handleError)
+        )
+        .subscribe(data => {
+          this.storeCountries(data);
+          resolve(this.countries);
+        });
+    });
   }
 
   storeCountries(countriesArray) {
     this.countries = countriesArray;
-  }
-
-  async getCountries() {
-    return new Promise((resolve, reject) => {
-      if (this.countries.length > 0) {
-        resolve(this.countries)
-      } else {
-        this.initCountries()
-          .subscribe(
-            data => {
-              this.storeCountries(data);
-              resolve(data);
-            },
-            err => reject(err)
-          );
-      }
-    })
   }
 
   /**

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AuthenticationService } from '../../services/authentication.service';
-import { Router } from "@angular/router"
+import { Router, ActivatedRoute } from "@angular/router"
 import { AlertController } from '@ionic/angular';
 import { UserAuth } from 'src/app/classes/user-auth';
 import { UserService } from 'src/app/services/user.service';
@@ -29,27 +29,14 @@ export class LoginPage implements OnInit {
     public userService: UserService,
     public alertController: AlertController) {
   }
-  
-  async ngOnInit() {  
-    // Enables Auto Login and Stores User Data in UserService  
+
+  ionViewDidEnter() {
     if (this.authentication.loggedIn()) {
-      this.alreadyLoggedIn()
+      this.router.navigate(['/dashboard']);
     }
   }
-
-  alreadyLoggedIn() {
-    this.userService.getUser()
-    .subscribe(
-      res => {
-        this.response = res;
-        this.userService.storeUser(this.response[0])  
-        this.router.navigate(['/dashboard']); // navigating to LoginComponent      
-      },
-      error => {
-        this.apiErrorResponse = error.message
-        this.presentAlert('Error', error.status, this.apiErrorResponse)
-      }     
-    );
+  
+  ngOnInit() {      
   }
 
   loginUser(event: { preventDefault: () => void; }) {  
@@ -76,9 +63,12 @@ export class LoginPage implements OnInit {
           }
         },
         error => {
-          console.log(error);
-          this.apiErrorResponse = error.message
-          this.presentAlert('Error', error.status, this.apiErrorResponse)
+          if (typeof(error) === 'string') {
+            this.apiErrorResponse = error;
+          } else {
+            this.apiErrorResponse = `${error.message} ${Object.values(error.errors) ? Object.values(error.errors).toString() : 'No More Info.'}`;
+          }
+          this.presentAlert('Error', 'Unsuccessful Login Attempt', this.apiErrorResponse)
         }     
       );
     } else {
@@ -90,6 +80,7 @@ export class LoginPage implements OnInit {
       }
     }
   }
+  
   async presentAlert(header: string, subHeader:string, message: string) {
     const alert = await this.alertController.create({
       header: header,

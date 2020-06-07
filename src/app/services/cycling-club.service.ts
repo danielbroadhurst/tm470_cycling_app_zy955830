@@ -4,6 +4,12 @@ import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
+const httpOptions = {
+  headers: new HttpHeaders({
+    'Accept': 'application/json',
+    'Authorization': `Bearer ${localStorage.getItem('token')}`
+  })
+};   
 @Injectable({
   providedIn: 'root'
 })
@@ -17,12 +23,6 @@ export class CyclingClubService {
   cyclingClubEndpoint = 'api/cycling-club';
 
   createCyclingClub(cyclingClub: CyclingClub): Observable<any> { 
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      })
-    };   
     return this.http.post<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}`, cyclingClub, httpOptions)
     .pipe(
       catchError(this.handleError)
@@ -30,27 +30,13 @@ export class CyclingClubService {
   }
 
   updateCyclingClub(cyclingClub: CyclingClub): Observable<any> { 
-    console.log(cyclingClub);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      })
-    };   
     return this.http.put<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}/${cyclingClub.id}`, cyclingClub, httpOptions)
     .pipe(
       catchError(this.handleError)
     )
   }
 
-  deleteCyclingClub(cyclingClub: CyclingClub): Observable<any> { 
-    console.log(cyclingClub);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      })
-    };   
+  deleteCyclingClub(cyclingClub: CyclingClub): Observable<any> {
     return this.http.delete<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}/${cyclingClub.id}`, httpOptions)
     .pipe(
       catchError(this.handleError)

@@ -11,30 +11,38 @@ import { AlertController } from '@ionic/angular';
 })
 export class ProfilePage implements OnInit {
 
+  user: User;
+  profile: boolean;
+
   constructor(
     public userService: UserService,
     public alertController: AlertController,
-    public loading: Loading) {
-   }
+    public loading: Loading) { }
 
-  ngOnInit() {
-    this.getLoggedUser()
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.profile = false;
+    this.userService.getUser()
+      .then(user => {
+        this.user = user;
+        if (this.user.user_profile) this.profile = true;
+      })
   }
-  user: User;
-  profile: boolean;
-  response:any;
-  apiErrorResponse: any;
 
-  async getLoggedUser() {    
-    this.user = await this.userService.getLoggedUser();  
-    console.log(this.user);
-    
+  ionViewDidLeave() {
+    this.user = null;
+  }
+
+  userProfileUpdated(user: User) {
+    this.user = user;
     if (this.user.user_profile) {
       this.profile = true;
+      this.presentAlert('Success', 'Profile Updated', 'Thank you for creating your profile.')
     }
   }
 
-  async presentAlert(header: string, subHeader:string, message: string) {
+  async presentAlert(header: string, subHeader: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
       subHeader: subHeader,

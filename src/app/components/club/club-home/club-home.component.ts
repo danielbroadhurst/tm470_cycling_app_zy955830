@@ -1,4 +1,6 @@
 import { Component, OnInit } from '@angular/core';
+import { CyclingClub } from 'src/app/classes/cyclingClub';
+import { ClubService } from 'src/app/services/club.service';
 
 @Component({
   selector: 'app-club-home',
@@ -7,8 +9,15 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ClubHomeComponent implements OnInit {
 
-  constructor() { }
+  club: CyclingClub
 
-  ngOnInit() {}
+  constructor(
+    private clubService: ClubService
+  ) { }
+
+  ngOnInit() {
+    this.club = this.clubService.getCyclingClub(); 
+    console.log(this.club);
+  }
 
 }

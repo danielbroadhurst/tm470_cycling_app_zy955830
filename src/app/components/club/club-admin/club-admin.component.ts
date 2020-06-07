@@ -28,7 +28,7 @@ export class ClubAdminComponent implements OnInit {
 
   ngOnInit() {  
     this.club = this.clubService.getCyclingClub();     
-    this.getLoggedUser();
+    this.getUser();
   }
 
   showEditProfile() {
@@ -63,8 +63,8 @@ export class ClubAdminComponent implements OnInit {
     await alert.present();
   }
 
-  async getLoggedUser() {    
-    this.user = await this.userService.getLoggedUser();
+  async getUser() {    
+    this.user = await this.userService.getUser();
   }
 
   updateSuccess(value: boolean) {

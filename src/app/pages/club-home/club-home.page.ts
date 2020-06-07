@@ -22,12 +22,7 @@ export class ClubHomePage implements OnInit {
     private clubService: ClubService
   ) { }
 
-  ngOnInit() {      
-    this.getLoggedUser()  
-  }
-
-  async getLoggedUser() {    
-    this.user = await this.userService.getLoggedUser();
+  ngOnInit() { 
     this.showClub();
   }
 

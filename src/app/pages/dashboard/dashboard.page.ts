@@ -11,31 +11,38 @@ import { Loading } from 'src/app/services/loading.service';
 })
 export class DashboardPage implements OnInit {
 
-  constructor(
-    public userService: UserService,
-    public alertController: AlertController,
-    public loading: Loading) {
-  }
-
-  response:any;
-  apiErrorResponse: any;
   user: User;
   profile: boolean;
 
-  ngOnInit() {
+  constructor(
+    public userService: UserService,
+    public alertController: AlertController,
+    public loading: Loading) { }
+
+  ngOnInit() { }
+
+  ionViewWillEnter() {
     this.profile = false;
-    this.loading.presentLoading("Loading Details", 300)
-    this.getLoggedUser()
+    this.userService.getUser()
+      .then(user => {
+        this.user = user;
+        if (this.user.user_profile) this.profile = true;
+      })
   }
 
-  async getLoggedUser() {    
-    this.user = await this.userService.getLoggedUser();  
+  ionViewDidLeave() {
+    this.user = null;
+  }
+
+  userProfileUpdated(user: User) {
+    this.user = user;
     if (this.user.user_profile) {
       this.profile = true;
+      this.presentAlert('Success', 'Profile Created', 'Thank you for creating your profile.')
     }
   }
 
-  async presentAlert(header: string, subHeader:string, message: string) {
+  async presentAlert(header: string, subHeader: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
       subHeader: subHeader,

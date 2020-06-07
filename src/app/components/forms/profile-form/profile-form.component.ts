@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { User } from 'src/app/classes/userClass';
 import { Camera, CameraOptions } from '@ionic-native/camera/ngx';
 import { Platform, AlertController } from '@ionic/angular';
@@ -13,7 +13,8 @@ import { CountriesService } from "src/app/services/countries.service";
 })
 export class ProfileFormComponent implements OnInit {
   @Input() user: User;
-
+  @Output() userDataUpdated = new EventEmitter();
+  
   response: any;
   apiErrorResponse: string;
   imageFilePath: any;
@@ -25,7 +26,8 @@ export class ProfileFormComponent implements OnInit {
     public userService: UserService,
     public countriesService: CountriesService,
     public platform: Platform,
-    public alertController: AlertController) { }
+    public alertController: AlertController,
+    ) { }
 
 
   async ngOnInit() {
@@ -66,7 +68,6 @@ export class ProfileFormComponent implements OnInit {
     let year = date.getFullYear();
     let month = date.getMonth() + 1;
     let day = date.getDate();
-
     this.profile.date_of_birth = `${year}/${this.padDateString(month)}/${this.padDateString(day)}`;
   }
 
@@ -81,19 +82,12 @@ export class ProfileFormComponent implements OnInit {
 
   submitProfile() {
     this.userService.createProfile(this.profile)
-      .subscribe(
-        res => {
-          this.response = res;
-          this.userService.storeUser(res[0])
-          console.log(this.response);
-        }, // success path
-        error => {
-          this.apiErrorResponse = error
-          this.presentAlert('Error', this.apiErrorResponse)
-        } // error path      
-      )
-    console.log(this.profile);
-
+    .subscribe(
+      res => {
+        this.userService.storeUser(res[0]);
+        this.presentAlert('Success', 'Created Profile.')
+      }
+    )
   }
 
   async presentAlert(header: string, message: string) {

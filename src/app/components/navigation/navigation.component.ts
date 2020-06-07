@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MenuController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
+import { UserService } from 'src/app/services/user.service';
 
 @Component({
   selector: 'app-navigation',
@@ -13,26 +14,28 @@ export class NavigationComponent implements OnInit {
   response;
   constructor(
     private authService: AuthenticationService,
-    private menu: MenuController,
+    private userService: UserService,
     private router: Router,
     public alertController: AlertController) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
   menuItems = [
-    {name: 'Dashboard', icon: 'home-outline', link: "/dashboard"},
-    {name: 'Profile', icon: 'person-circle-outline', link: "/profile"},
-    {name: 'Clubs', icon: 'bicycle-outline', link: "/clubs"},
+    { name: 'Dashboard', icon: 'home-outline', link: "/dashboard" },
+    { name: 'Profile', icon: 'person-circle-outline', link: "/profile" },
+    { name: 'Clubs', icon: 'bicycle-outline', link: "/clubs" },
   ]
 
   logout() {
-    this.authService.logoutUser().subscribe(
-      res => {
-        this.response = res;
-        this.presentAlert('Success', this.response)
-      })
-    localStorage.removeItem('token');
-    this.router.navigate(['/']);
+    this.userService.clearUser()
+    this.authService.logoutUser()
+      .subscribe(
+        res => {          
+          this.response = res;
+          this.router.navigate(['/']);
+          this.presentAlert('Success', this.response)
+          localStorage.removeItem('token');
+        })
   }
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({

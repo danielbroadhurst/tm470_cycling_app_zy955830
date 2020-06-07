@@ -4,14 +4,6 @@ import { throwError, Observable } from 'rxjs';
 import { catchError } from 'rxjs/operators/'; 
 
 import { UserAuth } from '../classes/user-auth';
-
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-  })
-};
-
 @Injectable()
 export class AuthenticationService {
 
@@ -46,6 +38,12 @@ export class AuthenticationService {
   }
 
   logoutUser(): Observable<{}> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };    
     return this.http.post(`${this.macLocal}${this.logoutEndpoint}`, null, httpOptions)
     .pipe(
       catchError(this.handleError)

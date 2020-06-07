@@ -18,15 +18,15 @@ export class ClubsCreateComponent implements OnInit {
    }
 
   ngOnInit() {
-    this.getLoggedUser()
+    this.getUser()
   }
   user: User;
   profile: boolean;
   response:any;
   apiErrorResponse: any;
 
-  async getLoggedUser() {    
-    this.user = await this.userService.getLoggedUser();          
+  async getUser() {    
+    this.user = await this.userService.getUser();          
     if (this.user.user_profile) {
       this.profile = true;
     }

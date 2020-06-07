@@ -11,7 +11,7 @@
   <div *ngIf="user && user.first_name">
     Welcome {{user.first_name}} {{user.last_name}}
     <div *ngIf="!profile">
-      <app-profile-form [user]="user"></app-profile-form>
+      <app-profile-form [user]="user" (userDataUpdated)="userProfileUpdated($event)"></app-profile-form>
     </div>
   </div>
 </ion-content>

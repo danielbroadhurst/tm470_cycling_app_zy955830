@@ -29,7 +29,6 @@ export class ClubsComponent implements OnInit {
     private clubService: ClubService,
     private router: Router
   ) {
-    this.getLoggedUser();
     // Create a new Observable that publishes only the NavigationStart event
     this.navStart = router.events.pipe(
       filter(evt => evt instanceof NavigationStart)
@@ -39,13 +38,13 @@ export class ClubsComponent implements OnInit {
 
   ngOnInit() {
     this.navStart.subscribe(evt => {
-      this.getLoggedUser();
+      this.getUser();
     });
     this.loading.presentLoading("Loading Details", 300);
   }
 
-  async getLoggedUser() {
-    this.user = await this.userService.getLoggedUser();
+  async getUser() {
+    this.user = await this.userService.getUser();
     if (this.user.cycling_club_admin) {
       this.showAdminClubs();
     }

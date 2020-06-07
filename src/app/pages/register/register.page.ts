@@ -13,12 +13,11 @@ import { UserAuth } from 'src/app/classes/user-auth';
 })
 export class RegisterPage implements OnInit {
 
-  response: any;
   apiErrorResponse: string;
   model = new UserAuth(null, null, null, null);
 
   constructor(
-    private router: Router,
+    public router: Router,
     public authentication: AuthenticationService,
     public alertController: AlertController) { }
 
@@ -29,20 +28,22 @@ export class RegisterPage implements OnInit {
     event.preventDefault(); 
     this.authentication.registerUser(this.model)
     .subscribe(
-      res => {
-        this.response = res;
-        if (this.response.access_token) {
-          localStorage.setItem('token', this.response.access_token);
+      res => {        
+        if (res.email ==  this.model.email) {
+          this.presentAlert('Success', 'Successfully created Account, Please Login.')
+          this.router.navigate(['/dashboard'])          
           this.model = new UserAuth(null, null, null, null);
-          this.router.navigate(['/dashboard']);
+        } else {
+          throw "Error creating user account. Please try again.";
         }
-      }, // success path
+      },
       error => {
-        this.apiErrorResponse = error
+        this.apiErrorResponse = `${error.message} ${Object.values(error.errors) ? Object.values(error.errors).toString() : 'No more info.'}`;
         this.presentAlert('Error', this.apiErrorResponse)
-       } // error path      
+       }   
     )
   }
+
   async presentAlert(header: string, message: string) {
     const alert = await this.alertController.create({
       header: 'Alert',

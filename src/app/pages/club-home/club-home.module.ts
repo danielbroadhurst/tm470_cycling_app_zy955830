@@ -11,15 +11,16 @@ import { ClubAboutComponent } from 'src/app/components/club/club-about/club-abou
 import { ClubAdminComponent } from 'src/app/components/club/club-admin/club-admin.component';
 import { ClubEventsComponent } from 'src/app/components/club/club-events/club-events.component';
 import { ClubNewsComponent } from 'src/app/components/club/club-news/club-news.component';
-import { ClubFormComponent } from 'src/app/components/forms/club-form/club-form.component';
+import { CyclingFormsModule } from 'src/app/components/forms/cycling-forms.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    ClubHomePageRoutingModule
+    ClubHomePageRoutingModule,
+    CyclingFormsModule
   ],
-  declarations: [ClubHomePage, ClubAboutComponent, ClubAdminComponent, ClubEventsComponent, ClubNewsComponent, ClubFormComponent]
+  declarations: [ClubHomePage, ClubAboutComponent, ClubAdminComponent, ClubEventsComponent, ClubNewsComponent]
 })
 export class ClubHomePageModule {}

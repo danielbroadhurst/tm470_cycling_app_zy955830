@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
-import { catchError, map } from 'rxjs/operators/'; 
+import { catchError } from 'rxjs/operators/';
 import { User } from '../classes/userClass';
 import { Router } from '@angular/router';
 import { Profile } from '../classes/profile';
@@ -11,19 +11,13 @@ import { Profile } from '../classes/profile';
 })
 export class UserService {
 
-  loggedIn() {
-    if (localStorage.getItem('token')) {
-      return true;
-    }
-  }
-
-  user: any
+  user: User
   profile: any
   apiErrorResponse: string
 
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
   userUrl = 'http://cycling_hub_api.test/';
-  macLocal ='http://localhost:8888/TM470/laraPassport_cycling_api/public/'
+  macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   userEndpoint = 'api/user';
   profileEndpoint = 'api/user-profile';
 
@@ -38,7 +32,13 @@ export class UserService {
     }
   }
 
-  getUser(): Observable<any> {
+  loggedIn() {
+    if (localStorage.getItem('token')) {
+      return true;
+    }
+  }
+
+  getUserApi(): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
@@ -46,10 +46,9 @@ export class UserService {
       })
     };
     return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
-    .pipe(
-      map(data => this.user = data[0]),
-      catchError(this.handleError)
-    ) 
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   createProfile(profile: Profile): Observable<any> {
@@ -66,27 +65,35 @@ export class UserService {
   }
 
   storeUser(user: User) {
-    this.user = user;    
-    console.log('User Stored', user);
+    this.user = user;
+    console.log('User Stored');
     return true;
   }
 
-  async getLoggedUser() {       
+  clearUser() {
+    this.user = undefined;
+    console.log('User Cleared');
+    return true;
+  }
+
+  async getUser() {
     return new Promise<User>((resolve, reject) => {
-      if (!this.user) {
-        this.getUser()
-        .subscribe(
-          res => {             
-            this.storeUser(res)
-            resolve(this.user);
-          })    
-          error => {
-            reject(error.message)
-          }   
-      } else {
+      if (this.user) {
+        console.log('User Cache');
         resolve(this.user);
+      } else {
+        console.log('User API');
+        this.getUserApi()
+          .subscribe(
+            res => {
+              this.storeUser(res[0])
+              resolve(this.user);
+            })
+        error => {
+          reject(error.message)
+        }
       }
-    })     
+    })
   }
 
   profilePopulated(profile: any) {
@@ -96,10 +103,10 @@ export class UserService {
       return false;
     } else {
       return true;
-    }    
+    }
   }
 
-  getUserClubAdmin(id: any) {    
+  getUserClubAdmin(id: any) {
     if (this.user && this.user.cycling_club_admin) {
       let clubsArray = this.user.cycling_club_admin
       let club = clubsArray.find(clubs => clubs.id == id)
@@ -111,7 +118,7 @@ export class UserService {
    * 
    * @param error 
    */
-  private handleError(error: HttpErrorResponse) {    
+  private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
