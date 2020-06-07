@@ -1,0 +1,50 @@
+<div *ngIf="cyclingClub">
+  <h2>Club Profile Picture</h2>
+  <div>
+    <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture" id="profilePicture" [(ngModel)]="cyclingClub.profile_picture">
+    <button (click)="captureImage()">Click for Image</button>
+  </div>
+  <h2>Club Details</h2>
+  <ion-item>
+    <ion-label position="floating">Club Name</ion-label>
+    <ion-input type="text" name="town" id="town" [(ngModel)]="cyclingClub.club_name" #town="ngModel"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Description</ion-label>
+    <ion-textarea placeholder="Enter your bio here..." name="bio" id="bio" [(ngModel)]="cyclingClub.bio" #bio="ngModel"></ion-textarea>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Preffered Style</ion-label>
+    <ion-select name="preferredStyle" id="preferredStyle" [value]="cyclingClub.preferred_style" [(ngModel)]="cyclingClub.preferred_style" #preferredStyle="ngModel">
+      <ion-select-option value="Road">Road</ion-select-option>
+      <ion-select-option value="BMX">BMX</ion-select-option>
+      <ion-select-option value="Downhill">Downhill</ion-select-option>
+      <ion-select-option value="Cyclocross">Cyclocross</ion-select-option>
+      <ion-select-option value="MountainBike">Mountain Bike</ion-select-option>
+      <ion-select-option value="Track">Track</ion-select-option>
+    </ion-select>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Town</ion-label>
+    <ion-input type="text" name="town" id="town" [(ngModel)]="cyclingClub.town" #town="ngModel"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Region</ion-label>
+    <ion-input type="text" name="region" id="region" [(ngModel)]="cyclingClub.region" #region="ngModel"></ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Country</ion-label>
+    <ion-select id="country" [(ngModel)]="cyclingClub.country" [value]="cyclingClub.country" #country="ngModel">
+      <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}</ion-select-option>
+    </ion-select>
+  </ion-item>
+</div>
+
+<div class="ion-padding">
+  <ion-button *ngIf="!edit" expand="block" (click)="createClub()" class="ion-no-margin" color="tertiary">
+    Create Cycling Club
+  </ion-button>
+  <ion-button *ngIf="edit" expand="block" (click)="updateClub()" class="ion-no-margin" color="tertiary">
+    Edit Cycling Club
+  </ion-button>
+</div>
