@@ -1,0 +1,40 @@
+<div class="ion-padding scrollable">
+  <div *ngIf="memeberClubs.length == 0">
+    <p>Why not join a Cycling Club to find out about local Cycling Events...</p>
+    <ion-searchbar [(ngModel)]="searchQuery" (search)="searchForClubs($event)" placeholder="Search for Clubs"></ion-searchbar>
+  </div>
+  <div *ngIf="memeberClubs.length > 0">
+    <h2>Your Clubs</h2>
+    <ion-card *ngFor="let club of adminClubs; index as i;">
+      <ion-card-header>
+        <ion-card-subtitle>{{club.region}}, {{club.country}}</ion-card-subtitle>
+        <ion-card-title>{{club.club_name}}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <div>{{club.bio}}</div>
+        <ion-button size="small" color="primary" [routerLink]="['/club-home', club.id]">Club Home</ion-button>
+        <ion-button size="small" color="secondary" (click)="storeClub(club)" [routerLink]="['/club-home/' + club.id + '/admin']" >Admin</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+  <div *ngIf="adminClubs.length == 0">
+    <p>You can also create your own Cycling Club where you can arrange events.</p>
+    <ion-button size="small" color="primary" [routerLink]="['/create-club']">Create Club</ion-button>
+  </div>
+  <div *ngIf="adminClubs.length > 0">
+    <h2>Your Clubs</h2>
+    <ion-card *ngFor="let club of adminClubs; index as i;">
+      <ion-card-header>
+        <ion-card-subtitle>{{club.region}}, {{club.country}}</ion-card-subtitle>
+        <ion-card-title>{{club.club_name}}</ion-card-title>
+      </ion-card-header>
+      
+      <ion-card-content>
+        <div>{{club.bio}}</div>
+        <ion-button size="small" color="primary" [routerLink]="['/club-home', club.id]">Club Home</ion-button>
+        <ion-button size="small" color="secondary" (click)="storeClub(club)" [routerLink]="['/club-home/' + club.id + '/admin']" >Admin</ion-button>
+      </ion-card-content>
+    </ion-card>
+  </div>
+</div>
