@@ -16,7 +16,7 @@ export class ProfileFormComponent implements OnInit {
 
   response: any;
   apiErrorResponse: string;
-  imageFilePath:any;
+  imageFilePath: any;
   profile: Profile;
   countries: any;
 
@@ -29,28 +29,18 @@ export class ProfileFormComponent implements OnInit {
 
 
   async ngOnInit() {
-    this.getCountries()
-  }
-
-  async getCountries() {
-    if (!this.countriesService.getCountries()) {
-      this.countriesService.initCountries()
-      .subscribe((data: any) => {
-        this.countriesService.storeCountries(data);
-        this.countries = this.countriesService.getCountries();
-        if (this.user.user_profile) {
-          this.profile = this.user.user_profile;
-          this.imageFilePath = this.user.user_profile.profile_picture;
-        } else {
-          this.profile = new Profile(null, null, null, null, null, null, null, null, null)
-        }    
-      });
-    }    
+    this.countries = await this.countriesService.getCountries()
+    if (this.user.user_profile) {
+      this.profile = this.user.user_profile;
+      this.imageFilePath = this.user.user_profile.profile_picture;
+    } else {
+      this.profile = new Profile(null, null, null, null, null, null, null, null, null)
+    }
   }
 
   captureImage() {
     this.platform.ready().then(() => {
-      if(this.platform.is('cordova')){
+      if (this.platform.is('cordova')) {
         const options: CameraOptions = {
           quality: 40,
           destinationType: this.camera.DestinationType.DATA_URL,
@@ -70,7 +60,7 @@ export class ProfileFormComponent implements OnInit {
       }
     });
   }
-  
+
   formatDateOfBirth(event: any) {
     let date = new Date(event.detail.value);
     let year = date.getFullYear();
@@ -80,30 +70,30 @@ export class ProfileFormComponent implements OnInit {
     this.profile.date_of_birth = `${year}/${this.padDateString(month)}/${this.padDateString(day)}`;
   }
 
-  padDateString(value:number) {
+  padDateString(value: number) {
     return value.toString().padStart(2, "0");
   }
 
-  
+
   genderSelected(event: any) {
     this.profile.gender = event.detail.value;
   }
 
   submitProfile() {
     this.userService.createProfile(this.profile)
-    .subscribe(
-      res => {
-        this.response = res;
-        this.userService.storeUser(res[0])
-        console.log(this.response);
-      }, // success path
-      error => {
-        this.apiErrorResponse = error
-        this.presentAlert('Error', this.apiErrorResponse)
-       } // error path      
-    )
+      .subscribe(
+        res => {
+          this.response = res;
+          this.userService.storeUser(res[0])
+          console.log(this.response);
+        }, // success path
+        error => {
+          this.apiErrorResponse = error
+          this.presentAlert('Error', this.apiErrorResponse)
+        } // error path      
+      )
     console.log(this.profile);
-    
+
   }
 
   async presentAlert(header: string, message: string) {
