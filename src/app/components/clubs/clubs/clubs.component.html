@@ -20,7 +20,7 @@
   </div>
   <div *ngIf="adminClubs.length == 0">
     <p>You can also create your own Cycling Club where you can arrange events.</p>
-    <ion-button size="small" color="primary" [routerLink]="['/create-club']">Create Club</ion-button>
+    <ion-button size="small" color="primary" [routerLink]="['/clubs/create-club']">Create Club</ion-button>
   </div>
   <div *ngIf="adminClubs.length > 0">
     <h2>Your Clubs</h2>
