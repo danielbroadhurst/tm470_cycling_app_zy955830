@@ -8,9 +8,9 @@ import { catchError } from 'rxjs/operators';
 })
 export class CountriesService {
 
-  countries: Array<any>;
+  countries: Array<string> = [];
 
-  macLocal ='http://localhost:8888/TM470/laraPassport_cycling_api/public/'
+  macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   countriesEndpoint = 'api/countries';
 
   constructor(
@@ -29,24 +29,37 @@ export class CountriesService {
       })
     };
     return this.http.get<any>(`${this.macLocal}${this.countriesEndpoint}`, httpOptions)
-    .pipe(      
-      catchError(this.handleError)
-    ) 
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   storeCountries(countriesArray) {
     this.countries = countriesArray;
   }
 
-  getCountries() {
-    return this.countries;
+  async getCountries() {
+    return new Promise((resolve, reject) => {
+      if (this.countries.length > 0) {
+        resolve(this.countries)
+      } else {
+        this.initCountries()
+          .subscribe(
+            data => {
+              this.storeCountries(data);
+              resolve(data);
+            },
+            err => reject(err)
+          );
+      }
+    })
   }
 
-    /**
-   * 
-   * @param error 
-   */
-  private handleError(error: HttpErrorResponse) {    
+  /**
+ * 
+ * @param error 
+ */
+  private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
