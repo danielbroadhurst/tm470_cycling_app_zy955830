@@ -1,0 +1,11 @@
+<div class="ion-padding scrollable">
+  <ion-title>Admin Area</ion-title>
+  <div class="ion-padding">
+    <ion-button *ngIf="!editProfile" expand="block" (click)="showEditProfile()" class="ion-no-margin" color="tertiary">Edit Profile</ion-button>
+    <app-club-form *ngIf="editProfile" [user]="user" [edit]="true" [club]="club" (updated)=updateSuccess($event)></app-club-form>
+  </div>
+  <div class="ion-padding">
+    <ion-button expand="block" (click)="deleteClub()" class="ion-no-margin" color="danger">Delete Cycling Club</ion-button>
+  </div>
+  
+</div>

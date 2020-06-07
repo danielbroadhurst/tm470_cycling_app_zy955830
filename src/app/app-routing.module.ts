@@ -27,11 +27,21 @@ const routes: Routes = [
     canActivate: [AuthGuard],
     loadChildren: () => import('./pages/clubs/clubs.module').then( m => m.ClubsPageModule)
   },
+  {
+    path: 'club-home/:id',
+    canActivate: [AuthGuard],
+    loadChildren: () => import('./pages/club-home/club-home.module').then( m => m.ClubHomePageModule),
+  },
+  {
+    path: '**',
+    loadChildren: () => import('./pages/error/error.module').then( m => m.ErrorPageModule)
+  },
+
 ];
 
 @NgModule({
   imports: [
-    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules })
+    RouterModule.forRoot(routes, { preloadingStrategy: PreloadAllModules, onSameUrlNavigation: 'reload' })
   ],
   exports: [RouterModule]
 })
