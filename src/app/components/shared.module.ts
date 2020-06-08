@@ -2,13 +2,15 @@ import { CommonModule } from '@angular/common';
 import { NgModule } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
-import { ProfileFormComponent } from './profile-form/profile-form.component';
-import { ClubFormComponent } from './club-form/club-form.component';
+import { IonicModule } from '@ionic/angular';
+
+import { ProfileFormComponent } from './forms/profile-form/profile-form.component';
+import { ClubFormComponent } from './forms/club-form/club-form.component';
 
 @NgModule({
- imports:      [ CommonModule ],
+ imports:      [ CommonModule, IonicModule],
  declarations: [ ProfileFormComponent, ClubFormComponent ],
  exports:      [ ProfileFormComponent, ClubFormComponent,
                  CommonModule, FormsModule ]
 })
-export class CyclingFormsModule { }
+export class SharedModule { }

@@ -10,7 +10,7 @@ import { ClubsPage } from './clubs.page';
 import { ClubsCreateComponent } from 'src/app/components/clubs/clubs-create/clubs-create.component';
 import { ClubsHomeComponent } from 'src/app/components/clubs/clubs-home/clubs-home.component';
 import { ClubsComponent } from 'src/app/components/clubs/clubs/clubs.component';
-import { CyclingFormsModule } from 'src/app/components/forms/cycling-forms.module';
+import { SharedModule } from 'src/app/components/shared.module';
 
 @NgModule({
   imports: [
@@ -18,7 +18,7 @@ import { CyclingFormsModule } from 'src/app/components/forms/cycling-forms.modul
     FormsModule,
     IonicModule,
     ClubsPageRoutingModule,
-    CyclingFormsModule
+    SharedModule
   ],
   declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent]
 })

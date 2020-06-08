@@ -7,15 +7,16 @@ import { IonicModule } from '@ionic/angular';
 import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
-import { ProfileFormComponent } from 'src/app/components/forms/profile-form/profile-form.component';
+import { SharedModule } from 'src/app/components/shared.module';
 
 @NgModule({
   imports: [
     CommonModule,
     FormsModule,
     IonicModule,
-    DashboardPageRoutingModule
+    DashboardPageRoutingModule,
+    SharedModule
   ],
-  declarations: [DashboardPage, ProfileFormComponent]
+  declarations: [DashboardPage]
 })
 export class DashboardPageModule {}

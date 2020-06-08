@@ -11,7 +11,7 @@ import { ClubAboutComponent } from 'src/app/components/club/club-about/club-abou
 import { ClubAdminComponent } from 'src/app/components/club/club-admin/club-admin.component';
 import { ClubEventsComponent } from 'src/app/components/club/club-events/club-events.component';
 import { ClubNewsComponent } from 'src/app/components/club/club-news/club-news.component';
-import { CyclingFormsModule } from 'src/app/components/forms/cycling-forms.module';
+import { SharedModule } from 'src/app/components/shared.module';
 
 @NgModule({
   imports: [
@@ -19,7 +19,7 @@ import { CyclingFormsModule } from 'src/app/components/forms/cycling-forms.modul
     FormsModule,
     IonicModule,
     ClubHomePageRoutingModule,
-    CyclingFormsModule
+    SharedModule
   ],
   declarations: [ClubHomePage, ClubAboutComponent, ClubAdminComponent, ClubEventsComponent, ClubNewsComponent]
 })
