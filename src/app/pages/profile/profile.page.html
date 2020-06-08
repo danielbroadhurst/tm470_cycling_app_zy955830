@@ -9,7 +9,6 @@
 
 <ion-content contentId="main-content" class="ion-padding">
   <div *ngIf="user && user.first_name">
-    Welcome {{user.first_name}} {{user.last_name}}
     <app-profile-form [user]="user" (userDataUpdated)="userProfileUpdated($event)"></app-profile-form>
   </div>
 </ion-content>
