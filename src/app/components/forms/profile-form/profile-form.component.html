@@ -5,7 +5,8 @@
 </ion-text>
 
 <div>
-  <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture" id="profilePicture" ngDefaultControl [(ngModel)]="profile.profile_picture">
+  <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture"
+    id="profilePicture" [(ngModel)]="profile.profile_picture">
   <button (click)="captureImage()">Click for Image</button>
 </div>
 
@@ -17,10 +18,11 @@
   </ion-item>
   <ion-item>
     <ion-label position="floating">Date of Birth</ion-label>
-    <ion-datetime (ionChange)="formatDateOfBirth($event)" displayFormat="DD/MM/YYYY" placeholder="DD/MM/YYYY" name="dateOfBirth" id="dateOfBirth" ngDefaultControl [(ngModel)]="profile.date_of_birth" #dateOfBirth="ngModel"></ion-datetime>
+    <ion-datetime (ionChange)="formatDateOfBirth($event)" displayFormat="DD/MM/YYYY" placeholder="DD/MM/YYYY"
+      name="dateOfBirth" id="dateOfBirth" [(ngModel)]="profile.date_of_birth" #dateOfBirth="ngModel"></ion-datetime>
   </ion-item>
   <ion-item>
-    <ion-segment (ionChange)="genderSelected($event)" ngDefaultControl [(ngModel)]="profile.gender">
+    <ion-segment (ionChange)="genderSelected($event)" [(ngModel)]="profile.gender">
       <ion-segment-button value="male">
         <ion-label>Male</ion-label>
       </ion-segment-button>
@@ -34,16 +36,17 @@
   </ion-item>
   <ion-item>
     <ion-label position="floating">Town</ion-label>
-    <ion-input type="text" name="town" id="town" ngDefaultControl [(ngModel)]="profile.town" #town="ngModel"></ion-input>
+    <ion-input type="text" name="town" id="town" [(ngModel)]="profile.town" #town="ngModel"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Region</ion-label>
-    <ion-input type="text" name="region" id="region" ngDefaultControl [(ngModel)]="profile.region" #region="ngModel"></ion-input>
+    <ion-input type="text" name="region" id="region" [(ngModel)]="profile.region" #region="ngModel"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Country</ion-label>
-    <ion-select id="country" ngDefaultControl [(ngModel)]="profile.country" [value]="profile.country" #country="ngModel">
-      <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}</ion-select-option>
+    <ion-select id="country" [(ngModel)]="profile.country" [value]="profile.country" #country="ngModel">
+      <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}
+      </ion-select-option>
     </ion-select>
   </ion-item>
 </div>
@@ -52,15 +55,18 @@
   <ion-list-header>Cycling Preferences</ion-list-header>
   <ion-item>
     <ion-label position="floating">Description</ion-label>
-    <ion-textarea placeholder="Enter your bio here..." name="bio" id="bio" ngDefaultControl [(ngModel)]="profile.bio" #bio="ngModel"></ion-textarea>
+    <ion-textarea placeholder="Enter your bio here..." name="bio" id="bio" [(ngModel)]="profile.bio" #bio="ngModel">
+    </ion-textarea>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Current Bike</ion-label>
-    <ion-input type="text" name="currentBike" id="currentBike" ngDefaultControl [(ngModel)]="profile.current_bike" #currentBike="ngModel"></ion-input>
+    <ion-input type="text" name="currentBike" id="currentBike" [(ngModel)]="profile.current_bike"
+      #currentBike="ngModel"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Preffered Style</ion-label>
-    <ion-select name="preferredStyle" id="preferredStyle" [value]="profile.preferred_style" ngDefaultControl [(ngModel)]="profile.preferred_style" #preferredStyle="ngModel">
+    <ion-select name="preferredStyle" id="preferredStyle" [value]="profile.preferred_style"
+      [(ngModel)]="profile.preferred_style" #preferredStyle="ngModel">
       <ion-select-option value="Road">Road</ion-select-option>
       <ion-select-option value="BMX">BMX</ion-select-option>
       <ion-select-option value="Downhill">Downhill</ion-select-option>
@@ -72,5 +78,6 @@
 </div>
 
 <div class="ion-padding">
-  <ion-button expand="block" (click)="submitProfile()" class="ion-no-margin" color="tertiary">Complete Profile</ion-button>
+  <ion-button expand="block" (click)="submitProfile()" class="ion-no-margin" color="tertiary">Complete Profile
+  </ion-button>
 </div>

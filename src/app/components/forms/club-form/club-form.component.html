@@ -1,21 +1,25 @@
 <div *ngIf="cyclingClub">
   <h2>Club Profile Picture</h2>
   <div>
-    <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture" id="profilePicture" [(ngModel)]="cyclingClub.profile_picture">
+    <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture"
+      id="profilePicture" [(ngModel)]="cyclingClub.profile_picture">
     <button (click)="captureImage()">Click for Image</button>
   </div>
   <h2>Club Details</h2>
   <ion-item>
     <ion-label position="floating">Club Name</ion-label>
-    <ion-input type="text" name="clubName" id="clubName" ngDefaultControl [(ngModel)]="cyclingClub.club_name" #clubName="ngModel"></ion-input>
+    <ion-input type="text" name="clubName" id="clubName" [(ngModel)]="cyclingClub.club_name" #clubName="ngModel">
+    </ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Description</ion-label>
-    <ion-textarea placeholder="Enter your bio here..." name="bio" id="bio" ngDefaultControl [(ngModel)]="cyclingClub.bio" #bio="ngModel"></ion-textarea>
+    <ion-textarea placeholder="Enter your bio here..." name="bio" id="bio" [(ngModel)]="cyclingClub.bio" #bio="ngModel">
+    </ion-textarea>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Preffered Style</ion-label>
-    <ion-select name="preferredStyle" id="preferredStyle" [value]="cyclingClub.preferred_style" ngDefaultControl [(ngModel)]="cyclingClub.preferred_style" #preferredStyle="ngModel">
+    <ion-select name="preferredStyle" id="preferredStyle" [value]="cyclingClub.preferred_style"
+      [(ngModel)]="cyclingClub.preferred_style" #preferredStyle="ngModel">
       <ion-select-option value="Road">Road</ion-select-option>
       <ion-select-option value="BMX">BMX</ion-select-option>
       <ion-select-option value="Downhill">Downhill</ion-select-option>
@@ -26,16 +30,17 @@
   </ion-item>
   <ion-item>
     <ion-label position="floating">Town</ion-label>
-    <ion-input type="text" name="town" id="town" ngDefaultControl [(ngModel)]="cyclingClub.town" #town="ngModel"></ion-input>
+    <ion-input type="text" name="town" id="town" [(ngModel)]="cyclingClub.town" #town="ngModel"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Region</ion-label>
-    <ion-input type="text" name="region" id="region" ngDefaultControl [(ngModel)]="cyclingClub.region" #region="ngModel"></ion-input>
+    <ion-input type="text" name="region" id="region" [(ngModel)]="cyclingClub.region" #region="ngModel"></ion-input>
   </ion-item>
   <ion-item>
     <ion-label position="floating">Country</ion-label>
-    <ion-select id="country" [(ngModel)]="cyclingClub.country" ngDefaultControl [value]="cyclingClub.country" #country="ngModel">
-      <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}</ion-select-option>
+    <ion-select id="country" [(ngModel)]="cyclingClub.country" (change)="onChange()" #country="ngModel">
+      <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}
+      </ion-select-option>
     </ion-select>
   </ion-item>
 </div>

@@ -70,7 +70,7 @@ export class ClubFormComponent implements OnInit {
     });
   }
 
-  createClub() {
+  createClub() {    
     this.cyclingClubService.createCyclingClub(this.cyclingClub)
     .subscribe(
       res => {
