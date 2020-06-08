@@ -27,10 +27,11 @@ export class NavigationComponent implements OnInit {
   ]
 
   logout() {
-    this.userService.clearUser()
-    this.authService.logoutUser()
+    let token = localStorage.getItem('token');
+    this.authService.logoutUser(token)
       .subscribe(
-        res => {          
+        res => {         
+          this.userService.clearUser() 
           this.response = res;
           this.router.navigate(['/']);
           this.presentAlert('Success', this.response)

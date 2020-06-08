@@ -37,11 +37,11 @@ export class AuthenticationService {
     )
   }
 
-  logoutUser(): Observable<{}> {
+  logoutUser(token: string): Observable<{}> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
+        'Authorization': `Bearer ${token}`
       })
     };    
     return this.http.post(`${this.macLocal}${this.logoutEndpoint}`, null, httpOptions)
