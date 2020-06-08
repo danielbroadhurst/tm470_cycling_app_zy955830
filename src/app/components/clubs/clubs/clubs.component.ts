@@ -5,9 +5,7 @@ import { UserService } from 'src/app/services/user.service';
 import { AlertController } from '@ionic/angular';
 import { Loading } from 'src/app/services/loading.service';
 import { ClubService } from 'src/app/services/club.service';
-import { Router, NavigationStart } from '@angular/router';
-import { filter } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clubs',
@@ -18,7 +16,6 @@ export class ClubsComponent implements OnInit {
 
   user: User;
   adminClubs: Array<CyclingClub> = [];
-  navStart: Observable<NavigationStart>;
   searchQuery: string;
   memeberClubs: Array<CyclingClub> = [];
 
@@ -28,26 +25,30 @@ export class ClubsComponent implements OnInit {
     public loading: Loading,
     private clubService: ClubService,
     private router: Router
-  ) {
-    // Create a new Observable that publishes only the NavigationStart event
-    this.navStart = router.events.pipe(
-      filter(evt => evt instanceof NavigationStart)
-    ) as Observable<NavigationStart>;
+  ) { }
+
+
+  ngOnInit() { }
+
+  ionViewWillEnter() {
+    this.userService.getUser()
+      .then(user => {
+        this.user = user;
+        if (this.user.cycling_club_admin) {
+          this.showAdminClubs();
+        }
+      })
   }
 
-
-  ngOnInit() {
-    this.navStart.subscribe(evt => {
-      this.getUser();
-    });
-    this.loading.presentLoading("Loading Details", 300);
+  ionViewDidLeave() {    
+    this.user = null;
+    console.log(this.user, 'cleared');
+    
   }
 
   async getUser() {
     this.user = await this.userService.getUser();
-    if (this.user.cycling_club_admin) {
-      this.showAdminClubs();
-    }
+    
   }
 
   showAdminClubs() {
