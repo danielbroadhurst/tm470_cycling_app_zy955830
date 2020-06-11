@@ -76,6 +76,7 @@ export class ClubFormComponent implements OnInit {
       res => {
         this.userService.storeUser(res[0]);
         this.presentAlert('Success', 'Created Club ' + this.cyclingClub.club_name)
+        this.cyclingClub = new CyclingClub(null, null, null, null, null, null, null, null)
       }
     )
   }
