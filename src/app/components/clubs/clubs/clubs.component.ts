@@ -40,15 +40,12 @@ export class ClubsComponent implements OnInit {
       })
   }
 
-  ionViewDidLeave() {    
+  ionViewDidLeave() {
     this.user = null;
-    console.log(this.user, 'cleared');
-    
   }
 
   async getUser() {
     this.user = await this.userService.getUser();
-    
   }
 
   showAdminClubs() {
