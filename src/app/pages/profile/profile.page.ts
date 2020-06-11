@@ -35,11 +35,13 @@ export class ProfilePage implements OnInit {
   }
 
   userProfileUpdated(user: User) {
-    this.user = user;
-    if (this.user.user_profile) {
-      this.profile = true;
-      this.presentAlert('Success', 'Profile Updated', 'Thank you for creating your profile.')
-    }
+    this.userService.storeUser(user);
+    this.presentAlert('Success', 'Profile Updated', 'Thank you for updating your profile.')
+    this.userService.getUser()
+      .then(user => {
+        this.user = user;
+        if (this.user.user_profile) this.profile = true;
+      })
   }
 
   async presentAlert(header: string, subHeader: string, message: string) {

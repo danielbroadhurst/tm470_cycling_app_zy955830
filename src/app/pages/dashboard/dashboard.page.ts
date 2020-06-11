@@ -22,7 +22,7 @@ export class DashboardPage implements OnInit {
   ngOnInit() { }
 
   ionViewWillEnter() {
-    this.profile = false;
+    this.profile = false;    
     this.userService.getUser()
       .then(user => {
         this.user = user;
@@ -34,12 +34,15 @@ export class DashboardPage implements OnInit {
     this.user = null;
   }
 
-  userProfileUpdated(user: User) {
-    this.user = user;
-    if (this.user.user_profile) {
-      this.profile = true;
-      this.presentAlert('Success', 'Profile Created', 'Thank you for creating your profile.')
-    }
+  userProfileUpdated(user: User) {   
+    let message = `Thank you for ${this.profile ? 'updating your profile.' : 'creating your profile.'}`;
+    this.userService.storeUser(user);
+    this.presentAlert('Success', 'Profile Stored', message)
+    this.userService.getUser()
+      .then(user => {
+        this.user = user;
+        if (this.user.user_profile) this.profile = true;
+      })
   }
 
   async presentAlert(header: string, subHeader: string, message: string) {

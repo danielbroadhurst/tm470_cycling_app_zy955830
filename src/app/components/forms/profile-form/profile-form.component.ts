@@ -75,7 +75,6 @@ export class ProfileFormComponent implements OnInit {
     return value.toString().padStart(2, "0");
   }
 
-
   genderSelected(event: any) {
     this.profile.gender = event.detail.value;
   }
@@ -83,22 +82,9 @@ export class ProfileFormComponent implements OnInit {
   submitProfile() {
     this.userService.createProfile(this.profile)
     .subscribe(
-      res => {
-        this.userService.storeUser(res[0]);
-        this.presentAlert('Success', 'Created Profile.')
+      res => {        
+        this.userDataUpdated.emit(res[0])
       }
     )
   }
-
-  async presentAlert(header: string, message: string) {
-    const alert = await this.alertController.create({
-      header: 'Alert',
-      subHeader: header,
-      message: message,
-      buttons: ['OK']
-    });
-
-    await alert.present();
-  }
-
 }
