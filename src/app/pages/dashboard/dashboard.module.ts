@@ -8,6 +8,7 @@ import { DashboardPageRoutingModule } from './dashboard-routing.module';
 
 import { DashboardPage } from './dashboard.page';
 import { SharedModule } from 'src/app/components/shared.module';
+import { MapComponent } from 'src/app/components/map/map.component';
 
 @NgModule({
   imports: [
@@ -17,6 +18,6 @@ import { SharedModule } from 'src/app/components/shared.module';
     DashboardPageRoutingModule,
     SharedModule
   ],
-  declarations: [DashboardPage]
+  declarations: [DashboardPage, MapComponent]
 })
 export class DashboardPageModule {}

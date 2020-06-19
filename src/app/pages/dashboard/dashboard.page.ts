@@ -3,7 +3,6 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/classes/userClass';
 import { AlertController } from '@ionic/angular';
 import { Loading } from 'src/app/services/loading.service';
-
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.page.html',
@@ -13,6 +12,7 @@ export class DashboardPage implements OnInit {
 
   user: User;
   profile: boolean;
+  seachQuery: string;
 
   constructor(
     public userService: UserService,
@@ -43,6 +43,11 @@ export class DashboardPage implements OnInit {
         this.user = user;
         if (this.user.user_profile) this.profile = true;
       })
+  }
+
+  searchForLocation(event) {
+    this.seachQuery = event.target.value;
+    console.log(this.seachQuery);
   }
 
   async presentAlert(header: string, subHeader: string, message: string) {
