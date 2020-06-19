@@ -1,51 +1,51 @@
 <ion-toolbar>
   <ion-buttons slot="start">
     <ion-button [routerLink]="['/login']">
-      <ion-icon name="arrow-back-outline"></ion-icon>    
+      <ion-icon name="arrow-back-outline"></ion-icon>
     </ion-button>
   </ion-buttons>
   <ion-title>Register</ion-title>
 </ion-toolbar>
 
-<ion-content>
-  <form (ngSubmit)="onSubmit=createUser($event)">
-    <ion-item>
-      <ion-label position="floating">First Name</ion-label>
-      <ion-input type="text" required name="firstName" id="firstName" [(ngModel)]="model.firstName" #firstName="ngModel"></ion-input>
-      <div [hidden]="firstName.valid || firstName.pristine"
-            class="alert alert-danger"
-            *ngIf="model.firstName === false">
-        First Name is required
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">First Name</ion-label>
-      <ion-input type="text" required name="lastName" id="lastName" [(ngModel)]="model.lastName" #lastName="ngModel"></ion-input>
-      <div [hidden]="lastName.valid || lastName.pristine"
-            class="alert alert-danger"
-            *ngIf="model.lastName === false">
-        Last Name is required
-      </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">E-Mail</ion-label>
-      <ion-input type="email" required name="email" id="email" [(ngModel)]="model.email" #email="ngModel"></ion-input>
-      <div [hidden]="email.valid || email.pristine"
-             class="alert alert-danger">
+<div class="gradientBlue">
+  <ion-card>
+    <form (ngSubmit)="onSubmit=createUser($event)">
+      <ion-item>
+        <ion-label position="floating">First Name</ion-label>
+        <ion-input type="text" required name="firstName" id="firstName" [(ngModel)]="model.firstName"
+          #firstName="ngModel"></ion-input>
+        <div [hidden]="firstName.valid || firstName.pristine" class="alert alert-danger"
+          *ngIf="model.firstName === false">
+          First Name is required
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">First Name</ion-label>
+        <ion-input type="text" required name="lastName" id="lastName" [(ngModel)]="model.lastName" #lastName="ngModel">
+        </ion-input>
+        <div [hidden]="lastName.valid || lastName.pristine" class="alert alert-danger" *ngIf="model.lastName === false">
+          Last Name is required
+        </div>
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">E-Mail</ion-label>
+        <ion-input type="email" required name="email" id="email" [(ngModel)]="model.email" #email="ngModel">
+        </ion-input>
+        <div [hidden]="email.valid || email.pristine" class="alert alert-danger">
           Email is required
         </div>
-    </ion-item>
-    <ion-item>
-      <ion-label position="floating">Password</ion-label>
-      <ion-input type="password" required name="password" id="password" [(ngModel)]="model.password" #password="ngModel"></ion-input>
-      <div [hidden]="password.valid || password.pristine"
-             class="alert alert-danger">
+      </ion-item>
+      <ion-item>
+        <ion-label position="floating">Password</ion-label>
+        <ion-input type="password" required name="password" id="password" [(ngModel)]="model.password"
+          #password="ngModel"></ion-input>
+        <div [hidden]="password.valid || password.pristine" class="alert alert-danger">
           Password is required
+        </div>
+      </ion-item>
+      <div class="ion-padding">
+        <ion-button expand="block" type="submit" class="ion-no-margin">Create account</ion-button>
       </div>
-    </ion-item>
-    <div class="ion-padding">
-      <ion-button expand="block" type="submit" class="ion-no-margin">Create account</ion-button>
-    </div>
-  </form>
-  
-</ion-content>
+    </form>
+  </ion-card>
+</div>
