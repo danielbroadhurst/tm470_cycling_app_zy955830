@@ -4,6 +4,7 @@ import { Router, ActivatedRoute } from "@angular/router"
 import { AlertController } from '@ionic/angular';
 import { UserAuth } from 'src/app/classes/user-auth';
 import { UserService } from 'src/app/services/user.service';
+import { Loading } from 'src/app/services/loading.service';
 
 @Component({
   selector: 'app-login',
@@ -27,7 +28,8 @@ export class LoginPage implements OnInit {
     private router: Router,
     public authentication: AuthenticationService,
     public userService: UserService,
-    public alertController: AlertController) {
+    public alertController: AlertController,
+    public loadingController: Loading) {
   }
 
   ionViewDidEnter() {
@@ -50,11 +52,13 @@ export class LoginPage implements OnInit {
       this.displayPasswordError = false;
     }
     if (this.isValidEmail && this.isValidPassword) {
+      this.loadingController.presentLoading('Logging In');
       this.authentication.loginUser(this.model)
       .subscribe(
         res => {
           this.response = res;
           if (this.response.access_token) {
+            this.loadingController.dismiss();
             localStorage.setItem('token', this.response.access_token);
             setTimeout(() => {
               this.model = new UserAuth(null, null, null, null);
@@ -68,6 +72,7 @@ export class LoginPage implements OnInit {
           } else {
             this.apiErrorResponse = `${error.message} ${Object.values(error.errors) ? Object.values(error.errors).toString() : 'No More Info.'}`;
           }
+          this.loadingController.dismiss();
           this.presentAlert('Error', 'Unsuccessful Login Attempt', this.apiErrorResponse)
         }     
       );

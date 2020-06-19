@@ -1,4 +1,9 @@
+
 <div class="loginBox">
+  <div class="logo">
+    <h2>Cycling Hub</h2>
+    <ion-icon name="bicycle-outline"></ion-icon>
+  </div>
     <ion-card >
       <ion-card-header><ion-card-title>Login</ion-card-title></ion-card-header>
       <form (ngSubmit)="onSubmit=loginUser($event)">
@@ -22,7 +27,7 @@
           <ion-button expand="block" type="submit" class="ion-no-margin">Login</ion-button>
         </div>
         <div class="ion-padding">
-          <ion-button expand="block" [routerLink]="['/register']" class="ion-no-margin" color="tertiary">Sign Up</ion-button>
+          <ion-button expand="block" fill="outline" [routerLink]="['/register']" class="ion-no-margin" color="tertiary">Sign Up</ion-button>
         </div>
       </form>
   </ion-card>
