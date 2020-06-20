@@ -1,9 +1,6 @@
 import { Component, OnInit } from '@angular/core';
-import { User } from 'src/app/classes/userClass';
-import { UserService } from 'src/app/services/user.service';
 import { Loading } from 'src/app/services/loading.service';
 import { AlertController } from '@ionic/angular';
-import { Observable } from 'rxjs';
 @Component({
   selector: 'app-clubs',
   templateUrl: './clubs.page.html',
@@ -12,7 +9,6 @@ import { Observable } from 'rxjs';
 export class ClubsPage implements OnInit {
 
   constructor(
-    public userService: UserService,
     public alertController: AlertController,
     public loading: Loading,
   ) { }

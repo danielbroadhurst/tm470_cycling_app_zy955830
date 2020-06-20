@@ -34,7 +34,7 @@ export class LoginPage implements OnInit {
 
   ionViewDidEnter() {
     if (this.authentication.loggedIn()) {
-      this.router.navigate(['/dashboard']);
+      this.router.navigate(['/clubs']);
     }
   }
   

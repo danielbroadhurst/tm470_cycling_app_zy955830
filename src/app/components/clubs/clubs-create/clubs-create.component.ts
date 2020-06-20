@@ -17,9 +17,17 @@ export class ClubsCreateComponent implements OnInit {
     public loading: Loading) {
    }
 
-  ngOnInit() {
+  ngOnInit() {  }
+
+  ionViewWillEnter() {
     this.getUser()
   }
+
+  ionViewDidLeave() {
+    this.user = null;
+    this.profile = false;
+  }
+
   user: User;
   profile: boolean;
   response:any;

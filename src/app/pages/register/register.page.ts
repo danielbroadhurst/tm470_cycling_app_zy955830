@@ -31,7 +31,7 @@ export class RegisterPage implements OnInit {
       res => {        
         if (res.email ==  this.model.email) {
           this.presentAlert('Success', 'Successfully created Account, Please Login.')
-          this.router.navigate(['/dashboard'])          
+          this.router.navigate(['/login'])          
           this.model = new UserAuth(null, null, null, null);
         } else {
           throw "Error creating user account. Please try again.";

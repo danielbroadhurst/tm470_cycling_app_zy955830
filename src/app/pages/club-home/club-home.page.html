@@ -40,6 +40,11 @@
         <ion-label>About</ion-label>
       </ion-tab-button>
 
+      <ion-tab-button tab="admin" *ngIf="userGroup === 'admin'">
+        <ion-icon name="information-circle"></ion-icon>
+        <ion-label>Admin</ion-label>
+      </ion-tab-button>
+
     </ion-tab-bar>
   </ion-tabs>
 </ion-content>
