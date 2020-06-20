@@ -6,8 +6,11 @@ export class CyclingClub {
         public country: string,
         public preferred_style: string,
         public profile_picture: string,
-        public region: string,
-        public town: string,
+        public city: string,
         public id?: number,
+        public country_short?: string,
+        public county?: string,
+        public lat?: number,
+        public lng?: number,
     ) { }
 }

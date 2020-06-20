@@ -4,50 +4,89 @@ import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { catchError } from 'rxjs/operators';
 
-const httpOptions = {
-  headers: new HttpHeaders({
-    'Accept': 'application/json',
-    'Authorization': `Bearer ${localStorage.getItem('token')}`
-  })
-};   
 @Injectable({
   providedIn: 'root'
 })
 export class CyclingClubService {
 
+  clubSearchResults: any = null;
+
   constructor(private http: HttpClient) { }
 
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
   userUrl = 'http://cycling_hub_api.test/';
-  macLocal ='http://localhost:8888/TM470/laraPassport_cycling_api/public/'
+  macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   cyclingClubEndpoint = 'api/cycling-club';
 
-  createCyclingClub(cyclingClub: CyclingClub): Observable<any> { 
+  createCyclingClub(cyclingClub: CyclingClub): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
     return this.http.post<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}`, cyclingClub, httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
-  updateCyclingClub(cyclingClub: CyclingClub): Observable<any> { 
+  viewCyclingClubs(location?: string, id?: string|boolean): Observable<any> {
+    let data = null;
+    if (location) {
+      data = {
+        county: location
+      }
+    }
+    if (id) {
+      data = {
+        id: id
+      }
+    }
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }),
+      params: data
+    };
+    return this.http.get<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}`, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  updateCyclingClub(cyclingClub: CyclingClub): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
     return this.http.put<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}/${cyclingClub.id}`, cyclingClub, httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   deleteCyclingClub(cyclingClub: CyclingClub): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
     return this.http.delete<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}/${cyclingClub.id}`, httpOptions)
-    .pipe(
-      catchError(this.handleError)
-    )
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
-   /**
-   * 
-   * @param error 
-   */
-  private handleError(error: HttpErrorResponse) {    
+  /**
+  * 
+  * @param error 
+  */
+  private handleError(error: HttpErrorResponse) {
     let errorMessage = "";
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

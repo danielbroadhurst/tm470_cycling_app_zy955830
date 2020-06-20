@@ -5,6 +5,7 @@ import { catchError } from 'rxjs/operators/';
 import { User } from '../classes/userClass';
 import { Router } from '@angular/router';
 import { Profile } from '../classes/profile';
+import { CyclingClub } from '../classes/cyclingClub';
 
 @Injectable({
   providedIn: 'root'
@@ -106,11 +107,34 @@ export class UserService {
     }
   }
 
-  getUserClubAdmin(id: any) {
-    if (this.user && this.user.cycling_club_admin) {
-      let clubsArray = this.user.cycling_club_admin
-      let club = clubsArray.find(clubs => clubs.id == id)
-      return club;
+  getUserClub(id: any) : any {
+    console.log(this.user);
+    if (this.user) {
+      if (this.user.cycling_club_admin.length > 0) {
+        let adminArray = this.user.cycling_club_admin
+        let adminSearch = adminArray.find(clubs => clubs.id == id)
+        if (adminSearch) {
+          let details = {
+            club: adminSearch, 
+            userGroup: 'admin'
+          }
+          return details;
+        }
+      } else if (this.user.cycling_club_member.hasOwnProperty('cycling_club_member') && this.user.cycling_club_member.length > 0) {
+        let membersArray = this.user.cycling_club_member
+        let memberSearch = membersArray.find(clubs => clubs.id == id)
+        if (memberSearch) {
+          let details = {
+            club: memberSearch, 
+            userGroup: 'member'
+          }
+          return details;
+        }
+      } else {
+        return false;
+      }
+    } else {
+      return false;
     }
   }
 

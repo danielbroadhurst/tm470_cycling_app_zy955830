@@ -16,6 +16,8 @@ export class ClubHomeComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    console.log(this, 'loaded');
+    
     this.club = this.clubService.getCyclingClub(); 
     console.log(this.club);
   }
