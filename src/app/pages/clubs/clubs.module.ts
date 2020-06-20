@@ -9,7 +9,7 @@ import { ClubsPageRoutingModule } from './clubs-routing.module';
 import { ClubsPage } from './clubs.page';
 import { ClubsCreateComponent } from 'src/app/components/clubs/clubs-create/clubs-create.component';
 import { ClubsHomeComponent } from 'src/app/components/clubs/clubs-home/clubs-home.component';
-import { ClubsComponent } from 'src/app/components/clubs/clubs/clubs.component';
+import { ClubsComponent } from 'src/app/components/clubs/clubs-view/clubs.component';
 import { SharedModule } from 'src/app/components/shared.module';
 import { MapComponent } from 'src/app/components/map/map.component';
 
