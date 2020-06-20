@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
 import { throwError, Observable } from 'rxjs';
-import { catchError } from 'rxjs/operators/';
+import { catchError, map } from 'rxjs/operators/';
 import { User } from '../classes/userClass';
 import { Router } from '@angular/router';
 import { Profile } from '../classes/profile';
@@ -48,6 +48,37 @@ export class UserService {
     };
     return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
       .pipe(
+        map(result => {
+          if (result) {
+            let profilePictureCheck = result[0].user_profile ? result[0].user_profile : null;
+            if (profilePictureCheck && profilePictureCheck.profile_picture) {
+              let profileUrl = `${this.macLocal}${profilePictureCheck.profile_picture}`;
+              result[0].user_profile.profile_picture = profileUrl;
+            }
+            let cyclingClubAdmin = result[0].cycling_club_admin;
+            if (cyclingClubAdmin.length > 0) {
+              for (let i = 0; i < cyclingClubAdmin.length; i++) {
+                const club = cyclingClubAdmin[i];
+                if (club.profile_picture) {
+                  let profileUrl = `${this.macLocal}${club.profile_picture}`;
+                  result[0].cycling_club_admin[i].profile_picture = profileUrl;
+                }
+              }
+            }
+            let cyclingClubMember = result[0].cycling_club_member;
+            if (cyclingClubMember.length > 0) {
+              for (let i = 0; i < cyclingClubMember.length; i++) {
+                const club = cyclingClubMember[i];
+                if (club.profile_picture) {
+                  let profileUrl = `${this.macLocal}${club.profile_picture}`;
+                  result[0].cycling_club_member[i].profile_picture = profileUrl;
+                }
+              }
+            }
+          }
+          console.log(result, 'profileUrls');
+          return result;
+        }),
         catchError(this.handleError)
       )
   }
@@ -107,35 +138,43 @@ export class UserService {
     }
   }
 
-  getUserClub(id: any) : any {
-    console.log(this.user);
+  getUserClub(id: any): any {
+    console.log(id, this.user, 'uS');
+    
     if (this.user) {
+      let details = null;
+      console.log(this.user, 'user');
+
       if (this.user.cycling_club_admin.length > 0) {
         let adminArray = this.user.cycling_club_admin
         let adminSearch = adminArray.find(clubs => clubs.id == id)
         if (adminSearch) {
-          let details = {
-            club: adminSearch, 
+          details = {
+            club: adminSearch,
             userGroup: 'admin'
           }
-          return details;
         }
-      } else if (this.user.cycling_club_member.hasOwnProperty('cycling_club_member') && this.user.cycling_club_member.length > 0) {
+        console.log(details, 'adminCheck');
+      }
+
+      if (this.user.cycling_club_member.length > 0) {
         let membersArray = this.user.cycling_club_member
         let memberSearch = membersArray.find(clubs => clubs.id == id)
         if (memberSearch) {
-          let details = {
-            club: memberSearch, 
+          details = {
+            club: memberSearch,
             userGroup: 'member'
           }
-          return details;
+          console.log(details, 'memberCheck');
         }
+      }
+
+      if (details) {
+        return details;
       } else {
         return false;
       }
-    } else {
-      return false;
-    }
+    } return Error('No User Stored');
   }
 
   /**

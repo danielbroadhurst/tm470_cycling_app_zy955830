@@ -1,17 +1,30 @@
-<div class="ion-padding scrollable">
-  <div *ngIf="user">
-    Welcome {{user.first_name}} {{user.last_name}}
-    <div *ngIf="!profile">
-      <app-profile-form [user]="user" (userDataUpdated)="userProfileUpdated($event)"></app-profile-form>
-    </div>
-    <div *ngIf="profile"> 
-      <ion-searchbar [(ngModel)]="searchQuery" enterkeyhint="search" inputmode="search" (search)="searchForLocation($event)" placeholder="Search for Clubs"></ion-searchbar>
-      <ion-button size="small" color="primary" (click)="findClubs()">Find Clubs Near Me</ion-button>
-      <div *ngIf="clubMarkers.length > 0">
-        <app-map [location]="location" [markers]="clubMarkers"></app-map>
+<ion-content *ngIf="user">
+  <div class="scrollable">
+    <ion-item *ngIf="user">
+      <ion-avatar *ngIf="user.user_profile !== null" slot="end">
+        <img *ngIf="user.user_profile.profile_picture != null" [src]="user.user_profile.profile_picture">
+        <img *ngIf="user.user_profile.profile_picture == null"
+          src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-avatar *ngIf="user.user_profile === null" slot="end">
+        <img *ngIf="user.profile_picture == null"
+          src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>{{user.first_name}} {{user.last_name}}</ion-label>
+    </ion-item>
+    <div class="ion-padding">
+      <div *ngIf="!profile" slot="fixed">
+        <app-profile-form [user]="user" (userDataUpdated)="userProfileUpdated($event)"></app-profile-form>
       </div>
-      <h2>Latest News</h2>
+      <div *ngIf="profile">
+        <ion-searchbar [(ngModel)]="searchQuery" enterkeyhint="search" inputmode="search"
+          (search)="searchForLocation($event)" placeholder="Search for Clubs"></ion-searchbar>
+        <ion-button size="small" color="primary" (click)="findClubs()">Find Clubs Near Me</ion-button>
+        <div *ngIf="clubMarkers.length > 0">
+          <app-map [location]="location" [markers]="clubMarkers"></app-map>
+        </div>
+        <h2>Latest News</h2>
+      </div>
     </div>
   </div>
-  
-</div>
+</ion-content>

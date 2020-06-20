@@ -1,8 +1,8 @@
 <div *ngIf="cyclingClub">
   <h2>Club Profile Picture</h2>
   <div>
-    <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture"
-      id="profilePicture" [(ngModel)]="cyclingClub.profile_picture">
+    <img *ngIf="imageFilePath" [src]="imageFilePath" width="100%" height="auto" alt="" 
+      id="profilePicture">
     <button (click)="captureImage()">Click for Image</button>
   </div>
   <h2>Club Details</h2>

@@ -5,8 +5,8 @@
 </ion-text>
 
 <div>
-  <img *ngIf="imageFilePath" [src]="imageFilePath" width="300" height="300" alt="" name="profilePicture"
-    id="profilePicture" [(ngModel)]="profile.profile_picture">
+  <img *ngIf="imageFilePath" [src]="imageFilePath" width="100%" height="auto" alt=""
+    id="profilePicture">
   <button (click)="captureImage()">Click for Image</button>
 </div>
 
