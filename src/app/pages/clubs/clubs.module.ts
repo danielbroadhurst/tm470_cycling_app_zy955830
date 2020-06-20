@@ -11,6 +11,7 @@ import { ClubsCreateComponent } from 'src/app/components/clubs/clubs-create/club
 import { ClubsHomeComponent } from 'src/app/components/clubs/clubs-home/clubs-home.component';
 import { ClubsComponent } from 'src/app/components/clubs/clubs/clubs.component';
 import { SharedModule } from 'src/app/components/shared.module';
+import { MapComponent } from 'src/app/components/map/map.component';
 
 @NgModule({
   imports: [
@@ -20,6 +21,6 @@ import { SharedModule } from 'src/app/components/shared.module';
     ClubsPageRoutingModule,
     SharedModule
   ],
-  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent]
+  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, MapComponent]
 })
 export class ClubsPageModule {}

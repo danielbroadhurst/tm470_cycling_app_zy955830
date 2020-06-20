@@ -5,19 +5,19 @@
     </ion-toolbar>
   </ion-header>
   <ion-content>
-    <ion-list *ngFor="let item of menuItems; index as i; trackBy: trackByFn">
-      <ion-menu-toggle auto-hide="true">
+    <ion-list >
+      <ion-menu-toggle auto-hide="true" *ngFor="let item of menuItems; index as i; trackBy: trackByFn">
         <ion-item [routerLink]='item.link' ion-menu-toggle menuClose>
           <ion-icon name="{{item.icon}}" slot="start"></ion-icon>
           {{item.name}}
         </ion-item>
       </ion-menu-toggle>
+      <ion-menu-toggle auto-hide="true">
+        <ion-item (click)="logout()" ion-menu-toggle menuClose>
+          <ion-icon name="log-out-outline" slot="start"></ion-icon>
+          Logout
+        </ion-item>
+      </ion-menu-toggle>
     </ion-list>
-    <ion-menu-toggle auto-hide="true">
-      <ion-item (click)="logout()" ion-menu-toggle menuClose>
-        <ion-icon name="log-out-outline" slot="start"></ion-icon>
-        Logout
-      </ion-item>
-    </ion-menu-toggle>
   </ion-content>
 </ion-menu>

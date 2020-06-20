@@ -62,7 +62,7 @@ export class LoginPage implements OnInit {
             localStorage.setItem('token', this.response.access_token);
             setTimeout(() => {
               this.model = new UserAuth(null, null, null, null);
-              this.router.navigate(['/dashboard']);
+              this.router.navigate(['/clubs']);
             }, 1000);
           }
         },

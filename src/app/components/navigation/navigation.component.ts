@@ -3,6 +3,7 @@ import { MenuController, AlertController } from '@ionic/angular';
 import { AuthenticationService } from 'src/app/services/authentication.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
+import { ClubService } from 'src/app/services/club.service';
 
 @Component({
   selector: 'app-navigation',
@@ -15,15 +16,15 @@ export class NavigationComponent implements OnInit {
   constructor(
     private authService: AuthenticationService,
     private userService: UserService,
+    private clubService: ClubService,
     private router: Router,
     public alertController: AlertController) { }
 
   ngOnInit() { }
 
   menuItems = [
-    { name: 'Dashboard', icon: 'home-outline', link: "/dashboard" },
-    { name: 'Profile', icon: 'person-circle-outline', link: "/profile" },
     { name: 'Clubs', icon: 'bicycle-outline', link: "/clubs" },
+    { name: 'Profile', icon: 'person-circle-outline', link: "/profile" }, 
   ]
 
   logout() {
@@ -31,6 +32,7 @@ export class NavigationComponent implements OnInit {
     this.authService.logoutUser(token)
       .subscribe(
         res => {         
+          this.clubService.clearCyclingClub()
           this.userService.clearUser() 
           this.response = res;
           this.router.navigate(['/']);
