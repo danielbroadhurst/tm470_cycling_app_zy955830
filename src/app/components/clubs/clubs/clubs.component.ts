@@ -17,7 +17,7 @@ export class ClubsComponent implements OnInit {
   user: User;
   adminClubs: Array<CyclingClub> = [];
   searchQuery: string;
-  memeberClubs: Array<CyclingClub> = [];
+  memberClubs: Array<CyclingClub> = [];
 
   constructor(
     public userService: UserService,
@@ -37,15 +37,14 @@ export class ClubsComponent implements OnInit {
         if (this.user.cycling_club_admin) {
           this.showAdminClubs();
         }
+        if (this.user.cycling_club_member) {
+          this.showMemberClubs();
+        }
       })
   }
 
   ionViewDidLeave() {
     this.user = null;
-  }
-
-  async getUser() {
-    this.user = await this.userService.getUser();
   }
 
   showAdminClubs() {
@@ -54,6 +53,18 @@ export class ClubsComponent implements OnInit {
       let clubs = this.user.cycling_club_admin;
       clubs.forEach(club => {
         this.adminClubs.push(club);
+      });
+      console.log(this.adminClubs);
+      
+    }
+  }
+
+  showMemberClubs() {
+    if (this.memberClubs.length !== this.user.cycling_club_member.length) {
+      this.memberClubs.length = 0;
+      let clubs = this.user.cycling_club_member;      
+      clubs.forEach(club => {
+        this.memberClubs.push(club);
       });
     }
   }

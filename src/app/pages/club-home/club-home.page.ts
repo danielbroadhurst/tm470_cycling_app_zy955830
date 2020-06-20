@@ -20,41 +20,50 @@ export class ClubHomePage implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
     private clubService: ClubService,
     private cyclingClubService: CyclingClubService
   ) { }
 
-  ngOnInit() {
+  ngOnInit() {  }
+
+  ionViewWillEnter() {
     this.showClub();
   }
 
-  async showClub() {
+  ionViewDidLeave() {
+    console.log('left');
+    
+  }
 
+  async showClub() {
     let clubID = this.route.snapshot.paramMap.get('id') ? this.route.snapshot.paramMap.get('id') : false;
-    console.log(clubID, this.route.snapshot.paramMap.get('id'), 'id');
     let clubCheck = this.userService.getUserClub(clubID);
-    console.log(clubCheck, 'before');
+
+    if (clubCheck.message == 'No User Stored') {
+      return this.router.navigate(['/clubs']);
+    }
 
     if (!clubCheck && clubID) {
       let clubSearch = await this.checkClubs(clubID);
-      console.log(clubCheck, 'loop');
       clubCheck = {
         club: clubSearch[0],
         userGroup: 'guest'
       }
     }
-    console.log(clubCheck, 'after');
 
     this.club = clubCheck.club;
     this.userGroup = clubCheck.userGroup;
     this.clubService.setCyclingClub(this.club);
     this.clubService.setUserGroup(clubCheck.userGroup);
 
-    console.log(clubCheck, 'outside of loop');
+    if (this.userGroup === 'admin' || this.userGroup === 'member') {
+      return this.router.navigate(['/club-home/'+clubID+'/home']);
+    }
   }
 
-  checkClubs(id) {
+  checkClubs(id: string) {
     return new Promise((resolve, reject) => {
       this.cyclingClubService.viewCyclingClubs(null, id)
         .subscribe(result => {
