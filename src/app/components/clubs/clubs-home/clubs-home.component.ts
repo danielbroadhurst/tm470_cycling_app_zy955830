@@ -23,6 +23,7 @@ export class ClubsHomeComponent implements OnInit {
   localClubs: boolean;
   cyclingClubs: CyclingClub[] = [];
   clubMarkers: Array<any>[any] = [];
+  clubSearchResults: CyclingClub[] = [];
 
   constructor(
     private route: ActivatedRoute,
@@ -113,6 +114,22 @@ export class ClubsHomeComponent implements OnInit {
   searchForClubs(event: any) {
     // Search DB of Clubs by Name and Location
     console.log(event.target.value);
+  }
+
+  showClubDistances(clubDistance) {
+    let cyclingClub = this.cyclingClubs.find(club => club.id === clubDistance.id);
+    if (cyclingClub) {
+      cyclingClub.distanceToUser = (clubDistance.distance / 1000).toFixed(2);
+    }
+    console.log(clubDistance, cyclingClub, 'inLoop');
+    this.clubSearchResults.push(cyclingClub);
+    this.sortArray(this.clubSearchResults);
+  }
+
+  private sortArray(array) {
+    array.sort(function(a, b) {
+      return a.distanceToUser - b.distanceToUser;
+    });
   }
 
   async presentAlert(header: string, subHeader: string, message: string) {

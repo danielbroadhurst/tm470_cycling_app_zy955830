@@ -21,7 +21,8 @@
           (search)="searchForLocation($event)" placeholder="Search for Clubs"></ion-searchbar>
         <ion-button size="small" color="primary" (click)="findClubs()">Find Clubs Near Me</ion-button>
         <div *ngIf="clubMarkers.length > 0">
-          <app-map [location]="location" [markers]="clubMarkers"></app-map>
+          <app-map [location]="location" [markers]="clubMarkers" (mapDistance)="showClubDistances($event)"></app-map>
+          <app-club *ngFor="let result of clubSearchResults" [club]="result"></app-club>
         </div>
         <h2>Latest News</h2>
       </div>

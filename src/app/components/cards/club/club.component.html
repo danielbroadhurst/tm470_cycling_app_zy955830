@@ -1,0 +1,20 @@
+<ion-card *ngIf="club">
+  <ion-card-header>
+    <ion-card-subtitle>{{club.city}}, {{club.county}}, {{club.country}}</ion-card-subtitle>
+    <ion-item>
+      <ion-avatar slot="end">
+        <img *ngIf="club.profile_picture != null" [src]="club.profile_picture">
+        <img *ngIf="club.profile_picture == null" src="https://gravatar.com/avatar/dba6bae8c566f9d4041fb9cd9ada7741?d=identicon&f=y">
+      </ion-avatar>
+      <ion-label>{{club.club_name}}</ion-label>
+    </ion-item>
+  </ion-card-header>
+
+  <ion-card-content>
+    <p *ngIf="club.distanceToUser"><strong>Distance:</strong> {{club.distanceToUser}}km</p>
+    <p><strong>Style:</strong> {{club.preferred_style}}</p>
+    <div>{{club.bio}}</div>
+    <ion-button (click)="storeClub(club.id)" expand="block" size="small" color="primary" 
+      [routerLink]="['/club-home', club.id]">Club Home</ion-button>
+  </ion-card-content>
+</ion-card>

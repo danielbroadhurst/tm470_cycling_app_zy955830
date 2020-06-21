@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, ElementRef, Input, Directive, HostListener } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, Input, Directive, HostListener, Output, EventEmitter } from '@angular/core';
 import { Router } from '@angular/router';
 import { ClubService } from 'src/app/services/club.service';
 import { ClubsHomeComponent } from '../clubs/clubs-home/clubs-home.component';
@@ -14,20 +14,19 @@ declare var H: any;
 export class MapComponent implements OnInit {
 
   @HostListener('click', ['$event.target.id']) onClick(id: any) {
-    console.log(this.parent, 'b4');
     this.parent.clearMap();
-    console.log(this.parent, 'aft');
-    
-    console.log(`You clicked on ${id}`);
     this.clubService.setSelectedClub(id);
     this.router.navigate(['/club-home/'+id]); 
   } 
 
   @Input() location: any;
   @Input() markers: any;
+  @Output() mapDistance = new EventEmitter();
 
   private platform: any;
-  private behavior: any;
+  behavior: any;
+  userLocation: any;
+  clubDistances: object[] = [];
 
   @ViewChild("map")
   public mapElement: ElementRef;
@@ -45,10 +44,11 @@ export class MapComponent implements OnInit {
 
   public ngOnInit() {
     console.log(this.markers, 'mapMarkers');
-
   }
 
   public ngAfterViewInit() {
+    this.userLocation = new H.map.Marker({ lat: this.location.coords.latitude, lng: this.location.coords.longitude });
+    console.log(this.userLocation, 'uL');
     if (this.location) {
       this.displayMap();
     }
@@ -82,25 +82,31 @@ export class MapComponent implements OnInit {
  * @param {H.geo.Point} coordinate  The location of the marker
  * @param {String} html             Data associated with the marker
  */
-  addMarkerToGroup(group, coordinate, html) {
-    var marker = new H.map.Marker(coordinate);
+  addMarkerToGroup(id: number, group: { addObject: (arg0: any) => void; }, coordinate: { lat: any; lng: any; }, html: string) {
+    let marker = new H.map.Marker(coordinate);
+    let distance = this.userLocation.getPosition().distance(marker.getPosition());
+    let clubDistanceToUser = {
+      id: id,
+      distance: distance
+    }
+    console.log(clubDistanceToUser, 'clubDis');
+    
+    this.mapDistance.emit(clubDistanceToUser);
     // add custom data to the marker
     marker.setData(html);
     group.addObject(marker);
   }
 
   /**
- * Add two markers showing the position of Liverpool and Manchester City football clubs.
- * Clicking on a marker opens an infobubble which holds HTML content related to the marker.
+ * 
+ *
  * @param  {H.Map} map      A HERE Map instance within the application
  */
-  addInfoBubble(map, ui) {
-    var group = new H.map.Group();
-
+  addInfoBubble(map: { addObject: (arg0: any) => void; }, ui: { addBubble: (arg0: any) => void; }) {
+    let group = new H.map.Group();
     map.addObject(group);
-
     // add 'tap' event listener, that opens info bubble, to the group
-    group.addEventListener('tap', function (evt) {
+    group.addEventListener('tap', function (evt: { target: { getGeometry: () => any; getData: () => any; }; }) {
       // event target is the marker itself, group is a parent event target
       // for all objects that it contains
       var bubble = new H.ui.InfoBubble(evt.target.getGeometry(), {
@@ -111,13 +117,20 @@ export class MapComponent implements OnInit {
       ui.addBubble(bubble);
     }, false);
 
-    this.markers.forEach(marker => {
+    this.markers.forEach((marker: { lat: string; lon: string; name: string; style: string; id: any; }) => {
+      let checkMarkers = this.markers.filter((markerCheck: { lat: any; lon: any; }) => markerCheck.lat == marker.lat && markerCheck.lon == marker.lon)
+      if (checkMarkers.length > 0) {
+        let latVar = (Math.random() * (-1 - 1) + 1) / 300;
+        let lonVar = (Math.random() * (-1 - 1) + 1) / 300;        
+        marker.lat = (parseFloat(marker.lat) + latVar).toFixed(5);
+        marker.lon = (parseFloat(marker.lon) + lonVar).toFixed(5);
+      }      
       let htmlInfo = `<div class="marker">
                         <h3>${marker.name}</h3>
                         <p>${marker.style}</p>
                         <button clicked id="${marker.id}">Join Club</button>
                       </div>`
-      this.addMarkerToGroup(group, { lat: marker.lat, lng: marker.lon }, htmlInfo);
+      this.addMarkerToGroup(marker.id, group, { lat: marker.lat, lng: marker.lon }, htmlInfo);
     });
 
   }

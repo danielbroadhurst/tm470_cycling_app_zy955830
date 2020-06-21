@@ -12,5 +12,6 @@ export class CyclingClub {
         public county?: string,
         public lat?: number,
         public lng?: number,
+        public distanceToUser?: string
     ) { }
 }
