@@ -21,6 +21,8 @@ export class UserService {
   macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   userEndpoint = 'api/user';
   profileEndpoint = 'api/user-profile';
+  joinClubEndpoint = 'api/join-cycling-club/';
+  leaveClubEndpoint = 'api/leave-cycling-club/';
 
   constructor(
     private router: Router,
@@ -128,6 +130,11 @@ export class UserService {
     })
   }
 
+  refreshUser() {
+    this.user = null;
+    this.getUser();
+  }
+
   profilePopulated(profile: any) {
     if (!this.user.user_profile) {
       return false;
@@ -144,7 +151,8 @@ export class UserService {
     if (this.user) {
       let details = null;
       console.log(this.user, 'user');
-
+      console.log(this.user.cycling_club_admin);
+      
       if (this.user.cycling_club_admin.length > 0) {
         let adminArray = this.user.cycling_club_admin
         let adminSearch = adminArray.find(clubs => clubs.id == id)
@@ -175,6 +183,32 @@ export class UserService {
         return false;
       }
     } return Error('No User Stored');
+  }
+
+  joinClubAsMember(clubId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.macLocal}${this.joinClubEndpoint}${clubId}`, {}, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  leaveClubAsMember(clubId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.macLocal}${this.leaveClubEndpoint}${clubId}`, {}, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
   }
 
   /**

@@ -1,3 +1,7 @@
 <p>
   club-about works!
 </p>
+
+<div class="ion-padding" *ngIf="userGroup === 'member'">
+  <ion-button expand="block" (click)="leaveClub()" class="ion-no-margin" color="danger">Leave Cycling Club</ion-button>
+</div>
