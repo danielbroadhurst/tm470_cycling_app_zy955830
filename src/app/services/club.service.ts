@@ -6,10 +6,19 @@ import { CyclingClub } from '../classes/cyclingClub';
 })
 export class ClubService {
 
+  selectedClub: string;
   cyclingClub: CyclingClub;
   userGroup: string;
 
   constructor() { }
+
+  setSelectedClub(id: string) {
+    this.selectedClub = id;
+  }
+
+  getSelectedClub() {
+    return this.selectedClub;
+  }
 
   getCyclingClub() {
     return this.cyclingClub;
@@ -30,5 +39,6 @@ export class ClubService {
   clearCyclingClub() {
     this.cyclingClub = new CyclingClub(null,null,null,null,null,null,null,null);
     this.userGroup = null;
+    this.selectedClub = null;
   }
 }
