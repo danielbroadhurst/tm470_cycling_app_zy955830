@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
 import { User } from 'src/app/classes/userClass';
 import { CyclingClub } from 'src/app/classes/cyclingClub';
@@ -7,6 +7,7 @@ import { UserService } from 'src/app/services/user.service';
 import { Loading } from 'src/app/services/loading.service';
 import { HereMapsService } from 'src/app/services/here-maps.service';
 import { CyclingClubService } from 'src/app/services/cycling-club.service';
+import { ClubService } from 'src/app/services/club.service';
 
 @Component({
   selector: 'app-clubs-home',
@@ -15,33 +16,32 @@ import { CyclingClubService } from 'src/app/services/cycling-club.service';
 })
 export class ClubsHomeComponent implements OnInit {
 
-  searchQuery: string;
   user: User;
   profile: boolean;
-  seachQuery: string;
   location: object;
   localClubs: boolean;
   cyclingClubs: CyclingClub[] = [];
   clubMarkers: Array<any>[any] = [];
   clubSearchResults: CyclingClub[] = [];
 
+
   constructor(
     private route: ActivatedRoute,
-    public userService: UserService,
-    public alertController: AlertController,
-    public loading: Loading,
-    public hereService: HereMapsService,
-    public clubsService: CyclingClubService) { }
+    private userService: UserService,
+    private alertController: AlertController,
+    private loading: Loading,
+    private hereService: HereMapsService,
+    private clubsService: CyclingClubService,
+    ) { }
 
-  ngOnInit() { 
+  ngOnInit() {     
     if (this.route.snapshot.queryParams.message) {
       this.presentAlert('Error', 'Access Denied', this.route.snapshot.queryParams.message)
     }  
   }
 
   ionViewDidEnter() {
-    console.log('entered-clubs-home');
-    
+    console.log('entered-clubs-home');  
     this.profile = false;    
     this.userService.getUser()
       .then(user => {
@@ -104,16 +104,6 @@ export class ClubsHomeComponent implements OnInit {
         this.clubMarkers.push(mapMarker);
       });
     })
-  }
-
-  searchForLocation(event) {
-    this.seachQuery = event.target.value;
-    console.log(this.seachQuery);
-  }
-
-  searchForClubs(event: any) {
-    // Search DB of Clubs by Name and Location
-    console.log(event.target.value);
   }
 
   showClubDistances(clubDistance) {

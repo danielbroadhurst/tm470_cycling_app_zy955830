@@ -17,9 +17,9 @@
         <app-profile-form [user]="user" (userDataUpdated)="userProfileUpdated($event)"></app-profile-form>
       </div>
       <div *ngIf="profile">
-        <ion-searchbar [(ngModel)]="searchQuery" enterkeyhint="search" inputmode="search"
-          (search)="searchForLocation($event)" placeholder="Search for Clubs"></ion-searchbar>
-        <ion-button size="small" color="primary" (click)="findClubs()">Find Clubs Near Me</ion-button>
+        <app-search></app-search>
+        <ion-button class="standardMargin" size="small" color="primary" expand="block" (click)="findClubs()">Find Clubs
+          Near Me</ion-button>
         <div *ngIf="clubMarkers.length > 0">
           <app-map [location]="location" [markers]="clubMarkers" (mapDistance)="showClubDistances($event)"></app-map>
           <app-club *ngFor="let result of clubSearchResults" [club]="result"></app-club>

@@ -1,0 +1,16 @@
+<ion-searchbar id="mySearchBar" [(ngModel)]="searchQuery" (ionChange)="searchText($event)"
+  (ionClear)="cancelSearch($event)" enterkeyhint="search" inputmode="search" (search)="searchForLocation($event)"
+  placeholder="Search for Clubs" debounce="500"></ion-searchbar>
+<ion-list *ngIf="textSearchResults;">
+  <ion-item *ngFor="let club of textSearchResults">
+    {{club.club_name}}
+    <ion-chip slot="end" color="secondary" (click)="storeClub(club.id)">
+      <ion-label color="dark">View Club</ion-label>
+    </ion-chip>
+  </ion-item>
+</ion-list>
+<ion-list *ngIf="noResults">
+  <ion-item>
+    No Clubs found which match query.
+  </ion-item>
+</ion-list>

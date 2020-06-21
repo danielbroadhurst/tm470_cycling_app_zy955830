@@ -13,6 +13,7 @@ import { ClubsComponent } from 'src/app/components/clubs/clubs-view/clubs.compon
 import { SharedModule } from 'src/app/components/shared.module';
 import { MapComponent } from 'src/app/components/map/map.component';
 import { ClubComponent } from 'src/app/components/cards/club/club.component';
+import { SearchComponent } from 'src/app/components/search/search.component';
 
 @NgModule({
   imports: [
@@ -22,6 +23,6 @@ import { ClubComponent } from 'src/app/components/cards/club/club.component';
     ClubsPageRoutingModule,
     SharedModule
   ],
-  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, MapComponent, ClubComponent]
+  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, ClubComponent, MapComponent, SearchComponent]
 })
 export class ClubsPageModule {}

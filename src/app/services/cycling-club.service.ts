@@ -31,7 +31,7 @@ export class CyclingClubService {
       )
   }
 
-  viewCyclingClubs(location?: string, id?: string|boolean): Observable<any> {
+  viewCyclingClubs(location?: string, id?: string|boolean, search?: string): Observable<any> {
     let data = null;
     if (location) {
       data = {
@@ -41,6 +41,11 @@ export class CyclingClubService {
     if (id) {
       data = {
         id: id
+      }
+    }
+    if (search) {
+      data = {
+        search: search
       }
     }
     const httpOptions = {
@@ -54,9 +59,8 @@ export class CyclingClubService {
       .pipe(
         map(result => {
           if (result) {
-            console.log(result);
             result.forEach(club => {
-              if (club.profile_picture !== null) {
+              if (club.profile_picture && club.profile_picture !== null) {
                 let profileUrl = `${this.macLocal}${club.profile_picture}`;
                 club.profile_picture = profileUrl;
               }
@@ -99,6 +103,8 @@ export class CyclingClubService {
   * @param error 
   */
   private handleError(error: HttpErrorResponse) {
+    console.log(error);
+    
     let errorMessage = "";
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

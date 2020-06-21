@@ -1,8 +1,7 @@
 <div class="ion-padding scrollable">
   <div *ngIf="memberClubs.length == 0">
     <p>Why not join a Cycling Club to find out about local Cycling Events...</p>
-    <ion-searchbar [(ngModel)]="searchQuery" (search)="searchForClubs($event)" placeholder="Search for Clubs">
-    </ion-searchbar>
+    <app-search></app-search>
   </div>
   <div *ngIf="memberClubs.length > 0">
     <h2>Clubs</h2>

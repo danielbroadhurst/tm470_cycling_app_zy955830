@@ -5,7 +5,6 @@ import { UserService } from 'src/app/services/user.service';
 import { AlertController } from '@ionic/angular';
 import { Loading } from 'src/app/services/loading.service';
 import { ClubService } from 'src/app/services/club.service';
-import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-clubs',
@@ -16,7 +15,6 @@ export class ClubsComponent implements OnInit {
 
   user: User;
   adminClubs: Array<CyclingClub> = [];
-  searchQuery: string;
   memberClubs: Array<CyclingClub> = [];
 
   constructor(
