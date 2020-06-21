@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { CyclingClub } from '../classes/cyclingClub';
 import { Observable, throwError } from 'rxjs';
 import { HttpClient, HttpErrorResponse, HttpHeaders } from '@angular/common/http';
-import { catchError } from 'rxjs/operators';
+import { catchError, map } from 'rxjs/operators';
 
 @Injectable({
   providedIn: 'root'
@@ -50,8 +50,20 @@ export class CyclingClubService {
       }),
       params: data
     };
-    return this.http.get<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}`, httpOptions)
+    return this.http.get<CyclingClub[]>(`${this.macLocal}${this.cyclingClubEndpoint}`, httpOptions)
       .pipe(
+        map(result => {
+          if (result) {
+            console.log(result);
+            result.forEach(club => {
+              if (club.profile_picture !== null) {
+                let profileUrl = `${this.macLocal}${club.profile_picture}`;
+                club.profile_picture = profileUrl;
+              }
+            });
+          }
+          return result;
+        }),
         catchError(this.handleError)
       )
   }
