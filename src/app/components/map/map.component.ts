@@ -1,5 +1,7 @@
 import { Component, OnInit, ViewChild, ElementRef, Input, Directive, HostListener } from '@angular/core';
 import { Router } from '@angular/router';
+import { ClubService } from 'src/app/services/club.service';
+import { ClubsHomeComponent } from '../clubs/clubs-home/clubs-home.component';
 
 declare var H: any;
 
@@ -12,7 +14,12 @@ declare var H: any;
 export class MapComponent implements OnInit {
 
   @HostListener('click', ['$event.target.id']) onClick(id: any) {
+    console.log(this.parent, 'b4');
+    this.parent.clearMap();
+    console.log(this.parent, 'aft');
+    
     console.log(`You clicked on ${id}`);
+    this.clubService.setSelectedClub(id);
     this.router.navigate(['/club-home/'+id]); 
   } 
 
@@ -26,6 +33,8 @@ export class MapComponent implements OnInit {
   public mapElement: ElementRef;
 
   public constructor(
+    private parent: ClubsHomeComponent,
+    private clubService: ClubService,
     private router: Router
   ) {
     this.platform = new H.service.Platform({
@@ -107,7 +116,7 @@ export class MapComponent implements OnInit {
                         <h3>${marker.name}</h3>
                         <p>${marker.style}</p>
                         <button clicked id="${marker.id}">Join Club</button>
-                      </div>'`
+                      </div>`
       this.addMarkerToGroup(group, { lat: marker.lat, lng: marker.lon }, htmlInfo);
     });
 

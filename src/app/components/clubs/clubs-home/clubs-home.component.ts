@@ -38,7 +38,9 @@ export class ClubsHomeComponent implements OnInit {
     }  
   }
 
-  ionViewWillEnter() {
+  ionViewDidEnter() {
+    console.log('entered-clubs-home');
+    
     this.profile = false;    
     this.userService.getUser()
       .then(user => {
@@ -48,9 +50,14 @@ export class ClubsHomeComponent implements OnInit {
   }
 
   ionViewDidLeave() {
+    console.log('left-clubs-home');
     this.user = null;
-    this.location = null;
+    this.clearMap()
+  }
+
+  clearMap() {
     this.localClubs = false;
+    this.location = null;
     this.cyclingClubs = [];
     this.clubMarkers = [];
   }

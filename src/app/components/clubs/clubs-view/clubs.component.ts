@@ -24,7 +24,6 @@ export class ClubsComponent implements OnInit {
     public alertController: AlertController,
     public loading: Loading,
     private clubService: ClubService,
-    private router: Router
   ) { }
 
 
@@ -69,8 +68,8 @@ export class ClubsComponent implements OnInit {
     }
   }
 
-  storeClub(club: CyclingClub) {
-    this.clubService.setCyclingClub(club);
+  storeClub(id: string) {
+    this.clubService.setSelectedClub(id);
   }
 
   async presentAlert(header: string, subHeader: string, message: string) {

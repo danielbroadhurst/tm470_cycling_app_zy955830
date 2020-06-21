@@ -6,6 +6,7 @@ import { ClubService } from 'src/app/services/club.service';
 import { AlertController } from '@ionic/angular';
 import { CyclingClubService } from 'src/app/services/cycling-club.service';
 import { Router } from '@angular/router';
+import { ClubHomePage } from 'src/app/pages/club-home/club-home.page';
 
 @Component({
   selector: 'app-club-admin',
@@ -17,8 +18,10 @@ export class ClubAdminComponent implements OnInit {
   editProfile: boolean;
   club: CyclingClub;
   user: User;
+  userGroup: string;
 
   constructor(
+    private parent: ClubHomePage,
     private userService: UserService,
     private clubService: ClubService,
     private cyclingClubService: CyclingClubService,
@@ -26,9 +29,42 @@ export class ClubAdminComponent implements OnInit {
     public alertController: AlertController
   ) { }
 
-  ngOnInit() {  
-    this.club = this.clubService.getCyclingClub();     
+  ngOnInit() { }
+
+  ionViewWillEnter() {  
+    this.showClub();
     this.getUser();
+  }
+
+  ionViewDidLeave() {
+    this.club = null; 
+    this.userGroup = null;
+  }
+
+  async showClub() {    
+    let clubID = this.clubService.getSelectedClub();    
+    let clubCheck = this.userService.getUserClub(clubID);
+
+    if (clubCheck.message == 'No User Stored' || !clubCheck) {
+      return this.router.navigate(['/clubs']);
+    }
+    
+    this.clubService.setCyclingClub(clubCheck.club);
+    this.clubService.setUserGroup(clubCheck.userGroup);
+    this.club = this.clubService.getCyclingClub();
+    this.userGroup = this.clubService.getUserGroup();
+    this.parent.club = this.clubService.getCyclingClub();
+    this.parent.userGroup = this.clubService.getUserGroup(); 
+  }
+
+  checkClubs(id: string) {
+    return new Promise((resolve, reject) => {
+      this.cyclingClubService.viewCyclingClubs(null, id)
+        .subscribe(result => {
+          console.log(result, 'club');
+          resolve(result)
+        })
+    })
   }
 
   showEditProfile() {

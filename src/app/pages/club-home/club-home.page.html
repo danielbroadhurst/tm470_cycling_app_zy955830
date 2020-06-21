@@ -11,15 +11,11 @@
 </ion-header>
 
 <ion-content contentId="main-content" class="ion-padding">
-  <div *ngIf="club && userGroup === 'guest'">
-    <h1>{{club.club_name}}</h1>
-    <p>Join our group</p>
-  </div>
   
   <ion-tabs>
     <ion-tab-bar slot="bottom">
 
-      <ion-tab-button tab="home" *ngIf="userGroup !== 'guest'">
+      <ion-tab-button tab="home">
         <ion-icon name="home"></ion-icon>
         <ion-label>Club Home</ion-label>
       </ion-tab-button>
