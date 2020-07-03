@@ -20,6 +20,7 @@ export class UserService {
   userUrl = 'http://cycling_hub_api.test/';
   macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   userEndpoint = 'api/user';
+  deleteUserEndpoint = 'api/delete-account/';
   profileEndpoint = 'api/user-profile';
   joinClubEndpoint = 'api/join-cycling-club/';
   leaveClubEndpoint = 'api/leave-cycling-club/';
@@ -48,37 +49,40 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
+    return this.http.get<User>(`${this.heroku}${this.userEndpoint}`, httpOptions)
       .pipe(
         map(result => {
           if (result) {
-            let profilePictureCheck = result[0].user_profile ? result[0].user_profile : null;
-            if (profilePictureCheck && profilePictureCheck.profile_picture) {
-              let profileUrl = `${this.macLocal}${profilePictureCheck.profile_picture}`;
-              result[0].user_profile.profile_picture = profileUrl;
-            }
-            let cyclingClubAdmin = result[0].cycling_club_admin;
-            if (cyclingClubAdmin.length > 0) {
-              for (let i = 0; i < cyclingClubAdmin.length; i++) {
-                const club = cyclingClubAdmin[i];
-                if (club.profile_picture) {
-                  let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                  result[0].cycling_club_admin[i].profile_picture = profileUrl;
+            if (result[0].user_profile !== null) {              
+              let profilePictureCheck = result[0].user_profile ? result[0].user_profile : null;
+              if (profilePictureCheck && profilePictureCheck.profile_picture) {
+                let profileUrl = `${this.heroku}${profilePictureCheck.profile_picture}`;
+                result[0].user_profile.profile_picture = profileUrl;
+              }
+              let cyclingClubAdmin = result[0].cycling_club_admin;
+              if (cyclingClubAdmin.length > 0) {
+                for (let i = 0; i < cyclingClubAdmin.length; i++) {
+                  const club = cyclingClubAdmin[i];
+                  if (club.profile_picture) {
+                    let profileUrl = `${this.heroku}${club.profile_picture}`;
+                    result[0].cycling_club_admin[i].profile_picture = profileUrl;
+                  }
                 }
               }
-            }
-            let cyclingClubMember = result[0].cycling_club_member;
-            if (cyclingClubMember.length > 0) {
-              for (let i = 0; i < cyclingClubMember.length; i++) {
-                const club = cyclingClubMember[i];
-                if (club.profile_picture) {
-                  let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                  result[0].cycling_club_member[i].profile_picture = profileUrl;
+              let cyclingClubMember = result[0].cycling_club_member;
+              if (cyclingClubMember.length > 0) {
+                for (let i = 0; i < cyclingClubMember.length; i++) {
+                  const club = cyclingClubMember[i];
+                  if (club.profile_picture) {
+                    let profileUrl = `${this.heroku}${club.profile_picture}`;
+                    result[0].cycling_club_member[i].profile_picture = profileUrl;
+                  }
                 }
               }
+              console.log(result);
+              
             }
           }
-          console.log(result, 'profileUrls');
           return result;
         }),
         catchError(this.handleError)
@@ -92,7 +96,46 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.post<Profile>(`${this.macLocal}${this.profileEndpoint}`, profile, httpOptions)
+    return this.http.post<Profile>(`${this.heroku}${this.profileEndpoint}`, profile, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  joinClubAsMember(clubId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.heroku}${this.joinClubEndpoint}${clubId}`, {}, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  leaveClubAsMember(clubId: string): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.heroku}${this.leaveClubEndpoint}${clubId}`, {}, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  deleteUserAccount(id: number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.delete<Profile>(`${this.heroku}${this.deleteUserEndpoint}${id}`, httpOptions)
       .pipe(
         catchError(this.handleError)
       )
@@ -119,11 +162,13 @@ export class UserService {
         console.log('User API');
         this.getUserApi()
           .subscribe(
-            res => {
+            res => {              
               this.storeUser(res[0])
               resolve(this.user);
             })
         error => {
+          console.log(error);
+          
           reject(error.message)
         }
       }
@@ -185,32 +230,6 @@ export class UserService {
     } return Error('No User Stored');
   }
 
-  joinClubAsMember(clubId: string): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      })
-    };
-    return this.http.post<Profile>(`${this.macLocal}${this.joinClubEndpoint}${clubId}`, {}, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      )
-  }
-
-  leaveClubAsMember(clubId: string): Observable<any> {
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Accept': 'application/json',
-        'Authorization': `Bearer ${localStorage.getItem('token')}`
-      })
-    };
-    return this.http.post<Profile>(`${this.macLocal}${this.leaveClubEndpoint}${clubId}`, {}, httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      )
-  }
-
   /**
    * 
    * @param error 
@@ -226,6 +245,8 @@ export class UserService {
         `${error.status} Error:\n` +
         `${error.message}`);
     }
+    localStorage.removeItem('token')
+    this.router.navigate['/login']
     // return an observable with a user-facing error message
     return throwError(error);
   };

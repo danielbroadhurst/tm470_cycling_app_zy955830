@@ -3,6 +3,8 @@ import { UserService } from 'src/app/services/user.service';
 import { User } from 'src/app/classes/userClass';
 import { Loading } from 'src/app/services/loading.service';
 import { AlertController } from '@ionic/angular';
+import { ClubService } from 'src/app/services/club.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-profile',
@@ -16,6 +18,8 @@ export class ProfilePage implements OnInit {
 
   constructor(
     public userService: UserService,
+    public clubService: ClubService,
+    public router: Router,
     public alertController: AlertController,
     public loading: Loading) { }
 
@@ -44,12 +48,52 @@ export class ProfilePage implements OnInit {
       })
   }
 
+  deleteUserAccount() {
+    this.checkBeforeDelete();
+  }
+
+  deleteConfirmed() {
+    console.log('confirmed');
+    this.userService.deleteUserAccount(this.user.id)
+      .subscribe(result => {
+        if (result.message) {
+          this.userService.clearUser();
+          this.clubService.clearCyclingClub()
+          this.userService.clearUser()
+          this.router.navigate(['/']);
+          this.presentAlert('Success', 'Deleted Account', result.message)
+          localStorage.removeItem('token');
+        }
+      })
+  }
+
   async presentAlert(header: string, subHeader: string, message: string) {
     const alert = await this.alertController.create({
       header: header,
       subHeader: subHeader,
       message: message,
       buttons: ['OK']
+    });
+    await alert.present();
+  }
+
+  async checkBeforeDelete() {
+    const alert = await this.alertController.create({
+      header: 'Delete Account',
+      subHeader: 'Are you sure?',
+      message: 'This will remove your account and any clubs which you are currently an Admin for.',
+      buttons: [
+        {
+          text: 'Cancel',
+          role: 'cancel',
+          cssClass: 'secondary',
+        }, {
+          text: 'Delete Account',
+          handler: () => {
+            this.deleteConfirmed()
+          }
+        }
+      ]
     });
     await alert.present();
   }

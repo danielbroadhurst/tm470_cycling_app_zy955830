@@ -10,5 +10,7 @@
 <ion-content contentId="main-content" class="ion-padding">
   <div *ngIf="user && user.first_name">
     <app-profile-form [user]="user" (userDataUpdated)="userProfileUpdated($event)"></app-profile-form>
+    <ion-button expand="block" (click)="deleteUserAccount()" class="ion-margin" color="danger">Delete User Account
+    </ion-button>
   </div>
 </ion-content>
