@@ -7,7 +7,8 @@ import { UserService } from 'src/app/services/user.service';
 import { Loading } from 'src/app/services/loading.service';
 import { HereMapsService } from 'src/app/services/here-maps.service';
 import { CyclingClubService } from 'src/app/services/cycling-club.service';
-import { ClubService } from 'src/app/services/club.service';
+
+import { Geolocation } from '@ionic-native/geolocation/ngx';
 
 @Component({
   selector: 'app-clubs-home',
@@ -32,6 +33,7 @@ export class ClubsHomeComponent implements OnInit {
     private loading: Loading,
     private hereService: HereMapsService,
     private clubsService: CyclingClubService,
+    private geolocation: Geolocation
     ) { }
 
   ngOnInit() {     
@@ -46,6 +48,7 @@ export class ClubsHomeComponent implements OnInit {
     this.userService.getUser()
       .then(user => {
         this.user = user;
+        console.log(this.user, 'user');
         if (this.user.user_profile) this.profile = true;
       })
   }
@@ -75,16 +78,25 @@ export class ClubsHomeComponent implements OnInit {
   }
 
   findClubs() {
-    window.navigator.geolocation.getCurrentPosition(resp => {
-      this.location = resp;
-      console.log(this.location);
+    this.clubSearchResults = [];
+    this.clubMarkers = [];
+    this.geolocation.getCurrentPosition().then((resp) => {
+      this.location = resp;   
+      console.log(this.location, 'resp');
       this.hereService.getRelatedAreas(this.location)
       .subscribe(results => {
         console.log(results, 'maps');
         this.displayClubs(results.County)
       })
-      this.localClubs = true;
-    });
+     }).catch((error) => {
+       console.log('Error getting location', error);
+     });
+  
+    // window.navigator.geolocation.getCurrentPosition(resp => {
+    //   this.location = resp;
+    //   console.log(this.location, 'location');
+    //   this.localClubs = true;
+    // });
   }
 
   displayClubs(county: string) {
