@@ -43,18 +43,15 @@ export class ClubsHomeComponent implements OnInit {
   }
 
   ionViewDidEnter() {
-    console.log('entered-clubs-home');  
     this.profile = false;    
     this.userService.getUser()
       .then(user => {
         this.user = user;
-        console.log(this.user, 'user');
         if (this.user.user_profile) this.profile = true;
       })
   }
 
   ionViewDidLeave() {
-    console.log('left-clubs-home');
     this.user = null;
     this.clearMap()
   }
@@ -75,6 +72,9 @@ export class ClubsHomeComponent implements OnInit {
         this.user = user;
         if (this.user.user_profile) this.profile = true;
       })
+      .catch(error => {
+        
+      })
   }
 
   findClubs() {
@@ -89,7 +89,7 @@ export class ClubsHomeComponent implements OnInit {
         this.displayClubs(results.County)
       })
      }).catch((error) => {
-       console.log('Error getting location', error);
+       this.presentAlert('Error', 'Error getting location', error);
      });
   
     // window.navigator.geolocation.getCurrentPosition(resp => {
@@ -102,19 +102,22 @@ export class ClubsHomeComponent implements OnInit {
   displayClubs(county: string) {
     this.clubsService.viewCyclingClubs(county)
     .subscribe(results => {
-      console.log(results, 'clubs');
       this.cyclingClubs = results;
-      this.cyclingClubs.forEach(club => {
-        console.log(club, 'cl');
-        let mapMarker = {
-          id: club.id,
-          name: club.club_name,
-          style: club.preferred_style,
-          lat: club.lat,
-          lon: club.lng
-        }        
-        this.clubMarkers.push(mapMarker);
-      });
+      if (this.cyclingClubs.length > 0) {
+        this.cyclingClubs.forEach(club => {
+          console.log(club, 'cl');
+          let mapMarker = {
+            id: club.id,
+            name: club.club_name,
+            style: club.preferred_style,
+            lat: club.lat,
+            lon: club.lng
+          }        
+          this.clubMarkers.push(mapMarker);
+        });
+      } else {
+        this.presentAlert('Alert', 'No clubs found.', "There doesn't seem to be any clubs in the area which you have searched.")
+      }
     })
   }
 
@@ -123,7 +126,6 @@ export class ClubsHomeComponent implements OnInit {
     if (cyclingClub) {
       cyclingClub.distanceToUser = (clubDistance.distance / 1000).toFixed(2);
     }
-    console.log(clubDistance, cyclingClub, 'inLoop');
     this.clubSearchResults.push(cyclingClub);
     this.sortArray(this.clubSearchResults);
   }
