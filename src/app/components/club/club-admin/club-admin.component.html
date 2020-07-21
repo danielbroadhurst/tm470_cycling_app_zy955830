@@ -1,11 +1,16 @@
-<div class="ion-padding scrollable">
-  <ion-title>Admin Area</ion-title>
-  <div class="ion-padding">
-    <ion-button *ngIf="!editProfile" expand="block" (click)="showEditProfile()" class="ion-no-margin" color="tertiary">Edit Profile</ion-button>
-    <app-club-form *ngIf="editProfile" [user]="user" [edit]="true" [club]="club" (updated)=updateSuccess($event)></app-club-form>
+<div class="scrollable">
+  <div *ngIf="club && userGroup === 'admin'" class="ion-padding-start ion-padding-end">
+    <h1>{{club.club_name}} - Admin</h1>
+    <p>{{userGroup}}</p>
+    <div>
+      <ion-button *ngIf="!editProfile" expand="block" (click)="showEditProfile()" class="ion-no-margin"
+        color="tertiary">Edit Profile</ion-button>
+      <app-club-form *ngIf="editProfile" [user]="user" [edit]="true" [club]="club" (updated)=updateSuccess($event)>
+      </app-club-form>
+    </div>
+    <div class="ion-padding-top">
+      <ion-button expand="block" (click)="deleteClub()" class="ion-no-margin" color="danger">Delete Cycling Club
+      </ion-button>
+    </div>
   </div>
-  <div class="ion-padding">
-    <ion-button expand="block" (click)="deleteClub()" class="ion-no-margin" color="danger">Delete Cycling Club</ion-button>
-  </div>
-  
 </div>
