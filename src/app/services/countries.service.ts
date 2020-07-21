@@ -10,6 +10,7 @@ export class CountriesService {
   countries: Array<string> = [];
 
   macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
+  heroku = 'https://lit-fjord-04089.herokuapp.com/';
   countriesEndpoint = 'api/countries';
 
   constructor(
