@@ -9,16 +9,15 @@ import { catchError, map } from 'rxjs/operators';
 export class HereMapsService {
 
   constructor(private http: HttpClient) { }
-  private app_id = 'S3uSkOhhM4WP9GITH6r9';
-  private app_code = '9OkGtDOX_dwWCraOMu7x5Q';
-  private geocoderProxUrl = 'https://reverse.geocoder.cit.api.here.com/6.2/reversegeocode.json';
+  private apiKey = 'G6mTJYafb80IXTTa_7-yEFtwaGZBKYQIY59Ug2X0ekI';
+  //https://geocoder.ls.hereapi.com/search/6.2/geocode.json
+  private geocoderProxUrl = 'https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json';
 
   getRelatedAreas(location: any): Observable<any> { 
     let params = {
         prox: `${location.coords.latitude},${location.coords.longitude}`,
         mode: 'retrieveAreas',
-        app_id: this.app_id,
-        app_code: this.app_code,
+        apiKey: this.apiKey,
     }    
     return this.http.get<any>(`${this.geocoderProxUrl}`, {params})
     .pipe(
