@@ -49,14 +49,14 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.get<User>(`${this.heroku}${this.userEndpoint}`, httpOptions)
+    return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
       .pipe(
         map(result => {
           if (result) {
             if (result[0].user_profile !== null) {              
               let profilePictureCheck = result[0].user_profile ? result[0].user_profile : null;
               if (profilePictureCheck && profilePictureCheck.profile_picture) {
-                let profileUrl = `${this.heroku}${profilePictureCheck.profile_picture}`;
+                let profileUrl = `${this.macLocal}${profilePictureCheck.profile_picture}`;
                 result[0].user_profile.profile_picture = profileUrl;
               }
               let cyclingClubAdmin = result[0].cycling_club_admin;
@@ -64,7 +64,7 @@ export class UserService {
                 for (let i = 0; i < cyclingClubAdmin.length; i++) {
                   const club = cyclingClubAdmin[i];
                   if (club.profile_picture) {
-                    let profileUrl = `${this.heroku}${club.profile_picture}`;
+                    let profileUrl = `${this.macLocal}${club.profile_picture}`;
                     result[0].cycling_club_admin[i].profile_picture = profileUrl;
                   }
                 }
@@ -74,7 +74,7 @@ export class UserService {
                 for (let i = 0; i < cyclingClubMember.length; i++) {
                   const club = cyclingClubMember[i];
                   if (club.profile_picture) {
-                    let profileUrl = `${this.heroku}${club.profile_picture}`;
+                    let profileUrl = `${this.macLocal}${club.profile_picture}`;
                     result[0].cycling_club_member[i].profile_picture = profileUrl;
                   }
                 }
@@ -96,7 +96,7 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.post<Profile>(`${this.heroku}${this.profileEndpoint}`, profile, httpOptions)
+    return this.http.post<Profile>(`${this.macLocal}${this.profileEndpoint}`, profile, httpOptions)
       .pipe(
         catchError(this.handleError)
       )
@@ -109,7 +109,7 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.post<Profile>(`${this.heroku}${this.joinClubEndpoint}${clubId}`, {}, httpOptions)
+    return this.http.post<Profile>(`${this.macLocal}${this.joinClubEndpoint}${clubId}`, {}, httpOptions)
       .pipe(
         catchError(this.handleError)
       )
@@ -122,7 +122,7 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.post<Profile>(`${this.heroku}${this.leaveClubEndpoint}${clubId}`, {}, httpOptions)
+    return this.http.post<Profile>(`${this.macLocal}${this.leaveClubEndpoint}${clubId}`, {}, httpOptions)
       .pipe(
         catchError(this.handleError)
       )
@@ -135,7 +135,7 @@ export class UserService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
-    return this.http.delete<Profile>(`${this.heroku}${this.deleteUserEndpoint}${id}`, httpOptions)
+    return this.http.delete<Profile>(`${this.macLocal}${this.deleteUserEndpoint}${id}`, httpOptions)
       .pipe(
         catchError(this.handleError)
       )
