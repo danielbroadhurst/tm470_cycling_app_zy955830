@@ -1,22 +1,26 @@
 <div *ngIf="cyclingClub">
   <h2>Club Profile Picture</h2>
   <div>
+    <!-- Display Profile Picture and Capture Image Button -->
     <img *ngIf="imageFilePath" [src]="imageFilePath" width="100%" height="auto" alt="" 
       id="profilePicture">
     <button (click)="captureImage()">Click for Image</button>
   </div>
   <h2>Club Details</h2>
   <ion-item>
+    <!-- Club Name -->
     <ion-label position="floating">Club Name</ion-label>
     <ion-input type="text" name="clubName" id="clubName" [(ngModel)]="cyclingClub.club_name" #clubName="ngModel">
     </ion-input>
   </ion-item>
   <ion-item>
+    <!-- Club Description -->
     <ion-label position="floating">Description</ion-label>
     <ion-textarea placeholder="Enter your bio here..." name="bio" id="bio" [(ngModel)]="cyclingClub.bio" #bio="ngModel">
     </ion-textarea>
   </ion-item>
   <ion-item>
+    <!-- Preferred Style Select Menu -->
     <ion-label position="floating">Preffered Style</ion-label>
     <ion-select name="preferredStyle" id="preferredStyle" [value]="cyclingClub.preferred_style"
       [(ngModel)]="cyclingClub.preferred_style" #preferredStyle="ngModel">
@@ -29,10 +33,12 @@
     </ion-select>
   </ion-item>
   <ion-item>
+    <!-- Cycling Club City Input -->
     <ion-label position="floating">City</ion-label>
     <ion-input type="text" name="city" id="city" [(ngModel)]="cyclingClub.city" #city="ngModel"></ion-input>
   </ion-item>
   <ion-item>
+    <!-- Cycling Club Countries Select Menu -->
     <ion-label position="floating">Country</ion-label>
     <ion-select id="country" [(ngModel)]="cyclingClub.country" (change)="onChange()" #country="ngModel">
       <ion-select-option *ngFor="let country of countries; index as i;" [value]="country">{{country}}
@@ -42,6 +48,7 @@
 </div>
 
 <div class="ion-padding">
+  <!-- Create or Edit button -->
   <ion-button *ngIf="!edit" expand="block" (click)="createClub()" class="ion-no-margin" color="tertiary">
     Create Cycling Club
   </ion-button>
