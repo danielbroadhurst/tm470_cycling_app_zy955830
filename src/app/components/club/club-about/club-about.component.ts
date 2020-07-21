@@ -3,6 +3,7 @@ import { ClubService } from 'src/app/services/club.service';
 import { Router } from '@angular/router';
 import { UserService } from 'src/app/services/user.service';
 import { AlertController } from '@ionic/angular';
+import { CyclingClub } from 'src/app/classes/cyclingClub';
 
 @Component({
   selector: 'app-club-about',
@@ -11,6 +12,7 @@ import { AlertController } from '@ionic/angular';
 })
 export class ClubAboutComponent implements OnInit {
 
+  club: CyclingClub;
   userGroup: string;
 
   constructor(
@@ -23,6 +25,7 @@ export class ClubAboutComponent implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {  
+    this.club = this.clubService.getCyclingClub();
     this.userGroup = this.clubService.getUserGroup();
     if (!this.userGroup) {
       this.router.navigate(['/clubs'])
@@ -30,6 +33,7 @@ export class ClubAboutComponent implements OnInit {
   }
 
   ionViewDidLeave() {
+    this.club = null;
     this.userGroup = null;
   }
 

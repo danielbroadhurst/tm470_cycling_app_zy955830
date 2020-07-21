@@ -1,15 +1,17 @@
-<ion-content>
+<div>
   <div *ngIf="club && userGroup === 'guest'" class="scrollable">
-    <h1>{{club.club_name}}</h1>
     <img *ngIf="club.profile_picture != null" [src]="club.profile_picture">
-    <ion-card-subtitle>{{club.city}}, {{club.county}}, {{club.country}}</ion-card-subtitle>
-    <p><strong>Bio:</strong> {{club.bio}}</p>
-    <p><strong>Style:</strong> {{club.preferred_style}}</p>
-    <ion-button color="primary" (click)=joinClub(club.id)>Join Cycling Club</ion-button>
+    <div class="ion-padding-start ion-padding-end">
+      <h1>{{club.club_name}}</h1>
+      <ion-card-subtitle>{{club.city}}, {{club.county}}, {{club.country}}</ion-card-subtitle>
+      <p><strong>Bio:</strong> {{club.bio}}</p>
+      <p><strong>Style:</strong> {{club.preferred_style}}</p>
+      <ion-button color="primary" expand="block" (click)=joinClub(club.id)>Join Cycling Club</ion-button>
+    </div>
+
   </div>
-  <div *ngIf="club && userGroup !== 'guest'" class="scrollable">
+  <div *ngIf="club && (userGroup === 'admin' || userGroup === 'member')" class="ion-padding-start ion-padding-end">
     <h1>{{club.club_name}}</h1>
     <p>{{userGroup}}</p>
   </div>
-
-</ion-content >
+</div>
