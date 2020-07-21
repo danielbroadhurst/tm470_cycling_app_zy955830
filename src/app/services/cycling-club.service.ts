@@ -9,15 +9,15 @@ import { catchError, map } from 'rxjs/operators';
 })
 export class CyclingClubService {
 
-  clubSearchResults: any = null;
-
   constructor(private http: HttpClient) { }
 
+  clubSearchResults: any = null;
   heroku = 'https://lit-fjord-04089.herokuapp.com/';
   userUrl = 'http://cycling_hub_api.test/';
   macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   cyclingClubEndpoint = 'api/cycling-club';
 
+  // Calls the Create Club API Endpoint with the Cycling Club data provided.
   createCyclingClub(cyclingClub: CyclingClub): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
