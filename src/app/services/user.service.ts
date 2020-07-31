@@ -25,7 +25,7 @@ export class UserService {
   joinClubEndpoint = 'api/join-cycling-club/';
   leaveClubEndpoint = 'api/leave-cycling-club/';
 
-  constructor(
+  constructor(    
     private router: Router,
     private http: HttpClient
   ) { }
@@ -54,35 +54,35 @@ export class UserService {
     return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
       .pipe(
         map(result => {
-          if (result) {
-            if (result[0].user_profile !== null) {              
-              let profilePictureCheck = result[0].user_profile ? result[0].user_profile : null;
+          if (result) {            
+            if (result.user_profile !== null) {              
+              let profilePictureCheck = result.user_profile ? result.user_profile : null;
               if (profilePictureCheck && profilePictureCheck.profile_picture) {
                 let profileUrl = `${this.macLocal}${profilePictureCheck.profile_picture}`;
-                result[0].user_profile.profile_picture = profileUrl;
+                result.user_profile.profile_picture = profileUrl;
               }
-              let cyclingClubAdmin = result[0].cycling_club_admin;
-              if (cyclingClubAdmin.length > 0) {
-                for (let i = 0; i < cyclingClubAdmin.length; i++) {
-                  const club = cyclingClubAdmin[i];
-                  if (club.profile_picture) {
-                    let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                    result[0].cycling_club_admin[i].profile_picture = profileUrl;
+              if (result.hasOwnProperty('cycling_club_admin')) {
+                if (result.cycling_club_admin.length > 0) {
+                  for (let i = 0; i < result.cycling_club_admin.length; i++) {
+                    const club = result.cycling_club_admin[i];
+                    if (club.profile_picture) {
+                      let profileUrl = `${this.macLocal}${club.profile_picture}`;
+                      result.cycling_club_admin[i].profile_picture = profileUrl;
+                    }
                   }
                 }
               }
-              let cyclingClubMember = result[0].cycling_club_member;
-              if (cyclingClubMember.length > 0) {
-                for (let i = 0; i < cyclingClubMember.length; i++) {
-                  const club = cyclingClubMember[i];
-                  if (club.profile_picture) {
-                    let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                    result[0].cycling_club_member[i].profile_picture = profileUrl;
+              if (result.hasOwnProperty('cycling_club_member')) {
+                if (result.cycling_club_member.length > 0) {
+                  for (let i = 0; i < result.cycling_club_member.length; i++) {
+                    const club = result.cycling_club_member[i];
+                    if (club.profile_picture) {
+                      let profileUrl = `${this.macLocal}${club.profile_picture}`;
+                      result.cycling_club_member[i].profile_picture = profileUrl;
+                    }
                   }
                 }
-              }
-              console.log(result);
-              
+              }             
             }
           }
           return result;
@@ -155,22 +155,19 @@ export class UserService {
     return true;
   }
 
-  async getUser() {
+  async getUser() {    
     return new Promise<User>((resolve, reject) => {
       if (this.user) {
         console.log('User Cache');
         resolve(this.user);
       } else {
-        console.log('User API');
         this.getUserApi()
           .subscribe(
-            res => {              
-              this.storeUser(res[0])
+            res => {                            
+              this.storeUser(res)
               resolve(this.user);
             })
-        error => {
-          console.log(error);
-          
+        error => {          
           reject(error.message)
         }
       }
@@ -192,15 +189,10 @@ export class UserService {
     }
   }
 
-  getUserClub(id: any): any {
-    console.log(id, this.user, 'uS');
-    
+  getUserClub(id: any): any {    
     if (this.user) {
-      let details = null;
-      console.log(this.user, 'user');
-      console.log(this.user.cycling_club_admin);
-      
-      if (this.user.cycling_club_admin.length > 0) {
+      let details = null;      
+      if (this.user.hasOwnProperty('cycling_club_admin') && this.user.cycling_club_admin.length > 0) {
         let adminArray = this.user.cycling_club_admin
         let adminSearch = adminArray.find(clubs => clubs.id == id)
         if (adminSearch) {
@@ -209,10 +201,8 @@ export class UserService {
             userGroup: 'admin'
           }
         }
-        console.log(details, 'adminCheck');
       }
-
-      if (this.user.cycling_club_member.length > 0) {
+      if (this.user.hasOwnProperty('cycling_club_member') && this.user.cycling_club_member.length > 0) {
         let membersArray = this.user.cycling_club_member
         let memberSearch = membersArray.find(clubs => clubs.id == id)
         if (memberSearch) {
@@ -220,10 +210,8 @@ export class UserService {
             club: memberSearch,
             userGroup: 'member'
           }
-          console.log(details, 'memberCheck');
         }
       }
-
       if (details) {
         return details;
       } else {
@@ -236,7 +224,7 @@ export class UserService {
    * 
    * @param error 
    */
-  private handleError(error: HttpErrorResponse) {
+  private handleError(error: HttpErrorResponse) {    
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
       console.error('An error occurred:', error.error.message);
