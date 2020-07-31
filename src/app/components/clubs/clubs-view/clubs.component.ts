@@ -51,8 +51,6 @@ export class ClubsComponent implements OnInit {
       clubs.forEach(club => {
         this.adminClubs.push(club);
       });
-      console.log(this.adminClubs);
-      
     }
   }
 

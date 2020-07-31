@@ -79,6 +79,8 @@ export class CyclingClubService {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
     };
+    console.log(cyclingClub);
+    
     return this.http.put<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}/${cyclingClub.id}`, cyclingClub, httpOptions)
       .pipe(
         catchError(this.handleError)
