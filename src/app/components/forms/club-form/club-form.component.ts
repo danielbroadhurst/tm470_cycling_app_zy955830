@@ -89,7 +89,7 @@ export class ClubFormComponent implements OnInit {
     this.cyclingClubService.updateCyclingClub(this.cyclingClub)
     .subscribe(
       res => {
-        this.userService.storeUser(res[0]);
+        this.userService.storeUser(res);
         this.updated.emit(true);
         this.presentAlert('Success', 'Updated Club: ' + this.cyclingClub.club_name)
       }
