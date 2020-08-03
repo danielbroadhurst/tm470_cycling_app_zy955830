@@ -54,7 +54,7 @@ export class UserService {
     return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
       .pipe(
         map(result => {
-          if (result) {            
+          if (result) {         
             if (result.user_profile !== null) {              
               let profilePictureCheck = result.user_profile ? result.user_profile : null;
               if (profilePictureCheck && profilePictureCheck.profile_picture) {
@@ -63,32 +63,43 @@ export class UserService {
               }
               if (result.hasOwnProperty('cycling_club_admin')) {
                 if (result.cycling_club_admin.length > 0) {
-                  for (let i = 0; i < result.cycling_club_admin.length; i++) {
-                    const club = result.cycling_club_admin[i];
-                    if (club.profile_picture) {
-                      let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                      result.cycling_club_admin[i].profile_picture = profileUrl;
-                    }
-                  }
+                  this.generatePictureUrl(result.cycling_club_admin);
                 }
               }
               if (result.hasOwnProperty('cycling_club_member')) {
                 if (result.cycling_club_member.length > 0) {
-                  for (let i = 0; i < result.cycling_club_member.length; i++) {
-                    const club = result.cycling_club_member[i];
-                    if (club.profile_picture) {
-                      let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                      result.cycling_club_member[i].profile_picture = profileUrl;
-                    }
-                  }
+                  this.generatePictureUrl(result.cycling_club_member);
                 }
-              }             
+              } 
+              if (result.hasOwnProperty('event_attendee')) {
+                if (result.event_attendee.length > 0) {
+                  this.generatePictureUrl(result.event_attendee);
+                }
+              }           
             }
           }
           return result;
         }),
         catchError(this.handleError)
       )
+  }
+
+
+  private generatePictureUrl(array: any) {
+    if (array !== Object) {
+      for (let i = 0; i < array.length; i++) {
+        const club = array[i];
+        if (club.profile_picture) {
+          let profileUrl = `${this.macLocal}${club.profile_picture}`;
+          array[i].profile_picture = profileUrl;
+        }
+        if (club.events) {
+          this.generatePictureUrl(club.events);
+        }
+      }
+    } else {
+      this.generatePictureUrl(array);
+    }
   }
 
   createProfile(profile: Profile): Observable<any> {
