@@ -5,7 +5,6 @@ import { catchError, map } from 'rxjs/operators/';
 import { User } from '../classes/userClass';
 import { Router } from '@angular/router';
 import { Profile } from '../classes/profile';
-import { CyclingClub } from '../classes/cyclingClub';
 
 @Injectable({
   providedIn: 'root'
@@ -53,37 +52,32 @@ export class UserService {
     };
     return this.http.get<User>(`${this.macLocal}${this.userEndpoint}`, httpOptions)
       .pipe(
-        map(result => {
-          if (result) {         
-            if (result.user_profile !== null) {              
-              let profilePictureCheck = result.user_profile ? result.user_profile : null;
-              if (profilePictureCheck && profilePictureCheck.profile_picture) {
-                let profileUrl = `${this.macLocal}${profilePictureCheck.profile_picture}`;
-                result.user_profile.profile_picture = profileUrl;
-              }
-              if (result.hasOwnProperty('cycling_club_admin')) {
-                if (result.cycling_club_admin.length > 0) {
-                  this.generatePictureUrl(result.cycling_club_admin);
-                }
-              }
-              if (result.hasOwnProperty('cycling_club_member')) {
-                if (result.cycling_club_member.length > 0) {
-                  this.generatePictureUrl(result.cycling_club_member);
-                }
-              } 
-              if (result.hasOwnProperty('event_attendee')) {
-                if (result.event_attendee.length > 0) {
-                  this.generatePictureUrl(result.event_attendee);
-                }
-              }           
-            }
-          }
-          return result;
-        }),
         catchError(this.handleError)
       )
   }
 
+  private urlFormat(result: User) {
+    if (result.user_profile !== null) {
+      if (result.user_profile && result.user_profile.profile_picture) {
+        result.user_profile.profile_picture = `${this.macLocal}${result.user_profile.profile_picture}`;
+      }
+      if (result.hasOwnProperty('cycling_club_admin')) {
+        if (result.cycling_club_admin.length > 0) {
+          this.generatePictureUrl(result.cycling_club_admin);
+        }
+      }
+      if (result.hasOwnProperty('cycling_club_member')) {
+        if (result.cycling_club_member.length > 0) {
+          this.generatePictureUrl(result.cycling_club_member);
+        }
+      }
+      if (result.hasOwnProperty('event_attendee')) {
+        if (result.event_attendee.length > 0) {
+          this.generatePictureUrl(result.event_attendee);
+        }
+      }
+    }
+  }
 
   private generatePictureUrl(array: any) {
     if (array !== Object) {
@@ -155,8 +149,9 @@ export class UserService {
   }
 
   storeUser(user: User) {
+    this.urlFormat(user);
     this.user = user;
-    console.log('User Stored');
+    console.log('User Stored', this.user);
     return true;
   }
 
