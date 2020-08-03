@@ -53,7 +53,6 @@ export class ProfilePage implements OnInit {
   }
 
   deleteConfirmed() {
-    console.log('confirmed');
     this.userService.deleteUserAccount(this.user.id)
       .subscribe(result => {
         if (result.message) {

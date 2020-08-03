@@ -16,7 +16,6 @@ export class ClubAdmin implements CanActivate {
     let clubId = parseInt(next.parent.paramMap.get('id'));
     let user = await this.userService.getUser();    
     let clubCheck = user.cycling_club_admin.find(club => club.id == clubId);
-    console.log(clubId, user, clubCheck, 'cAs');
     if (clubCheck) {
       return true;
     } else {

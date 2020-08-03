@@ -42,13 +42,10 @@ export class MapComponent implements OnInit {
     });
   }
 
-  public ngOnInit() {
-    console.log(this.markers, 'mapMarkers');
-  }
+  public ngOnInit() { }
 
   public ngAfterViewInit() {
     this.userLocation = new H.map.Marker({ lat: this.location.coords.latitude, lng: this.location.coords.longitude });
-    console.log(this.userLocation, 'uL');
     if (this.location) {
       this.displayMap();
     }
@@ -88,9 +85,7 @@ export class MapComponent implements OnInit {
     let clubDistanceToUser = {
       id: id,
       distance: distance
-    }
-    console.log(clubDistanceToUser, 'clubDis');
-    
+    }    
     this.mapDistance.emit(clubDistanceToUser);
     // add custom data to the marker
     marker.setData(html);

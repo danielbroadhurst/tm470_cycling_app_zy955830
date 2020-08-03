@@ -49,7 +49,6 @@ export class ClubsHomeComponent implements OnInit {
       .then(user => {
         this.user = user;
         if (this.user.user_profile) this.profile = true;
-        console.log(this.user);
         this.club = this.user.cycling_club_admin[0]
       })
   }
@@ -85,10 +84,8 @@ export class ClubsHomeComponent implements OnInit {
     this.clubMarkers = [];
     this.geolocation.getCurrentPosition().then((resp) => {
       this.location = resp;   
-      console.log(this.location, 'resp');
       this.hereService.getRelatedAreas(this.location)
       .subscribe(results => {
-        console.log(results, 'maps');
         this.displayClubs(results.County)
       })
      }).catch((error) => {
@@ -97,7 +94,6 @@ export class ClubsHomeComponent implements OnInit {
   
     // window.navigator.geolocation.getCurrentPosition(resp => {
     //   this.location = resp;
-    //   console.log(this.location, 'location');
     //   this.localClubs = true;
     // });
   }
@@ -108,7 +104,6 @@ export class ClubsHomeComponent implements OnInit {
       this.cyclingClubs = results;
       if (this.cyclingClubs.length > 0) {
         this.cyclingClubs.forEach(club => {
-          console.log(club, 'cl');
           let mapMarker = {
             id: club.id,
             name: club.club_name,

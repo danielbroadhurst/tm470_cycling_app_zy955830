@@ -78,9 +78,7 @@ export class CyclingClubService {
         'Accept': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       })
-    };
-    console.log(cyclingClub);
-    
+    };    
     return this.http.put<CyclingClub>(`${this.macLocal}${this.cyclingClubEndpoint}/${cyclingClub.id}`, cyclingClub, httpOptions)
       .pipe(
         catchError(this.handleError)
@@ -104,9 +102,7 @@ export class CyclingClubService {
   * 
   * @param error 
   */
-  private handleError(error: HttpErrorResponse) {
-    console.log(error);
-    
+  private handleError(error: HttpErrorResponse) {    
     let errorMessage = "";
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

@@ -15,9 +15,7 @@ export class ClubComponent implements OnInit {
     private clubService: ClubService
   ) { }
 
-  ngOnInit() {
-    console.log(this.club);
-  }
+  ngOnInit() { }
 
   storeClub(id: string) {
     this.clubService.setSelectedClub(id);

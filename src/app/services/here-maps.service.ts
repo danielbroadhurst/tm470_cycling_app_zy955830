@@ -21,9 +21,7 @@ export class HereMapsService {
     }    
     return this.http.get<any>(`${this.geocoderProxUrl}`, {params})
     .pipe(
-      map(results => {
-        console.log(results);
-        
+      map(results => {        
         return results.Response.View[0].Result[0].Location.Address
       }),
       catchError(this.handleError)

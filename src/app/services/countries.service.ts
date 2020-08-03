@@ -29,11 +29,9 @@ export class CountriesService {
       })
     };
     if (this.countries.length > 0) {
-      console.log('return Countries');
       return Promise.resolve(this.countries);
     }
     return new Promise(resolve => {
-      console.log('called Countries API');
       this.http.get(`${this.macLocal}${this.countriesEndpoint}`, httpOptions)
         .pipe(
           map((res: any) => res),

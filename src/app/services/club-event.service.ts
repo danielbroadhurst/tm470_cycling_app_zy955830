@@ -102,9 +102,7 @@ export class ClubEventService {
   * 
   * @param error 
   */
-  private handleError(error: HttpErrorResponse) {
-    console.log(error);
-    
+  private handleError(error: HttpErrorResponse) {    
     let errorMessage = "";
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.

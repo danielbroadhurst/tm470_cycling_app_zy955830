@@ -42,7 +42,6 @@ export class SearchComponent implements OnInit {
         if (this.textSearchResults.length === 0) {
           this.noResults = true;
         }
-        console.log(this.textSearchResults);
       })
     } else {
       this.textSearchResults = [];
@@ -56,8 +55,6 @@ export class SearchComponent implements OnInit {
     this.textSearchResults = [];
   }
 
-  cancelSearch() {
-    console.log('triggered');
-  }
+  cancelSearch() { }
 
 }

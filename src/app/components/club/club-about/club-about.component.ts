@@ -38,10 +38,8 @@ export class ClubAboutComponent implements OnInit {
   }
 
   leaveClub() {
-    console.log('click');
     this.userService.leaveClubAsMember(this.clubService.getSelectedClub())
-    .subscribe(result => {
-      console.log(result);
+    .subscribe(() => {
       this.userService.refreshUser();
       this.presentAlert('Success', 'Left Club', 'You will now be redirected back to your clubs.')
     })

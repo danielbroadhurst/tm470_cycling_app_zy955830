@@ -36,7 +36,6 @@ export class ProfileFormComponent implements OnInit {
     if (this.user.user_profile) {
       this.profile = this.user.user_profile;
       this.imageFilePath = this.user.user_profile.profile_picture;
-      console.log(this.user);
     } else {
       this.profile = new Profile(null, null, null, null, null, null, null, null, null)
     }

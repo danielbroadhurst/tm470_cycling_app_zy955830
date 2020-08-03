@@ -60,10 +60,8 @@ export class ClubHomeComponent implements OnInit {
   }
 
   joinClub(id: string) {
-    console.log(id, 'click');
     this.userService.joinClubAsMember(id)
     .subscribe(result => {
-      console.log(result, 'res');
       this.userService.storeUser(result[0]);
       this.showClub();
     })
@@ -73,7 +71,6 @@ export class ClubHomeComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.cyclingClubService.viewCyclingClubs(null, id)
         .subscribe(result => {
-          console.log(result, 'club');
           resolve(result)
         })
     })

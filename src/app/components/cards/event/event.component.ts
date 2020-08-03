@@ -14,9 +14,7 @@ export class EventComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-    console.log(this.event, this.userGroup);
-  }
+  ngOnInit() { }
 
   userAdmin(event) {
     console.log(event, 'uA'); 

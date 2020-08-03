@@ -63,7 +63,6 @@ export class ClubAdminComponent implements OnInit {
     return new Promise((resolve, reject) => {
       this.cyclingClubService.viewCyclingClubs(null, id)
         .subscribe(result => {
-          console.log(result, 'club');
           resolve(result)
         })
     })
