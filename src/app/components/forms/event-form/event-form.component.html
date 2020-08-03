@@ -1,0 +1,59 @@
+<div *ngIf="clubEvent">
+  <h2>Club Event Image</h2>
+  <div>
+    <!-- Display Profile Picture and Capture Image Button -->
+    <img *ngIf="imageFilePath" [src]="imageFilePath" width="100%" height="auto" alt="" id="eventPicture">
+    <ion-button (click)="captureImage()" size="small">Upload Image</ion-button>
+  </div>
+  <!-- <h2>Event Map</h2>
+  <ion-item>
+    <ion-label position="stacked">Upload Map</ion-label>
+    <ion-input name="mapUpload" id="mapUpload" type="file" (ionChange)="previewMap($event)"></ion-input>
+  </ion-item> -->
+  <h2>Event Details</h2>
+  <ion-item>
+    <!-- Event Name -->
+    <ion-label position="floating">Event Name</ion-label>
+    <ion-input autocomplete="false" type="text" name="eventName" id="eventName" [(ngModel)]="clubEvent.event_name"
+      #eventName="ngModel">
+    </ion-input>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Date of Event</ion-label>
+    <ion-datetime displayFormat="DD/MM/YYYY" placeholder="DD/MM/YYYY"
+      name="event_date" id="event_date" [(ngModel)]="clubEvent.event_date" #event_date="ngModel"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <ion-label position="floating">Event Start Time</ion-label>
+    <ion-datetime displayFormat="HH:mm" minuteValues="0,15,30,45" placeholder="HH:MM" name="start_time" id="start_time"
+      [(ngModel)]="clubEvent.start_time" #start_time="ngModel"></ion-datetime>
+  </ion-item>
+  <ion-item>
+    <!-- Event Description -->
+    <ion-label position="floating">Description</ion-label>
+    <ion-textarea placeholder="Enter your bio here..." name="description" id="description"
+      [(ngModel)]="clubEvent.description" #description="ngModel">
+    </ion-textarea>
+  </ion-item>
+  <ion-item>
+    <!-- Club Start Address Input -->
+    <ion-label position="floating">Start Address</ion-label>
+    <ion-input type="text" name="startAddress" id="startAddress" [(ngModel)]="clubEvent.start_address"
+      #startAddress="ngModel"></ion-input>
+  </ion-item>
+  <ion-item>
+    <!-- Club Event City Input -->
+    <ion-label position="floating">City</ion-label>
+    <ion-input type="text" name="city" id="city" [(ngModel)]="clubEvent.city" #city="ngModel"></ion-input>
+  </ion-item>
+</div>
+
+<div class="ion-margin-top ion-margin-bottom">
+  <!-- Create or Edit button -->
+  <ion-button *ngIf="!edit" expand="block" (click)="createClubEvent()" class="ion-no-margin" color="tertiary">
+    Create Club Event
+  </ion-button>
+  <ion-button *ngIf="edit" expand="block" (click)="updateEvent()" class="ion-no-margin" color="tertiary">
+    Edit Club Event
+  </ion-button>
+</div>

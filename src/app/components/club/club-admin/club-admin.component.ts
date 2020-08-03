@@ -16,6 +16,8 @@ import { ClubHomePage } from 'src/app/pages/club-home/club-home.page';
 export class ClubAdminComponent implements OnInit {
 
   editProfile: boolean;
+  createEvent: boolean;
+  activeForm: boolean = false;
   club: CyclingClub;
   user: User;
   userGroup: string;
@@ -54,7 +56,7 @@ export class ClubAdminComponent implements OnInit {
     this.club = this.clubService.getCyclingClub();
     this.userGroup = this.clubService.getUserGroup();
     this.parent.club = this.clubService.getCyclingClub();
-    this.parent.userGroup = this.clubService.getUserGroup(); 
+    this.parent.userGroup = this.clubService.getUserGroup();     
   }
 
   checkClubs(id: string) {
@@ -69,6 +71,18 @@ export class ClubAdminComponent implements OnInit {
 
   showEditProfile() {
     this.editProfile = true;
+    this.activeForm = true;
+  }
+
+  showCreateEvent() {
+    this.createEvent = true;
+    this.activeForm = true;
+  }
+
+  backToAdmin() {
+    this.editProfile = false;
+    this.createEvent = false;
+    this.activeForm = false;
   }
 
   async deleteClub() {

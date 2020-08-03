@@ -1,6 +1,10 @@
-<div>
+<div class="scrollable">
   <div *ngIf="club && (userGroup === 'admin' || userGroup === 'member')" class="ion-padding-start ion-padding-end">
     <h1>{{club.club_name}} - Events</h1>
     <p>{{userGroup}}</p>
+    <div *ngIf="editEvent.length === 0">
+      <app-event *ngFor="let event of club.events" [event]="event" (editEventID)="showEventForm($event)" [userGroup]="userGroup"></app-event>
+    </div>
+    <app-event-form *ngIf="editEvent.length > 0" [user]='user' [club]="club" [edit]="true" [event]="editEvent[0]" (updated)="eventUpdated($event)"></app-event-form>
   </div>
 </div>

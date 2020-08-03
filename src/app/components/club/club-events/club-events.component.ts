@@ -4,6 +4,8 @@ import { UserService } from 'src/app/services/user.service';
 import { ClubService } from 'src/app/services/club.service';
 import { Router } from '@angular/router';
 import { AlertController } from '@ionic/angular';
+import { ClubEvent } from 'src/app/classes/club-event';
+import { User } from 'src/app/classes/userClass';
 
 @Component({
   selector: 'app-club-events',
@@ -12,10 +14,13 @@ import { AlertController } from '@ionic/angular';
 })
 export class ClubEventsComponent implements OnInit {
 
+  user: User;
   club: CyclingClub;
   userGroup: string;
+  editEvent: ClubEvent[] = [];
 
   constructor(
+    private userService: UserService,
     private clubService: ClubService,
     private router: Router,
     public alertController: AlertController
@@ -24,6 +29,10 @@ export class ClubEventsComponent implements OnInit {
   ngOnInit() {}
 
   ionViewWillEnter() {  
+    this.userService.getUser()
+    .then(user => {
+      this.user = user;
+    });
     this.club = this.clubService.getCyclingClub();
     this.userGroup = this.clubService.getUserGroup();
     if (!this.userGroup) {
@@ -34,5 +43,16 @@ export class ClubEventsComponent implements OnInit {
   ionViewDidLeave() {
     this.club = null;
     this.userGroup = null;
+  }
+
+  showEventForm($event) {
+    console.log($event);
+    this.editEvent.push($event);
+  }
+
+  eventUpdated($event) {
+    if ($event) {
+      this.editEvent = [];
+    }
   }
 }
