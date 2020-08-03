@@ -33,7 +33,7 @@ export class EventFormComponent implements OnInit {
   countries: any;
   cyclingClub: CyclingClub;
   showMap: boolean = false;
-  eventLocation: any;
+  imageCaptured: boolean = false;
 
   constructor(
     private camera: Camera,
@@ -46,24 +46,19 @@ export class EventFormComponent implements OnInit {
 
 
   async ngOnInit() {
-    console.log(this.club);
     this.cyclingClub = this.club;
-    console.log(this.user);
-    
     if (this.user) {
       if (this.edit) {
         this.clubEvent = this.event;
         this.imageFilePath = this.clubEvent.profile_picture;
-        console.log(this.clubEvent, "EDIT");
       } else {
         this.clubEvent = new ClubEvent(this.cyclingClub.id, null, null, null, null, null, null, null, null)
-        console.log(this.clubEvent);
-
       }
     }
   }
 
   captureImage() {
+    this.imageCaptured = true;
     this.clubEvent.profile_picture = base64ClubEventProfile;
     this.imageFilePath = base64ClubEventProfile;
 
@@ -90,8 +85,8 @@ export class EventFormComponent implements OnInit {
   }
 
   createClubEvent() {
-    this.clubEvent.start_time = this.clubEvent.start_time.split('T')[1].substr(0,5);
-    this.clubEvent.event_date = this.clubEvent.event_date.split('T')[0].substr(0,10);
+    this.clubEvent.start_time = this.clubEvent.start_time.split('T')[1].substr(0, 5);
+    this.clubEvent.event_date = this.clubEvent.event_date.split('T')[0].substr(0, 10);
     this.clubEventService.createClubEvent(this.clubEvent)
       .subscribe(
         res => {
@@ -104,12 +99,17 @@ export class EventFormComponent implements OnInit {
 
   updateEvent() {
     if (this.clubEvent.event_date.length > 10) {
-      this.clubEvent.event_date = this.clubEvent.event_date.split('T')[0].substr(0,10);
+      this.clubEvent.event_date = this.clubEvent.event_date.split('T')[0].substr(0, 10);
     }
+    if (!this.imageCaptured) {
+      delete this.clubEvent.profile_picture;
+    }    
     this.clubEventService.updateClubEvent(this.clubEvent)
       .subscribe(
         res => {
-          this.userService.storeUser(res);
+          this.userService.storeUser(res);   
+          let club = res.cycling_club_admin.find(club => club.id === this.club.id);
+          this.clubService.setCyclingClub(club)                 
           this.updated.emit(true);
           this.presentAlert('Success', 'Updated Club Event: ' + this.clubEvent.event_name)
         }

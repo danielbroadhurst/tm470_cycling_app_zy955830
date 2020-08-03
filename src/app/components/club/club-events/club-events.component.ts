@@ -26,18 +26,18 @@ export class ClubEventsComponent implements OnInit {
     public alertController: AlertController
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() { }
 
-  ionViewWillEnter() {  
+  ionViewWillEnter() {
     this.userService.getUser()
-    .then(user => {
-      this.user = user;
-    });
-    this.club = this.clubService.getCyclingClub();
-    this.userGroup = this.clubService.getUserGroup();
-    if (!this.userGroup) {
-      this.router.navigate(['/clubs'])
-    }
+      .then(user => {
+        this.user = user;
+        this.club = this.clubService.getCyclingClub();
+        this.userGroup = this.clubService.getUserGroup();
+        if (!this.userGroup) {
+          this.router.navigate(['/clubs'])
+        }
+      });
   }
 
   ionViewDidLeave() {
@@ -46,13 +46,13 @@ export class ClubEventsComponent implements OnInit {
   }
 
   showEventForm($event) {
-    console.log($event);
     this.editEvent.push($event);
   }
 
   eventUpdated($event) {
     if ($event) {
-      this.editEvent = [];
+      this.editEvent = [];      
+      this.ionViewWillEnter();
     }
   }
 }
