@@ -25,6 +25,7 @@ export class ClubsHomeComponent implements OnInit {
   clubMarkers: Array<any>[any] = [];
   clubSearchResults: CyclingClub[] = [];
 
+  club: CyclingClub
 
   constructor(
     private route: ActivatedRoute,
@@ -33,9 +34,9 @@ export class ClubsHomeComponent implements OnInit {
     private loading: Loading,
     private hereService: HereMapsService,
     private clubsService: CyclingClubService,
-    private geolocation: Geolocation
+    private geolocation: Geolocation,
     ) { }
-
+  
   ngOnInit() {     
     if (this.route.snapshot.queryParams.message) {
       this.presentAlert('Error', 'Access Denied', this.route.snapshot.queryParams.message)
@@ -48,6 +49,8 @@ export class ClubsHomeComponent implements OnInit {
       .then(user => {
         this.user = user;
         if (this.user.user_profile) this.profile = true;
+        console.log(this.user);
+        this.club = this.user.cycling_club_admin[0]
       })
   }
 
