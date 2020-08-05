@@ -12,6 +12,7 @@
 
   <ion-card-content>
     <p *ngIf="event.distanceToUser"><strong>Distance:</strong> {{event.distanceToUser}}km</p>
+    <p><strong>Difficulty:</strong> {{convertDifficulty(event.difficulty)}}</p>
     <p><strong>Starting Point:</strong> {{event.start_address}}</p>
     <p><strong>Date:</strong> {{event.event_date}}</p>
     <p><strong>Start Time:</strong> {{event.start_time}}</p>

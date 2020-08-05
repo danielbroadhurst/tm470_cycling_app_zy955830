@@ -10,6 +10,7 @@ export class ClubEvent {
         public profile_picture: string,
         public id?: number,
         public country?: string,
+        public difficulty?: string,
         public country_short?: string,
         public county?: string,
         public lat?: number,

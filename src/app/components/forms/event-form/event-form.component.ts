@@ -85,6 +85,9 @@ export class EventFormComponent implements OnInit {
   }
 
   createClubEvent() {
+    if (this.clubEvent.event_date == null || this.clubEvent.start_time == null) {
+      return this.presentAlert('Error', 'Please enter Event Date and Start Time.')
+    }    
     this.clubEvent.start_time = this.clubEvent.start_time.split('T')[1].substr(0, 5);
     this.clubEvent.event_date = this.clubEvent.event_date.split('T')[0].substr(0, 10);
     this.clubEventService.createClubEvent(this.clubEvent)

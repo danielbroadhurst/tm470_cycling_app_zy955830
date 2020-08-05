@@ -29,6 +29,13 @@
       [(ngModel)]="clubEvent.start_time" #start_time="ngModel"></ion-datetime>
   </ion-item>
   <ion-item>
+    <ion-label position="floating" class="ion-padding-bottom">Difficulty</ion-label>
+    <ion-range min="0" max="100" color="secondary" name="difficulty" [(ngModel)]="clubEvent.difficulty" #difficulty="ngModel">
+      <ion-icon size="small" slot="start" name="walk-outline"></ion-icon>
+      <ion-icon size="small" slot="end" name="image-outline"></ion-icon>
+    </ion-range>
+  </ion-item>
+  <ion-item>
     <!-- Event Description -->
     <ion-label position="floating">Description</ion-label>
     <ion-textarea placeholder="Enter your bio here..." name="description" id="description"
