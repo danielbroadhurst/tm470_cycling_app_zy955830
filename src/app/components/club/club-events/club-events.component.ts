@@ -18,6 +18,8 @@ export class ClubEventsComponent implements OnInit {
   club: CyclingClub;
   userGroup: string;
   editEvent: ClubEvent[] = [];
+  viewEvent: ClubEvent[] = [];
+  showEvents: boolean = true;
 
   constructor(
     private userService: UserService,
@@ -46,13 +48,32 @@ export class ClubEventsComponent implements OnInit {
   }
 
   showEventForm($event) {
+    this.showEvents = false;
     this.editEvent.push($event);
+  }
+
+  viewEventInfo($event) {
+    this.showEvents = false;
+    this.viewEvent.push($event);
   }
 
   eventUpdated($event) {
     if ($event) {
+      this.showEvents = true;
       this.editEvent = [];      
       this.ionViewWillEnter();
     }
+  }
+
+  backToEvents() {
+    this.showEvents = true;
+    this.viewEvent = [];      
+    this.ionViewWillEnter();
+  }
+
+  convertDifficulty(difficulty: number): string {    
+    if (difficulty < 30) return "Easy";
+    else if (difficulty < 60) return "Medium";
+    else return "Hard";
   }
 }
