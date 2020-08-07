@@ -11,12 +11,9 @@
   </ion-card-header>
 
   <ion-card-content>
-    <p *ngIf="event.distanceToUser"><strong>Distance:</strong> {{event.distanceToUser}}km</p>
-    <p><strong>Difficulty:</strong> {{convertDifficulty(event.difficulty)}}</p>
     <p><strong>Starting Point:</strong> {{event.start_address}}</p>
     <p><strong>Date:</strong> {{event.event_date}}</p>
     <p><strong>Start Time:</strong> {{event.start_time}}</p>
-    <div>{{event.description}}</div>
     <ion-button (click)="viewEvent()" expand="block" size="small" color="primary">View Event</ion-button>
     <ion-button *ngIf="userGroup === 'admin'" (click)="editEvent()" expand="block" size="small" color="danger">Edit Event</ion-button>
   </ion-card-content>

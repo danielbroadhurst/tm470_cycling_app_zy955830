@@ -15,14 +15,16 @@ export class UserService {
   profile: any
   apiErrorResponse: string
 
-  heroku = 'https://lit-fjord-04089.herokuapp.com/';
-  userUrl = 'http://cycling_hub_api.test/';
+  //heroku = 'https://lit-fjord-04089.herokuapp.com/';
+  //userUrl = 'http://cycling_hub_api.test/';
   macLocal = 'http://localhost:8888/TM470/laraPassport_cycling_api/public/'
   userEndpoint = 'api/user';
   deleteUserEndpoint = 'api/delete-account/';
   profileEndpoint = 'api/user-profile';
   joinClubEndpoint = 'api/join-cycling-club/';
   leaveClubEndpoint = 'api/leave-cycling-club/';
+  attendClubEventEndpoint = 'api/attend-club-event/';
+  leaveClubEventEndpoint = 'api/leave-club-event/';
 
   constructor(    
     private router: Router,
@@ -135,6 +137,32 @@ export class UserService {
       )
   }
 
+  attendClubEvent(eventId: string | number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.macLocal}${this.attendClubEventEndpoint}${eventId}`, {}, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
+  leaveClubEvent(eventId: string | number): Observable<any> {
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      })
+    };
+    return this.http.post<Profile>(`${this.macLocal}${this.leaveClubEventEndpoint}${eventId}`, {}, httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      )
+  }
+
   deleteUserAccount(id: number): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
@@ -241,8 +269,8 @@ export class UserService {
         `${error.status} Error:\n` +
         `${error.message}`);
     }
-    localStorage.removeItem('token')
-    this.router.navigate['/login']
+    // localStorage.removeItem('token')
+    // this.router.navigate['/login']
     // return an observable with a user-facing error message
     return throwError(error);
   };

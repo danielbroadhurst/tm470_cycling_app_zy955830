@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { ClubEvent } from 'src/app/classes/club-event';
+import { User } from 'src/app/classes/userClass';
 
 @Component({
   selector: 'app-event',
@@ -9,6 +10,7 @@ import { ClubEvent } from 'src/app/classes/club-event';
 export class EventComponent implements OnInit {
 
   @Input() event: ClubEvent;
+  @Input() user: User;
   @Input() userGroup: string;
   @Output() editEventID = new EventEmitter();
   @Output() viewEventID = new EventEmitter();

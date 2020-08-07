@@ -9,6 +9,7 @@ import { HereMapsService } from 'src/app/services/here-maps.service';
 import { CyclingClubService } from 'src/app/services/cycling-club.service';
 
 import { Geolocation } from '@ionic-native/geolocation/ngx';
+import { ClubEvent } from 'src/app/classes/club-event';
 
 @Component({
   selector: 'app-clubs-home',
@@ -24,11 +25,13 @@ export class ClubsHomeComponent implements OnInit {
   cyclingClubs: CyclingClub[] = [];
   clubMarkers: Array<any>[any] = [];
   clubSearchResults: CyclingClub[] = [];
+  newEvents: ClubEvent[] = [];
 
-  club: CyclingClub
+  club: CyclingClub = null;
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private userService: UserService,
     private alertController: AlertController,
     private loading: Loading,
@@ -49,13 +52,36 @@ export class ClubsHomeComponent implements OnInit {
       .then(user => {
         this.user = user;
         if (this.user.user_profile) this.profile = true;
-        this.club = this.user.cycling_club_admin[0]
+        if (this.user.cycling_club_member) this.showNewEvents()
       })
   }
 
   ionViewDidLeave() {
     this.user = null;
     this.clearMap()
+  }
+
+  showNewEvents() {
+    this.user.cycling_club_member.forEach(club => {
+      if (club.events) {
+        club.events.forEach(clubEvent => {
+          clubEvent['cycling_club'] = club;
+          if (this.user.event_attendee) {
+            let attendee = this.user.event_attendee.find(event => event.id === clubEvent.id);
+            if (!attendee) {
+              this.newEvents.push(clubEvent)
+            }
+          } else {
+            this.newEvents.push(clubEvent)
+          }
+        });        
+      }
+    });
+  }
+
+  viewEvent(cyclingClub, eventID) {
+    let url = `/club-home/${cyclingClub}/events`
+    this.router.navigateByUrl(url, {state: {selectedEvent: eventID, cyclingClub, userGroup: 'member'}});
   }
 
   clearMap() {

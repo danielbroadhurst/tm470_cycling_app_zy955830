@@ -1,10 +1,17 @@
 <div class="scrollable">
   <div *ngIf="club && (userGroup === 'admin' || userGroup === 'member')" class="ion-padding-start ion-padding-end">
-    <h1>{{club.club_name}} - Events</h1>
-    <ion-item>{{userGroup}}</ion-item>
+    <h1>Events</h1>
     <div *ngIf="showEvents">
-      <app-event *ngFor="let event of club.events" [event]="event" (viewEventID)="viewEventInfo($event)"
+      <div *ngIf="user.event_attendee">
+        <h2>Attending</h2>
+        <app-event *ngFor="let event of user.event_attendee" [event]="event" (viewEventID)="viewEventInfo($event.id)"
         (editEventID)="showEventForm($event)" [userGroup]="userGroup"></app-event>
+      </div>
+      <div *ngIf="newEvents.length > 0">
+        <h2>Other Events</h2>
+        <app-event *ngFor="let event of newEvents" [event]="event" (viewEventID)="viewEventInfo($event.id)"
+        (editEventID)="showEventForm($event)" [userGroup]="userGroup"></app-event>
+      </div>
     </div>
     <app-event-form *ngIf="editEvent.length > 0" [user]='user' [club]="club" [edit]="true" [event]="editEvent[0]"
       (updated)="eventUpdated($event)"></app-event-form>
@@ -56,6 +63,26 @@
             <p>{{viewEvent[0].city}}</p>
           </ion-label>
         </ion-item>
+        <div *ngIf="checkUser(viewEvent[0].id)">
+          <ion-list>
+            <ion-list-header>
+              Members Attending
+            </ion-list-header>
+    
+            <ion-item *ngFor="let attendee of viewEvent[0].attendees">
+              <ion-avatar slot="start">
+                <img [src]="attendee.profile_picture">
+              </ion-avatar>
+              <ion-label>
+                <h2>{{attendee.user_name}}</h2>
+                <h3>{{attendee.town}}, {{attendee.region}}</h3>
+                <p><strong>Style:</strong> {{attendee.preferred_style}} <strong>Bike:</strong> {{attendee.current_bike}}</p>
+              </ion-label>
+            </ion-item>
+            </ion-list>
+          <ion-button (click)="leaveEvent(viewEvent[0].id)" expand="block" size="small" fill="outline" color="primary">Leave Event</ion-button>
+        </div>
+        <ion-button *ngIf="!checkUser(viewEvent[0].id)" (click)="joinEvent(viewEvent[0].id)" expand="block" size="small" fill="outline" color="primary">Join Event</ion-button>
       </ion-list>
     </div>
   </div>
