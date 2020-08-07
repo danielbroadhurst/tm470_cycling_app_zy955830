@@ -1,7 +1,6 @@
 <div>
   <div *ngIf="club && (userGroup === 'admin' || userGroup === 'member')" class="ion-padding-start ion-padding-end">
-    <h1>{{club.club_name}} - About</h1>
-    <p>{{userGroup}}</p>
+    <h1>Club Settings</h1>
     <ion-button *ngIf="userGroup === 'member'" expand="block" (click)="leaveClub()" class="ion-no-margin" color="danger">Leave Cycling Club</ion-button>
   </div>
 </div>

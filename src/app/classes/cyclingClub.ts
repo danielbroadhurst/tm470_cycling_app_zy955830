@@ -1,3 +1,5 @@
+import { ClubEvent } from './club-event';
+
 export class CyclingClub {
 
     constructor(
@@ -12,6 +14,9 @@ export class CyclingClub {
         public county?: string,
         public lat?: number,
         public lng?: number,
-        public distanceToUser?: string
+        public events?: ClubEvent[],
+        public distanceToUser?: string,
+        public members?: number,
+        public admin?: string
     ) { }
 }

@@ -13,7 +13,7 @@ import { ClubHomePage } from 'src/app/pages/club-home/club-home.page';
 })
 export class ClubHomeComponent implements OnInit {
 
-  club: CyclingClub;
+  club: CyclingClub = null;
   userGroup: string;
 
   constructor(
@@ -62,7 +62,7 @@ export class ClubHomeComponent implements OnInit {
   joinClub(id: string) {
     this.userService.joinClubAsMember(id)
     .subscribe(result => {
-      this.userService.storeUser(result[0]);
+      this.userService.storeUser(result);
       this.showClub();
     })
   }

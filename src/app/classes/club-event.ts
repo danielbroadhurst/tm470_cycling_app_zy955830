@@ -1,3 +1,5 @@
+import { User } from './userClass';
+
 export class ClubEvent {
     constructor(
         public cycling_club_id: number,
@@ -15,6 +17,7 @@ export class ClubEvent {
         public county?: string,
         public lat?: number,
         public lng?: number,
-        public distanceToUser?: string
+        public distanceToUser?: string,
+        public attendees?: User[]
     ) { }
 }

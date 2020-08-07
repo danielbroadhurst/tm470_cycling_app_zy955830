@@ -12,6 +12,16 @@
   </div>
   <div *ngIf="club && (userGroup === 'admin' || userGroup === 'member')" class="ion-padding-start ion-padding-end">
     <h1>{{club.club_name}}</h1>
-    <p>{{userGroup}}</p>
+    <ion-card-subtitle>{{club.city}}, {{club.county}}, {{club.country}}</ion-card-subtitle>
+    <img *ngIf="club" [src]="club.profile_picture" width="100%" height="auto" alt="">
+    <p><strong>Club Admin:</strong> {{club.admin}}</p>
+    <p><strong>Members:</strong> {{club.members}}</p>
+    <h3>Bio</h3>
+    <p>{{club.bio}}</p>
+    <h4>Extra Info</h4>
+    <div *ngIf="club.events">
+      <p>We currently are hosting {{club.events.length}} Events.</p>
+      <p>Check them out on the events tab.</p>
+    </div>
   </div>
 </div>

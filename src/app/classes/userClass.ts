@@ -1,8 +1,9 @@
 import { Profile } from './profile';
 import { CyclingClub } from './cyclingClub';
+import { ClubEvent } from './club-event';
 
 export class User {
-    event_attendee: Array<CyclingClub>;
+    event_attendee: Array<ClubEvent>;
 
     constructor(
       public id: number,

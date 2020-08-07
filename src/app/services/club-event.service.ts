@@ -31,45 +31,46 @@ export class ClubEventService {
       )
   }
 
-  viewClubEvents(location?: string, id?: string|boolean, search?: string): Observable<any> {
-    let data = null;
-    if (location) {
-      data = {
-        county: location
-      }
-    }
-    if (id) {
-      data = {
-        id: id
-      }
-    }
-    if (search) {
-      data = {
-        search: search
-      }
-    }
+  viewClubEvents(id?: string|boolean): Observable<any> {
     const httpOptions = {
       headers: new HttpHeaders({
         'Accept': 'application/json',
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }),
-      params: data
     };
-    return this.http.get<ClubEvent[]>(`${this.macLocal}${this.clubEventEndpoint}`, httpOptions)
+    return this.http.get<ClubEvent>(`${this.macLocal}${this.clubEventEndpoint}/${id}`, httpOptions)
       .pipe(
-        map(result => {
-          if (result) {
-            result.forEach(club => {
-              if (club.profile_picture && club.profile_picture !== null) {
-                let profileUrl = `${this.macLocal}${club.profile_picture}`;
-                club.profile_picture = profileUrl;
-              }
-            });
+        map(result => {          
+          if (result.profile_picture) {
+            let profileUrl = `${this.macLocal}${result.profile_picture}`;
+            result.profile_picture = profileUrl;
+          }
+          if (result.hasOwnProperty('attendees')) {
+            if (result.attendees.length > 0) {
+              this.generatePictureUrl(result.attendees);
+            }
           }
           return result;
         }),
         catchError(this.handleError)
       )
+  }
+
+  private generatePictureUrl(array: any) {
+    if (array !== Object) {
+      for (let i = 0; i < array.length; i++) {
+        const club = array[i];
+        if (club.profile_picture) {
+          let profileUrl = `${this.macLocal}${club.profile_picture}`;
+          array[i].profile_picture = profileUrl;
+        }
+        if (club.events) {
+          this.generatePictureUrl(club.events);
+        }
+      }
+    } else {
+      this.generatePictureUrl(array);
+    }
   }
 
   updateClubEvent(clubEvent: ClubEvent): Observable<any> {

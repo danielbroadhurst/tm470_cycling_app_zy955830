@@ -22,4 +22,8 @@ export class ClubHomePage implements OnInit {
     this.club = null;
   }
 
+  setCyclingClub(club: CyclingClub) {
+    this.club = club;
+  }
+
 }
