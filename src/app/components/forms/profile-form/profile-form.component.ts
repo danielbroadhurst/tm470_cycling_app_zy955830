@@ -87,7 +87,7 @@ export class ProfileFormComponent implements OnInit {
     this.userService.createProfile(this.profile)
     .subscribe(
       res => {        
-        this.userDataUpdated.emit(res[0])
+        this.userDataUpdated.emit(res)
       }
     )
   }

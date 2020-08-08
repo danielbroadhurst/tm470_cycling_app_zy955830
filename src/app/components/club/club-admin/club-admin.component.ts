@@ -100,7 +100,7 @@ export class ClubAdminComponent implements OnInit {
             this.cyclingClubService.deleteCyclingClub(this.club)
             .subscribe(
               res => {                
-                this.userService.storeUser(res[0]);
+                this.userService.storeUser(res);
                 this.presentAlert('Success', 'Deleted Club: ' + this.club.club_name)
               }
             )
