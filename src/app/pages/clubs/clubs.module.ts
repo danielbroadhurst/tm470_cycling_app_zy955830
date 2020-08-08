@@ -15,7 +15,7 @@ import { ClubComponent } from 'src/app/components/cards/club/club.component';
 import { SearchComponent } from 'src/app/components/search/search.component';
 
 import {Geolocation} from '@ionic-native/geolocation/ngx'
-import { EventMapComponent } from 'src/app/components/event-map/event-map.component';
+import { LocationMapComponent } from 'src/app/components/location-map/location-map.component';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import { EventMapComponent } from 'src/app/components/event-map/event-map.compon
     ClubsPageRoutingModule,
     SharedModule
   ],
-  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, ClubComponent, SearchComponent, EventMapComponent],
+  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, ClubComponent, SearchComponent, LocationMapComponent],
   providers: [Geolocation]
 })
 export class ClubsPageModule {}
