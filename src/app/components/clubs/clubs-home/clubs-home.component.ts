@@ -62,6 +62,7 @@ export class ClubsHomeComponent implements OnInit {
   }
 
   showNewEvents() {
+    this.newEvents = [];
     this.user.cycling_club_member.forEach(club => {
       if (club.events) {
         club.events.forEach(clubEvent => {
@@ -145,12 +146,14 @@ export class ClubsHomeComponent implements OnInit {
     })
   }
 
-  showClubDistances(clubDistance) {
-    let cyclingClub = this.cyclingClubs.find(club => club.id === clubDistance.id);
-    if (cyclingClub) {
-      cyclingClub.distanceToUser = (clubDistance.distance / 1000).toFixed(2);
-    }
-    this.clubSearchResults.push(cyclingClub);
+  showClubDistances(clubDistances) {
+    clubDistances.forEach(clubDistance => {
+      let cyclingClub = this.cyclingClubs.find(club => club.id === clubDistance.id);
+      if (cyclingClub) {
+        cyclingClub.distanceToUser = clubDistance.distanceToUser;
+      }
+      this.clubSearchResults.push(cyclingClub);
+    });
     this.sortArray(this.clubSearchResults);
   }
 

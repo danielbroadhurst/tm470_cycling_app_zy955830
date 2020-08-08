@@ -22,7 +22,7 @@
         <ion-button class="standardMargin" size="small" color="primary" expand="block" (click)="findClubs()">Find Clubs
           Near Me</ion-button>
         <div *ngIf="clubMarkers.length > 0">
-          <app-map [location]="location" [markers]="clubMarkers" (mapDistance)="showClubDistances($event)"></app-map>
+          <app-event-map [location]="location" [markers]="clubMarkers" (mapDistance)="showClubDistances($event)"></app-event-map>
           <app-club *ngFor="let result of clubSearchResults" [club]="result"></app-club>
         </div>
         <h2>Latest Events</h2>

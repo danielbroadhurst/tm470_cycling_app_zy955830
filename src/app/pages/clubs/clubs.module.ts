@@ -11,11 +11,11 @@ import { ClubsCreateComponent } from 'src/app/components/clubs/clubs-create/club
 import { ClubsHomeComponent } from 'src/app/components/clubs/clubs-home/clubs-home.component';
 import { ClubsComponent } from 'src/app/components/clubs/clubs-view/clubs.component';
 import { SharedModule } from 'src/app/components/shared.module';
-import { MapComponent } from 'src/app/components/map/map.component';
 import { ClubComponent } from 'src/app/components/cards/club/club.component';
 import { SearchComponent } from 'src/app/components/search/search.component';
 
 import {Geolocation} from '@ionic-native/geolocation/ngx'
+import { EventMapComponent } from 'src/app/components/event-map/event-map.component';
 
 
 @NgModule({
@@ -26,7 +26,7 @@ import {Geolocation} from '@ionic-native/geolocation/ngx'
     ClubsPageRoutingModule,
     SharedModule
   ],
-  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, ClubComponent, MapComponent, SearchComponent],
+  declarations: [ClubsPage, ClubsCreateComponent, ClubsHomeComponent, ClubsComponent, ClubComponent, SearchComponent, EventMapComponent],
   providers: [Geolocation]
 })
 export class ClubsPageModule {}
