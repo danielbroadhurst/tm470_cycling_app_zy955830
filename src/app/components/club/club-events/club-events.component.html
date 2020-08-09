@@ -4,7 +4,7 @@
     <div *ngIf="showEvents">
       <div *ngIf="user.event_attendee">
         <h2>Attending</h2>
-        <app-event *ngFor="let event of user.event_attendee" [event]="event" (viewEventID)="viewEventInfo($event.id)"
+        <app-event *ngFor="let event of attendingEvents" [event]="event" (viewEventID)="viewEventInfo($event.id)"
         (editEventID)="showEventForm($event)" [userGroup]="userGroup"></app-event>
       </div>
       <div *ngIf="newEvents.length > 0">
@@ -19,7 +19,7 @@
       <ion-button (click)="backToEvents()" expand="block" size="small" fill="outline" color="primary">Back to Events
       </ion-button>
       <img [src]="viewEvent[0].profile_picture" width="100%" height="auto" alt="">
-      <app-event-map *ngIf="viewEvent[0].map_array" [gpxArray]="viewEvent[0].map_array"></app-event-map>
+      <app-event-map *ngIf="viewEvent[0].map_array" [gpxArray]="viewEvent[0].map_array" [elevation]="viewEvent[0].elevation_array"></app-event-map>
       <ion-list>
         <ion-item>
           <!-- Event Name -->

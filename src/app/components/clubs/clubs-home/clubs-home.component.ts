@@ -68,7 +68,7 @@ export class ClubsHomeComponent implements OnInit {
         club.events.forEach(clubEvent => {
           clubEvent['cycling_club'] = club;
           if (this.user.event_attendee) {
-            let attendee = this.user.event_attendee.find(event => event.id === clubEvent.id);
+            let attendee = this.user.event_attendee.find(event => event.event_id === clubEvent.id);
             if (!attendee) {
               this.newEvents.push(clubEvent)
             }

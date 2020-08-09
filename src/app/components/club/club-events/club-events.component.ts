@@ -22,6 +22,7 @@ export class ClubEventsComponent implements OnInit {
   editEvent: ClubEvent[] = [];
   viewEvent: ClubEvent[] = [];
   newEvents: ClubEvent[] = [];
+  attendingEvents: ClubEvent[] = [];
   showEvents: boolean = true;
 
   displayEvent: number = null;
@@ -29,7 +30,6 @@ export class ClubEventsComponent implements OnInit {
   setUserGroup: number = null;
 
   constructor(
-    private route: Router,
     private userService: UserService,
     private clubService: ClubService,
     private eventService: ClubEventService,
@@ -82,16 +82,25 @@ export class ClubEventsComponent implements OnInit {
     this.displayEvent = null;
     this.setClub = null;
     this.setUserGroup = null;
+    if (document.getElementById("map_event")) {
+      document.getElementById("map_event").outerHTML = "";    
+    }
   }
 
-  checkForNewEvents() {
-    this.newEvents = [];
-    if (this.club.events) {
-      this.club.events.forEach(clubEvent => {
-        if (!('event_attendee'! in this.user) || !this.user.event_attendee.find(event => event.id === clubEvent.id)) {
-          this.newEvents.push(clubEvent)
+  checkForNewEvents() {    
+    this.newEvents = [];   
+    this.attendingEvents = [];     
+    if (Object.keys(this.club.events).length > 0) {
+      for (const event in this.club.events) {
+        if (Object.prototype.hasOwnProperty.call(this.club.events, event)) {
+          const clubEvent = this.club.events[event];
+          if (!('event_attendee'! in this.user) || !this.user.event_attendee.find(event => event.event_id == clubEvent.id)) {
+            this.newEvents.push(clubEvent);
+          } else {
+            this.attendingEvents.push(clubEvent);
+          }
         }
-      });
+      }
     }
   }
 
@@ -101,8 +110,6 @@ export class ClubEventsComponent implements OnInit {
   }
 
   viewEventInfo(eventID) {
-    console.log(eventID);
-
     this.eventService.viewClubEvents(eventID)
       .subscribe(result => {
         this.showEvents = false;
@@ -132,8 +139,6 @@ export class ClubEventsComponent implements OnInit {
       .subscribe(result => {
         this.userService.storeUser(result);
         this.user = result;
-        let event = this.user.event_attendee.find(event => event.id === id)
-        this.viewEvent.push(event);
         this.presentAlert('Success', 'Joined Event', 'You can view all the latest updates about the event on the Event Page.')
       })
   }
@@ -149,7 +154,7 @@ export class ClubEventsComponent implements OnInit {
   }
 
   checkUser(id: number) {
-    if (this.user.event_attendee && this.user.event_attendee.find(event => event.id === id)) {
+    if (this.user.event_attendee && this.user.event_attendee.find(event => event.event_id === id)) {
       return true;
     } else {
       return false;

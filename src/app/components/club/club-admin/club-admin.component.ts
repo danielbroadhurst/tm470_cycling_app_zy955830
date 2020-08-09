@@ -41,12 +41,14 @@ export class ClubAdminComponent implements OnInit {
   ionViewDidLeave() {
     this.club = null; 
     this.userGroup = null;
+    if (document.getElementById("map_event")) {
+      document.getElementById("map_event").outerHTML = "";    
+    }
   }
 
   async showClub() {    
     let clubID = this.clubService.getSelectedClub();    
     let clubCheck = this.userService.getUserClub(clubID);
-
     if (clubCheck.message == 'No User Stored' || !clubCheck) {
       return this.router.navigate(['/clubs']);
     }
