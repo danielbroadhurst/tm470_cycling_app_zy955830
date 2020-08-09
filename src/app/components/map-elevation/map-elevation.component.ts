@@ -9,32 +9,34 @@ import { Chart } from 'chart.js';
 export class MapElevationComponent implements AfterContentInit {
 
   @Input() elevation: [] = [];
-  @Input() distance: [] = [];
 
   @ViewChild('canvas') chart: ElementRef;
 
   constructor() { }
 
-  ngAfterContentInit() {
+  ngAfterContentInit() {    
     setTimeout(() => {
-      this.drawChart(this.elevation, this.distance);
-    }, 1500);
+      this.drawChart(this.elevation);
+    }, 250);
   }
 
-  drawChart(dataset, distance) {
+  drawChart(dataset) {
+    let distanceArray = dataset.map(a => a.dist);
+    let elevationArray = dataset.map(a => a.ele);
     var config = {
       type: 'line',
       data: {
-        labels: distance,
+        labels: distanceArray,
         datasets: [{
           label: 'Elevation',
           backgroundColor: '#00000',
           borderColor: '#00000',
-          data: dataset,
+          data: elevationArray,
           fill: false,
         }]
       },
       options: {
+        legend: false, 
         responsive: true,
         title: {
           display: true,

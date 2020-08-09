@@ -40,7 +40,7 @@ export class ClubEventService {
     };
     return this.http.get<ClubEvent>(`${this.macLocal}${this.clubEventEndpoint}/${id}`, httpOptions)
       .pipe(
-        map(result => {          
+        map(result => {                    
           if (result.profile_picture) {
             let profileUrl = `${this.macLocal}${result.profile_picture}`;
             result.profile_picture = profileUrl;
@@ -50,6 +50,12 @@ export class ClubEventService {
               this.generatePictureUrl(result.attendees);
             }
           }
+          if (result.map_array && result.map_array !== null) {
+            result.map_array = JSON.parse(result.map_array);
+          }
+          if (result.elevation_array && result.elevation_array !== null) {          
+            result.elevation_array = JSON.parse(result.elevation_array);
+          }          
           return result;
         }),
         catchError(this.handleError)

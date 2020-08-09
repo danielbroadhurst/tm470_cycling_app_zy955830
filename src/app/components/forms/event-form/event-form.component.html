@@ -8,15 +8,10 @@
   <h2>Club Event Route</h2>
   <div>
     <!-- Display Profile Picture and Capture Image Button -->
-    <app-event-map *ngIf="showMap" [gpxArray]="gpxArray" [elevation]="elevationArray" [distance]="distanceArray" [mapDistance]="mapDistance"></app-event-map>
+    <app-event-map *ngIf="showMap" [gpxArray]="gpxArray" [elevation]="elevationArray"></app-event-map>
     <ion-button size="small" (click)="f.click()">Upload GPX Map</ion-button>
     <input class="ion-hide" #f type="file" (change)="loadImageFromDevice($event)" id="file-input">
   </div>
-  <!-- <h2>Event Map</h2>
-  <ion-item>
-    <ion-label position="stacked">Upload Map</ion-label>
-    <ion-input name="mapUpload" id="mapUpload" type="file" (ionChange)="previewMap($event)"></ion-input>
-  </ion-item> -->
   <h2>Event Details</h2>
   <ion-item>
     <!-- Event Name -->

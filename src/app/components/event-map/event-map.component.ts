@@ -10,30 +10,28 @@ export class EventMapComponent implements AfterContentInit {
 
   @Input() gpxArray: any;
   @Input() elevation: [] = [];
-  @Input() distance: [] = [];
   @Input() showElevation: boolean = false;
-  @Input() mapDistance: any;
 
-  mymap: any;
+  mymap: any = null;
 
   constructor() { }
 
   ngOnInit() { }
 
-  ngAfterContentInit() {
+  ngAfterContentInit() {    
     if (this.gpxArray) {
       setTimeout(() => {
         this.displayMap();
-      }, 1000);
+      }, 300);
     }
     if (this.elevation) {
       setTimeout(() => {
         this.showElevation = true;
-      }, 1000);
+      }, 300);
     }
   }
 
-  displayMap() {    
+  displayMap() {
     this.mymap = L.map('map_event').setView(this.gpxArray[0], 12);
     L.tileLayer('https://api.mapbox.com/styles/v1/{id}/tiles/{z}/{x}/{y}?access_token={accessToken}', {
       attribution: '',

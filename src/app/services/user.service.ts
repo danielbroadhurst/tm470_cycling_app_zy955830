@@ -92,6 +92,12 @@ export class UserService {
         if (club.events) {
           this.generatePictureUrl(club.events);
         }
+        if (club.map_array && club.map_array !== null) {
+          array[i].map_array = JSON.parse(array[i].map_array);
+        }
+        if (club.elevation_array && club.elevation_array !== null) {          
+          array[i].elevation_array = JSON.parse(array[i].elevation_array);
+        }
       }
     } else {
       this.generatePictureUrl(array);
@@ -268,6 +274,10 @@ export class UserService {
       console.error(
         `${error.status} Error:\n` +
         `${error.message}`);
+    }
+    if (error.error.message === "Unauthenticated.") {
+      window.localStorage.clear();      
+      this.router.navigate['/login']
     }
     // localStorage.removeItem('token')
     // this.router.navigate['/login']

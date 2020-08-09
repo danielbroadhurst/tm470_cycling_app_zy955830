@@ -1,3 +1,3 @@
 <div id="map_event" class="mapStyle"></div>
-<h3 *ngIf="mapDistance">Distance: {{mapDistance}}km</h3>
-<app-map-elevation *ngIf="showElevation" [elevation]="elevation" [distance]="distance"></app-map-elevation>
+<h3 *ngIf="elevation">Distance: {{elevation[elevation.length - 1].dist}}km</h3>
+<app-map-elevation *ngIf="showElevation" [elevation]="elevation"></app-map-elevation>

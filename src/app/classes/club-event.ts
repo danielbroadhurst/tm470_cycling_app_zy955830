@@ -19,6 +19,7 @@ export class ClubEvent {
         public lng?: number,
         public distanceToUser?: string,
         public attendees?: User[],
-        public map_array?: []
+        public map_array?: any,
+        public elevation_array?: any,
     ) { }
 }

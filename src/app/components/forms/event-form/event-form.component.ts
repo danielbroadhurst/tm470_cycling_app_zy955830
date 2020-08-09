@@ -35,8 +35,6 @@ export class EventFormComponent implements OnInit {
   imageCaptured: boolean = false;
   gpxArray: any = [];
   elevationArray: any = [];
-  distanceArray: any = [];
-  mapDistance: string;
 
   constructor(
     private camera: Camera,
@@ -103,7 +101,9 @@ export class EventFormComponent implements OnInit {
         const element: Element = segments[i];
         let points = element.getElementsByTagName("trkpt");        
         let distance = 0.0;
-        this.distanceArray.push("0");
+        let tempEle = [];
+        let tempDist = []
+        tempDist.push(0);
         for (let j = 0; j < points.length; j++) {
           if (j % 5 === 0) {
             let lat = parseFloat(points[j].getAttribute('lat'));
@@ -113,16 +113,20 @@ export class EventFormComponent implements OnInit {
               let lonNext = parseFloat(points[j+5].getAttribute('lon'));
               if (latNext && lonNext) {
                 distance += L.latLng([lat, lon]).distanceTo(L.latLng([latNext, lonNext]));
-                this.distanceArray.push((distance / 1000).toFixed(2));
+                tempDist.push((distance / 1000).toFixed(2));
               }
             }
             this.addToGPXArray([lat, lon]);
-            let ele = parseFloat(points[j].childNodes[1].textContent);            
-            this.elevationArray.push(ele); 
+            tempEle.push(parseFloat(points[j].childNodes[1].textContent)); 
           }
         }
-        this.mapDistance = (distance / 1000).toFixed(0);
-      }      
+        for (let i = 0; i < tempEle.length; i++) {
+          this.elevationArray.push({
+            ele: tempEle[i],
+            dist: parseFloat(tempDist[i]).toFixed(2)
+          })
+        }        
+      }            
       this.showMap = true;      
     });
   }
@@ -147,6 +151,10 @@ export class EventFormComponent implements OnInit {
     }
     this.clubEvent.start_time = this.clubEvent.start_time.split('T')[1].substr(0, 5);
     this.clubEvent.event_date = this.clubEvent.event_date.split('T')[0].substr(0, 10);
+    if (this.gpxArray.length > 0 && this.elevationArray.length > 0) {
+      this.clubEvent.map_array = JSON.stringify(this.gpxArray);
+      this.clubEvent.elevation_array = JSON.stringify(this.elevationArray);
+    }
     this.clubEventService.createClubEvent(this.clubEvent)
       .subscribe(
         res => {
@@ -163,6 +171,10 @@ export class EventFormComponent implements OnInit {
     }
     if (!this.imageCaptured) {
       delete this.clubEvent.profile_picture;
+    }
+    if (this.gpxArray.length > 0 && this.elevationArray.length > 0) {
+      this.clubEvent.map_array = JSON.stringify(this.gpxArray);
+      this.clubEvent.elevation_array = JSON.stringify(this.elevationArray);
     }
     this.clubEventService.updateClubEvent(this.clubEvent)
       .subscribe(
